@@ -1,7 +1,6 @@
 'use client';
 import React, { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { SmallBentoBox } from '@/components/ui/small-bento-box';
 import { ChevronLeftIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -70,7 +69,7 @@ export function LeftToRightGrid() {
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
-          className="grid grid-rows-1 grid-flow-col gap-4 sm:gap-5 overflow-x-auto snap-mandatory scrollbar-hide justify-between"
+          className="grid grid-rows-1 grid-flow-col gap-4 sm:gap-10 md:gap-7 xl:gap-20 overflow-x-auto snap-mandatory scrollbar-hide justify-between"
         >
           <SmallBentoBox />
           <SmallBentoBox />
