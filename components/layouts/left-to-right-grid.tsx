@@ -48,13 +48,6 @@ export function LeftToRightGrid() {
   };
   return (
     <div className="group relative flex items-center justify-center p-4 gap-2 w-full h-min-content px-0">
-      <Button
-        variant="ghost"
-        onClick={scrollLeft}
-        className="group-hover:block hidden absolute top-1/2 left-0 transform -translate-y-1/2 bg-transparent z-10 mx-2 md:mx-3 lg:mx-6 xl:mx-8 2xl:mx-12"
-      >
-        <ChevronLeftIcon className="w-5 h-5" />
-      </Button>
       <div className="w-full relative z-0 px-4">
         <div className="flex flex-row items-center justify-between">
           <h2 className="mb-6 text-2xl xs:text-sm sm:text-lg lg:text-xl font-semibold">
@@ -69,8 +62,15 @@ export function LeftToRightGrid() {
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
-          className="grid grid-rows-1 grid-flow-col gap-4 sm:gap-10 md:gap-7 xl:gap-20 overflow-x-auto snap-mandatory scrollbar-hide justify-between"
+          className="grid grid-rows-1 grid-flow-col gap-4 sm:gap-6 md:gap-7 xl:gap-20 overflow-x-auto snap-mandatory scrollbar-hide justify-between items-center"
         >
+          <Button
+            variant="ghost"
+            onClick={scrollLeft}
+            className="md:group-hover:block hidden absolute z-10 mx-0 w-min"
+          >
+            <ChevronLeftIcon className="w-4 h-4" />
+          </Button>
           <SmallBentoBox />
           <SmallBentoBox />
           <SmallBentoBox />
@@ -85,7 +85,7 @@ export function LeftToRightGrid() {
         <Button
           variant="ghost"
           onClick={scrollRight}
-          className="group-hover:block hidden absolute top-1/2 right-0 transform -translate-y-1/2  mx-2 md:mx-3 lg:mx-6 xl:mx-8 2xl:mx-12"
+          className="md:group-hover:block hidden absolute mx-2"
         >
           <ChevronRightIcon className="w-5 h-5" />
         </Button>
