@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import { screens as _screens } from 'tailwindcss/defaultTheme';
 export const darkMode = ['class'];
 export const content = [
   './pages/**/*.{ts,tsx}',
@@ -9,12 +8,17 @@ export const content = [
 ];
 export const prefix = '';
 export const theme = {
+  screens: {
+    sm: '360px',
+    md: '768px',
+    lg: '1024px',
+    xl: '1200px',
+    '2xl': '1440px',
+  },
   container: {
     center: true,
     padding: '2rem',
     screens: {
-      xs: '375px',
-      ..._screens,
       '2xl': '1400px',
       '4xl': '1800px',
       '5xl': '2000px',
