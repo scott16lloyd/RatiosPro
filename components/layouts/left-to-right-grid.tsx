@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { SmallBentoBox } from '@/components/ui/small-bento-box';
 import { ChevronLeftIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
 import Link from 'next/link';
-export function LeftToRightGrid() {
+export function LeftToRightGrid({ title = 'No title' }: { title: string }) {
   // Functionality for scrolling left and right
   const UseScrollContainer = useRef<HTMLDivElement | null>(null);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -51,7 +51,7 @@ export function LeftToRightGrid() {
       <div className="w-full relative z-0 px-4">
         <div className="flex flex-row items-center justify-between">
           <h2 className="mb-6 text-2xl xs:text-sm sm:text-lg lg:text-xl font-semibold">
-            Trending
+            {title}
           </h2>
           <Link className="mb-6 text-sm underline" href="#">
             View all
