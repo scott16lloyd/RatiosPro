@@ -13,7 +13,7 @@ export default function DetailsPage() {
           </Link>
         </Button>
       </div>
-      <div className="h-full flex justify-center">
+      <div className="h-screen flex justify-center">
         <PriceHistory />
       </div>
     </>
