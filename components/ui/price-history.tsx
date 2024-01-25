@@ -9,11 +9,12 @@ import {
   TooltipProps,
   ResponsiveContainer,
 } from 'recharts';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { format, parse } from 'date-fns';
 import { Button } from './button';
+import { LineLoader } from '@/components/ui/line-loader';
 
-// Temporary price history data
+// Price history strores
 const data1M = [
   { date: '22-12-2023', price: 193.6 },
   { date: '23-12-2023', price: 193.05 },
@@ -63,6 +64,16 @@ const data1D = [
   { date: '22-12-2023', price: 194.1 },
   { date: '22-12-2023', price: 194.15 },
 ];
+
+const data1W: SetStateAction<{ date: string; price: number }[]> = [];
+
+const dataYTD: SetStateAction<{ date: string; price: number }[]> = [];
+
+const dataY: SetStateAction<{ date: string; price: number }[]> = [];
+
+const data5Y: SetStateAction<{ date: string; price: number }[]> = [];
+
+const dataMax: SetStateAction<{ date: string; price: number }[]> = [];
 
 // Calculates the domain and interval for the Y axis
 function calculateDomain(data: any[]) {
@@ -114,11 +125,26 @@ export function PriceHistory() {
       case '1d':
         setCurrentData(data1D);
         break;
+      case '1w':
+        setCurrentData(data1W);
+        break;
       case '1m':
         setCurrentData(data1M);
         break;
+      case 'ytd':
+        setCurrentData(dataYTD);
+        break;
+      case 'y':
+        setCurrentData(dataY);
+        break;
+      case '5y':
+        setCurrentData(data5Y);
+        break;
+      case 'max':
+        setCurrentData(dataMax);
+        break;
       default:
-        setCurrentData(data1D); // default to data1D
+        setCurrentData([]); // default to data1D
     }
   };
 
@@ -145,9 +171,13 @@ export function PriceHistory() {
     <div className="w-full md:w-10/12 2xl:w-8/12 h-2/6">
       {isClient &&
         (isLoading ? (
-          <h1>Loading...</h1>
+          <div className="w-full h-full flex justify-center items-center">
+            <LineLoader />
+          </div>
         ) : currentData && currentData.length === 0 ? (
-          <h1>No data available</h1>
+          <div className="w-full h-full flex justify-center items-center">
+            <h1>No data available</h1>
+          </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
