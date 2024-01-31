@@ -50,7 +50,6 @@
   .text-gradient {
     background: linear-gradient(
       90deg,
-      hsla(120, 90%, 73%, 1),
       hsla(120, 65%, 53%, 1),
       hsla(120, 100%, 37%, 1)
     );

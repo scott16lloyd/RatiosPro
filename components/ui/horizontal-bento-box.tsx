@@ -19,7 +19,7 @@ export function HorizontalBentoBox() {
           <p className="text-2xl md:text-4xl lg:text-5xl font-semibold ">
             $208.85
           </p>
-          <p className="text-lg md:text-2xl lg:text-3xl font-medium text-green-400">
+          <p className="text-lg md:text-2xl lg:text-3xl font-medium text-gradient">
             +1.12%
           </p>
         </div>

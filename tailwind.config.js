@@ -86,6 +86,17 @@ export const theme = {
     height: {
       120: '30rem',
     },
+    width: {
+      120: '40rem',
+      130: '50rem',
+    },
+    padding: {
+      110: '26rem',
+      130: '30rem',
+    },
+    maxWidth: {
+      130: '100rem',
+    },
   },
 };
 export const plugins = [

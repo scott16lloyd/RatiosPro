@@ -107,7 +107,7 @@ type ButtonSize = 'default' | 'sm' | 'lg' | 'icon' | 'xs' | null | undefined;
 // Price history component
 export function PriceHistory() {
   const [isClient, setIsClient] = useState(false);
-  const [buttonSize, setButtonSize] = useState<ButtonSize>('xs');
+  const [buttonSize, setButtonSize] = useState<ButtonSize>('default');
   const [activeButton, setActiveButton] = useState('1d');
   const [currentData, setCurrentData] = useState(data1D);
   const [isLoading, setIsLoading] = useState(false);
@@ -157,8 +157,8 @@ export function PriceHistory() {
       }
     };
 
-    window.addEventListener('resize', updateSize);
     updateSize();
+    window.addEventListener('resize', updateSize);
 
     return () => window.removeEventListener('resize', updateSize);
   }, []);
@@ -168,7 +168,7 @@ export function PriceHistory() {
   }, []);
 
   return (
-    <div className="w-full md:w-10/12 2xl:w-8/12 h-2/6">
+    <div className="w-full md:w-10/12 2xl:w-8/12 h-full">
       {isClient &&
         (isLoading ? (
           <div className="w-full h-full flex justify-center items-center">
@@ -207,10 +207,22 @@ export function PriceHistory() {
                   format(new Date(value), 'd MMM yyyy')
                 }
               />
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop
+                    offset="50%"
+                    style={{ stopColor: 'hsla(120, 65%, 53%, 1)' }}
+                  />
+                  <stop
+                    offset="100%"
+                    style={{ stopColor: 'hsla(120, 100%, 37%, 1)' }}
+                  />
+                </linearGradient>
+              </defs>
               <Line
                 type="linear"
                 dataKey="price"
-                stroke="#37D537"
+                stroke="url(#gradient)"
                 dot={false}
                 activeDot={{ r: 8 }}
                 strokeWidth={2}
