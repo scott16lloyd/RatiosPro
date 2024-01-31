@@ -88,10 +88,14 @@ export const theme = {
     },
     width: {
       120: '40rem',
+      130: '50rem',
     },
     padding: {
       110: '26rem',
-      120: '30rem',
+      130: '30rem',
+    },
+    maxWidth: {
+      130: '100rem',
     },
   },
 };
