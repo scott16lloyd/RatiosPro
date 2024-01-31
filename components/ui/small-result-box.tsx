@@ -1,6 +1,6 @@
 export function SmallResultBox() {
   return (
-    <div className="w-full h-full p-2 bg-secondary rounded-2xl flex flex-col">
+    <div className="w-full h-full min-h-24 p-2 bg-secondary rounded-2xl flex flex-col">
       <div className="flex flex-row justify-start px-2 w-full">
         <span className="text-base md:text-lg lg:text-xl xl:text-2xl">PSR</span>
       </div>
