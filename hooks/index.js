@@ -18,4 +18,31 @@ const fetchMostPopular = async () => {
   return data;
 };
 
-export { fetchBiggestGainers, fetchMostPopular };
+const fetchMostPopularBySector = async () => {
+  // Fetch all stocks
+  const response = await fetch(
+    `https://financialmodelingprep.com/api/v3/stock-screener?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
+  );
+  const stocks = await response.json();
+
+  // Group stocks by sector and sort by volume
+  const sectors = {};
+  for (const stock of stocks) {
+    if (!stock.sector) continue;
+    if (!sectors[stock.sector]) {
+      sectors[stock.sector] = [];
+    }
+    sectors[stock.sector].push(stock);
+  }
+
+  // Sort each sector's stocks by volume and take the top 10
+  for (const sector in sectors) {
+    sectors[sector].sort((a, b) => b.volume - a.volume);
+    sectors[sector] = sectors[sector].slice(0, 10);
+  }
+
+  console.log(sectors);
+  return sectors;
+};
+
+export { fetchBiggestGainers, fetchMostPopular, fetchMostPopularBySector };

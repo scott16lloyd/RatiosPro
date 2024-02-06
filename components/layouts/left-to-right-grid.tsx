@@ -38,47 +38,6 @@ export function LeftToRightGrid({
 
   if (error) return 'An error has occurred: ' + error.message;
 
-  // Functionality for scrolling left and right
-  // const useScrollContainer = useRef<HTMLDivElement | null>(null);
-  // const [isScrolling, setIsScrolling] = useState(false);
-  // const [scrollStart, setScrollStart] = useState(0);
-
-  // const handleMouseDown = (e: { clientX: React.SetStateAction<number> }) => {
-  //   setIsScrolling(true);
-  //   setScrollStart(e.clientX);
-  // };
-
-  // const handleMouseUp = () => {
-  //   setIsScrolling(false);
-  // };
-
-  // const handleMouseMove = (e: { clientX: React.SetStateAction<number> }) => {
-  //   if (isScrolling && useScrollContainer.current) {
-  //     useScrollContainer.current.scrollLeft +=
-  //       Number(scrollStart) - Number(e.clientX);
-  //     setScrollStart(e.clientX);
-  //   }
-  // };
-
-  // const scrollLeft = () => {
-  //   if (useScrollContainer.current !== null) {
-  //     if (useScrollContainer.current) {
-  //       useScrollContainer.current.scrollTo({
-  //         left: useScrollContainer.current.scrollLeft - window.innerWidth * 0.4,
-  //         behavior: 'smooth',
-  //       });
-  //     }
-  //   }
-  // };
-
-  // const scrollRight = () => {
-  //   if (useScrollContainer.current) {
-  //     useScrollContainer.current.scrollTo({
-  //       left: useScrollContainer.current.scrollLeft + window.innerWidth * 0.4,
-  //       behavior: 'smooth',
-  //     });
-  //   }
-  // };
   return (
     <div className="flex w-full h-min-content px-0">
       <div className="w-full px-4">
