@@ -3,52 +3,85 @@ import React, { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { SmallBentoBox } from '@/components/ui/small-bento-box';
 import { ChevronLeftIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-export function LeftToRightGrid({ title = 'No title' }: { title: string }) {
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+
+interface StockData {
+  symbol: string;
+  name: string;
+  price: number;
+  changesPercentage: number;
+}
+
+interface LeftToRightGridProps {
+  title: string;
+  fetchFunction: () => Promise<StockData[]>;
+}
+
+export function LeftToRightGrid({
+  title,
+  fetchFunction,
+}: LeftToRightGridProps) {
+  const { isLoading, error, data } = useQuery({
+    queryKey: [title],
+    queryFn: fetchFunction,
+  });
+
+  if (isLoading) return 'Loading...';
+
+  if (error) return 'An error has occurred: ' + error.message;
+
   // Functionality for scrolling left and right
-  const UseScrollContainer = useRef<HTMLDivElement | null>(null);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const [scrollStart, setScrollStart] = useState(0);
+  // const useScrollContainer = useRef<HTMLDivElement | null>(null);
+  // const [isScrolling, setIsScrolling] = useState(false);
+  // const [scrollStart, setScrollStart] = useState(0);
 
-  const handleMouseDown = (e: { clientX: React.SetStateAction<number> }) => {
-    setIsScrolling(true);
-    setScrollStart(e.clientX);
-  };
+  // const handleMouseDown = (e: { clientX: React.SetStateAction<number> }) => {
+  //   setIsScrolling(true);
+  //   setScrollStart(e.clientX);
+  // };
 
-  const handleMouseUp = () => {
-    setIsScrolling(false);
-  };
+  // const handleMouseUp = () => {
+  //   setIsScrolling(false);
+  // };
 
-  const handleMouseMove = (e: { clientX: React.SetStateAction<number> }) => {
-    if (isScrolling && UseScrollContainer.current) {
-      UseScrollContainer.current.scrollLeft +=
-        Number(scrollStart) - Number(e.clientX);
-      setScrollStart(e.clientX);
-    }
-  };
+  // const handleMouseMove = (e: { clientX: React.SetStateAction<number> }) => {
+  //   if (isScrolling && useScrollContainer.current) {
+  //     useScrollContainer.current.scrollLeft +=
+  //       Number(scrollStart) - Number(e.clientX);
+  //     setScrollStart(e.clientX);
+  //   }
+  // };
 
-  const scrollLeft = () => {
-    if (UseScrollContainer.current !== null) {
-      if (UseScrollContainer.current) {
-        UseScrollContainer.current.scrollTo({
-          left: UseScrollContainer.current.scrollLeft - window.innerWidth * 0.4,
-          behavior: 'smooth',
-        });
-      }
-    }
-  };
+  // const scrollLeft = () => {
+  //   if (useScrollContainer.current !== null) {
+  //     if (useScrollContainer.current) {
+  //       useScrollContainer.current.scrollTo({
+  //         left: useScrollContainer.current.scrollLeft - window.innerWidth * 0.4,
+  //         behavior: 'smooth',
+  //       });
+  //     }
+  //   }
+  // };
 
-  const scrollRight = () => {
-    if (UseScrollContainer.current) {
-      UseScrollContainer.current.scrollTo({
-        left: UseScrollContainer.current.scrollLeft + window.innerWidth * 0.4,
-        behavior: 'smooth',
-      });
-    }
-  };
+  // const scrollRight = () => {
+  //   if (useScrollContainer.current) {
+  //     useScrollContainer.current.scrollTo({
+  //       left: useScrollContainer.current.scrollLeft + window.innerWidth * 0.4,
+  //       behavior: 'smooth',
+  //     });
+  //   }
+  // };
   return (
-    <div className="group relative flex items-center justify-center p-4 gap-2 w-full h-min-content px-0">
-      <div className="w-full relative z-0 px-4">
+    <div className="flex w-full h-min-content px-0">
+      <div className="w-full px-4">
         <div className="flex flex-row items-center justify-between">
           <h2 className="mb-6 text-2xl xs:text-sm sm:text-lg lg:text-xl font-semibold">
             {title}
@@ -57,38 +90,35 @@ export function LeftToRightGrid({ title = 'No title' }: { title: string }) {
             View all
           </Link>
         </div>
-        <div
-          ref={UseScrollContainer}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          className="grid grid-rows-1 grid-flow-col gap-4 sm:gap-6 md:gap-7 xl:gap-20 overflow-x-auto snap-mandatory scrollbar-hide justify-between items-center"
-        >
-          <Button
-            variant="ghost"
-            onClick={scrollLeft}
-            className="md:group-hover:block hidden absolute z-10 mx-0 w-min"
+        <div className="flex justify-center md:px-10">
+          <Carousel
+            className="w-full"
+            opts={{
+              align: 'start',
+            }}
           >
-            <ChevronLeftIcon className="w-4 h-4" />
-          </Button>
-          <SmallBentoBox />
-          <SmallBentoBox />
-          <SmallBentoBox />
-          <SmallBentoBox />
-          <SmallBentoBox />
-          <SmallBentoBox />
-          <SmallBentoBox />
-          <SmallBentoBox />
+            <CarouselContent className="w-full max-w-md">
+              {data &&
+                data.map((data, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="basis-5/12 md:basis-7/12 lg:basis-9/12 xl:basis-10/12"
+                  >
+                    <div className="p-1">
+                      <SmallBentoBox
+                        key={index}
+                        symbol={data.symbol}
+                        price={data.price}
+                        changesPercentage={data.changesPercentage}
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+            </CarouselContent>
+            <CarouselPrevious className="md:flex hidden items-center justify-center" />
+            <CarouselNext className="md:flex hidden items-center justify-center" />
+          </Carousel>
         </div>
-      </div>
-      <div className="flex flex-col items-end">
-        <Button
-          variant="ghost"
-          onClick={scrollRight}
-          className="md:group-hover:block hidden absolute mx-2"
-        >
-          <ChevronRightIcon className="w-5 h-5" />
-        </Button>
       </div>
     </div>
   );
