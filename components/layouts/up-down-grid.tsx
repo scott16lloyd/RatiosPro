@@ -1,12 +1,19 @@
 'use client';
 
 import react, { useState } from 'react';
-import { Link } from 'lucide-react';
+import { Car, Link } from 'lucide-react';
 import { Button } from '../ui/button';
 import { HorizontalBentoBox } from '../ui/horizontal-bento-box';
+import { useQuery } from '@tanstack/react-query';
+import { fetchMostPopularBySector } from '@/hooks';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
 
 export function UpDownGrid({ title = 'No title' }: { title: string }) {
-  const [activeButton, setActiveButton] = useState('popular');
+  const [activeButton, setActiveButton] = useState('Technology');
 
   const changeColor = (buttonName: string) => {
     setActiveButton(buttonName);
@@ -14,9 +21,21 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
 
   const getButtonClass = (buttonName: string) => {
     return activeButton === buttonName
-      ? 'dark:bg-white hover:dark:bg-white text-black dark:hover:text-black'
-      : '';
+      ? 'dark:bg-white hover:dark:bg-white text-black dark:hover:text-black w-min'
+      : 'w-min';
   };
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['sectorData'],
+    queryFn: fetchMostPopularBySector,
+  });
+
+  console.log(data);
+
+  if (isLoading) return 'Loading...';
+
+  if (error) return 'An error has occurred: ' + error.message;
+
   return (
     <div className="group relative flex items-center justify-center p-4 gap-2 w-full h-min-content px-0">
       <div className="w-full relative z-0 px-4 items-center">
@@ -28,47 +47,32 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
             View all
           </Link>
         </div>
-        <div className="grid grid-rows-1 grid-flow-col overflow-x-auto snap-mandatory scrollbar-hide w-full lg:px-28 2xl:px-64 md:gap-6 lg:gap-8 xl:px-46 xl:gap-10 items-content-center gap-4 pb-4">
-          <Button
-            variant="outline"
-            onClick={() => changeColor('popular')}
-            className={getButtonClass('popular')}
-          >
-            Popular
-          </Button>
-          <Button
-            variant="outline"
-            className={getButtonClass('tech')}
-            onClick={() => changeColor('tech')}
-          >
-            Tech
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => changeColor('healthcare')}
-            className={getButtonClass('healthcare')}
-          >
-            Healthcare
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => changeColor('finance')}
-            className={getButtonClass('finance')}
-          >
-            Finance
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => changeColor('energy')}
-            className={getButtonClass('energy')}
-          >
-            Energy
-          </Button>
+        <div className="w-full md:px-12 lg:px-14 xl:px-18 2xl:px-28 pb-4">
+          <div className="flex justify-between gap-2 lg:gap-4 xl:gap-6 overflow-x-scroll scrollbar-hide">
+            {data &&
+              Object.keys(data).map((sector: any) => (
+                <Button
+                  key={sector}
+                  variant="outline"
+                  onClick={() => changeColor(sector)}
+                  className={getButtonClass(sector)}
+                >
+                  {sector}
+                </Button>
+              ))}
+          </div>
         </div>
         <div className="grid grid-flow-row gap-4 sm:gap-6 md:gap-7 xl:gap-12 md:px-10 lg:px-14 xl:px-18 2xl:px-28 snap-mandatory scrollbar-hide items-center w-full">
-          <HorizontalBentoBox />
-          <HorizontalBentoBox />
-          <HorizontalBentoBox />
+          {data &&
+            data[activeButton] &&
+            data[activeButton].map((stock: any, index: number) => (
+              <HorizontalBentoBox
+                key={index}
+                symbol={stock.symbol}
+                price={stock.price}
+                industry={stock.industry}
+              />
+            ))}
         </div>
       </div>
     </div>

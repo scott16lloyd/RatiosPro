@@ -9,15 +9,6 @@ import axios from 'axios';
 import { fetchBiggestGainers, fetchMostPopular } from '@/hooks/index';
 
 export default function Home() {
-  // const { isPending, error, data, isFetching } = useQuery({
-  //   queryKey: ['biggestGainerData'],
-  //   queryFn: async () => fetchBiggestGainers(),
-  // });
-
-  // if (isPending) return 'Loading...';
-
-  // if (error) return 'An error has occurred: ' + error.message;
-
   return (
     <main className="flex min-h-screen flex-col items-center gap-4 overflow-x-hidden">
       <TopNavBar />
