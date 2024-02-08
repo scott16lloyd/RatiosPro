@@ -22,9 +22,9 @@ export function SmallBentoBox({
         </div>
         <div className="flex flex-col md:gap-2 lg:gap-3">
           <p className="text-lg md:text-3xl lg:text-4xl font-semibold ">
-            {price.toFixed(2)}
+            ${price.toFixed(2)}
           </p>
-          <p className="text-sm md:text-xl lg:text-2xl font-medium text-green-400">
+          <p className="text-sm md:text-xl lg:text-2xl font-medium text-gradient">
             {changesPercentage.toFixed(2) + '%'}
           </p>
         </div>

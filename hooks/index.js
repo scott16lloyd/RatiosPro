@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
-
 const fetchBiggestGainers = async () => {
   // Provides a list of the stocks that have gained the most value on a given day
   const response = await fetch(
@@ -17,6 +15,19 @@ const fetchMostPopular = async () => {
   const data = await response.json();
   return data;
 };
+
+/**
+ * @typedef {Object} Stock
+ * @property {string} symbol
+ * @property {number} price
+ * @property {number} changesPercentage
+ * // Add other properties here based on the structure of your stock objects
+ */
+
+/**
+ * Fetches most popular stocks by sector
+ * @returns {Promise<Record<string, Stock[]>>}
+ */
 
 const fetchMostPopularBySector = async () => {
   // Fetch all stocks

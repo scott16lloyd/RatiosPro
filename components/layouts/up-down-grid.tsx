@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/carousel';
 
 export function UpDownGrid({ title = 'No title' }: { title: string }) {
-  const [activeButton, setActiveButton] = useState('popular');
+  const [activeButton, setActiveButton] = useState('Technology');
 
   const changeColor = (buttonName: string) => {
     setActiveButton(buttonName);
@@ -47,38 +47,32 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
             View all
           </Link>
         </div>
-        <div className="w-full lg:px-28 2xl:px-64 xl:px-46 pb-4">
-          <Carousel
-            className=""
-            opts={{
-              align: 'start',
-              dragFree: true,
-            }}
-          >
-            <CarouselContent className="w-full">
-              {data &&
-                Object.keys(data).map((sector: any) => (
-                  <CarouselItem
-                    key={sector}
-                    className="basis-2/12 md:basis-7/12 lg:basis-9/12 xl:basis-10/12 w-full h-full"
-                  >
-                    <Button
-                      key={sector}
-                      variant="outline"
-                      onClick={() => changeColor(sector)}
-                      className={getButtonClass(sector)}
-                    >
-                      {sector}
-                    </Button>
-                  </CarouselItem>
-                ))}
-            </CarouselContent>
-          </Carousel>
+        <div className="w-full md:px-12 lg:px-14 xl:px-18 2xl:px-28 pb-4">
+          <div className="flex justify-between gap-2 lg:gap-4 xl:gap-6 overflow-x-scroll scrollbar-hide">
+            {data &&
+              Object.keys(data).map((sector: any) => (
+                <Button
+                  key={sector}
+                  variant="outline"
+                  onClick={() => changeColor(sector)}
+                  className={getButtonClass(sector)}
+                >
+                  {sector}
+                </Button>
+              ))}
+          </div>
         </div>
         <div className="grid grid-flow-row gap-4 sm:gap-6 md:gap-7 xl:gap-12 md:px-10 lg:px-14 xl:px-18 2xl:px-28 snap-mandatory scrollbar-hide items-center w-full">
-          <HorizontalBentoBox />
-          <HorizontalBentoBox />
-          <HorizontalBentoBox />
+          {data &&
+            data[activeButton] &&
+            data[activeButton].map((stock: any, index: number) => (
+              <HorizontalBentoBox
+                key={index}
+                symbol={stock.symbol}
+                price={stock.price}
+                industry={stock.industry}
+              />
+            ))}
         </div>
       </div>
     </div>
