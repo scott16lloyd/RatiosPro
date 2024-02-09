@@ -13,6 +13,7 @@ import { SetStateAction, useEffect, useState } from 'react';
 import { format, parse } from 'date-fns';
 import { Button } from './button';
 import { LineLoader } from '@/components/ui/line-loader';
+import { BentoSkeleton } from './skeletons/bento-skeleton';
 
 // Price history strores
 const data1M = [
@@ -110,7 +111,17 @@ export function PriceHistory() {
   const [buttonSize, setButtonSize] = useState<ButtonSize>('default');
   const [activeButton, setActiveButton] = useState('1d');
   const [currentData, setCurrentData] = useState(data1D);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 6000); // Adjust this delay to match the loading time of your chart
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   const getButtonClass: (buttonName: string) => string = (buttonName) => {
     return activeButton === buttonName
@@ -171,8 +182,8 @@ export function PriceHistory() {
     <div className="w-full md:w-10/12 2xl:w-8/12 h-full">
       {isClient &&
         (isLoading ? (
-          <div className="w-full h-full flex justify-center items-center">
-            <LineLoader />
+          <div className="w-full h-full flex justify-center items-center pb-4">
+            <BentoSkeleton />
           </div>
         ) : currentData && currentData.length === 0 ? (
           <div className="w-full h-full flex justify-center items-center">
