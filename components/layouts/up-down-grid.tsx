@@ -1,16 +1,12 @@
 'use client';
 
-import react, { useState } from 'react';
-import { Car, Link } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'lucide-react';
 import { Button } from '../ui/button';
 import { HorizontalBentoBox } from '../ui/horizontal-bento-box';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMostPopularBySector } from '@/hooks';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
+import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
 
 export function UpDownGrid({ title = 'No title' }: { title: string }) {
   const [activeButton, setActiveButton] = useState('Technology');
@@ -29,10 +25,6 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
     queryKey: ['sectorData'],
     queryFn: fetchMostPopularBySector,
   });
-
-  console.log(data);
-
-  if (isLoading) return 'Loading...';
 
   if (error) return 'An error has occurred: ' + error.message;
 
@@ -63,16 +55,22 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
           </div>
         </div>
         <div className="grid grid-flow-row gap-4 sm:gap-6 md:gap-7 xl:gap-12 md:px-10 lg:px-14 xl:px-18 2xl:px-28 snap-mandatory scrollbar-hide items-center w-full">
-          {data &&
-            data[activeButton] &&
-            data[activeButton].map((stock: any, index: number) => (
-              <HorizontalBentoBox
-                key={index}
-                symbol={stock.symbol}
-                price={stock.price}
-                industry={stock.industry}
-              />
-            ))}
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, index) => (
+                <div className="p-1 w-full sm:h-24 md:h-36 lg:h-44">
+                  <BentoSkeleton key={index} />
+                </div>
+              ))
+            : data &&
+              data[activeButton] &&
+              data[activeButton].map((stock: any, index: number) => (
+                <HorizontalBentoBox
+                  key={index}
+                  symbol={stock.symbol}
+                  price={stock.price}
+                  industry={stock.industry}
+                />
+              ))}
         </div>
       </div>
     </div>
