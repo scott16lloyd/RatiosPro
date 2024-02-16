@@ -19,7 +19,7 @@ export default function DetailsPage() {
           </Button>
         </div>
         <div className="h-2/6 2xl:h-2/12 flex justify-center mb-8 lg:mb-10">
-          <PriceHistory />
+          <PriceHistory TickerSymbol="AAPL" />
         </div>
         <div className="w-full lg:h-5/6 xl:h-11/12 2xl:h-11/12 flex flex-col gap-2 lg:gap-4 p-4 px-8 md:px-44 lg:px-64 xl:px-130">
           {/* Top Row */}

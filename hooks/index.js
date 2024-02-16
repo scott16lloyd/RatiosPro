@@ -75,35 +75,32 @@ const fetchStockPriceHistory5Mins = async ({ queryKey }) => {
 
   // Reverse the array to get the latest data first
   latestDay.reverse();
-  console.log(latestDay);
-
   return latestDay;
 };
 
 const fetchDailyCharts = async ({ queryKey }) => {
   const [_key, symbol] = queryKey;
-  console.log('function called');
 
   // Fetch daily price history up to last 5 years
   const response = await fetch(
     `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
   );
 
-  console.log('response', response);
-
   // Parse the response data as JSON
   const data = await response.json();
-  console.log(data);
 
   // Return 1 week data
   let oneWeekData = data.historical.slice(0, 5);
   oneWeekData.reverse();
-  console.log(oneWeekData);
 
   // Return 1 month data
-  let oneMonthData = data.historical.slice(0, 31);
+  let dateOneMonthAgo = new Date();
+  dateOneMonthAgo.setMonth(dateOneMonthAgo.getMonth() - 1);
+  dateOneMonthAgo = dateOneMonthAgo.toISOString().split('T')[0];
+  let oneMonthData = data.historical.filter((day) => {
+    return day.date >= dateOneMonthAgo;
+  });
   oneMonthData.reverse();
-  console.log(oneMonthData);
 
   // Return 6 months data
   let dateSixMonthsAgo = new Date();
@@ -113,7 +110,6 @@ const fetchDailyCharts = async ({ queryKey }) => {
     return day.date >= dateSixMonthsAgo;
   });
   sixMonthsData.reverse();
-  console.log(sixMonthsData);
 
   // Return year to date
   let currentYear = new Date().getFullYear().toString();
@@ -122,22 +118,18 @@ const fetchDailyCharts = async ({ queryKey }) => {
     return day.date.startsWith(currentYear);
   });
   yearToDateData.reverse();
-  console.log(yearToDateData);
 
   // Return 1 year data
   // Calculate the date one year ago from today
   let oneYearAgo = new Date();
   oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
   oneYearAgo = oneYearAgo.toISOString().split('T')[0];
-  console.log(oneYearAgo);
 
   // Filter the data for the last year
   let lastYearData = data.historical.filter((day) => {
     return day.date >= oneYearAgo;
   });
   lastYearData.reverse();
-
-  console.log(lastYearData);
 
   // Return 5 years data
   let fiveYearsData = data.historical.slice(0, 1825);
