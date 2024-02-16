@@ -1,8 +1,6 @@
 'use client';
-import React, { useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import React from 'react';
 import { SmallBentoBox } from '@/components/ui/small-bento-box';
-import { ChevronLeftIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import {
@@ -69,7 +67,7 @@ export function LeftToRightGrid({
                     </CarouselItem>
                   ))
                 : // Display data when it's loaded
-                  data &&
+                  Array.isArray(data) &&
                   data.map((data, index) => (
                     <CarouselItem
                       key={index}

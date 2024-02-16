@@ -52,8 +52,111 @@ const fetchMostPopularBySector = async () => {
     sectors[sector] = sectors[sector].slice(0, 10);
   }
 
-  console.log(sectors);
   return sectors;
 };
 
-export { fetchBiggestGainers, fetchMostPopular, fetchMostPopularBySector };
+const fetchStockPriceHistory5Mins = async ({ queryKey }) => {
+  const [_key, symbol] = queryKey;
+  // Fetch 5 minute stock price history
+  const response = await fetch(
+    `https://financialmodelingprep.com/api/v3/historical-chart/5min/${symbol}?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
+  );
+
+  // Stores previous trading week data
+  const previousWeek = await response.json();
+
+  // Get last trade date
+  const lastTradeDate = previousWeek[0].date.split(' ')[0];
+
+  // Filter by trade date
+  const latestDay = previousWeek.filter((day) =>
+    day.date.startsWith(lastTradeDate)
+  );
+
+  // Reverse the array to get the latest data first
+  latestDay.reverse();
+  console.log(latestDay);
+
+  return latestDay;
+};
+
+const fetchDailyCharts = async ({ queryKey }) => {
+  const [_key, symbol] = queryKey;
+  console.log('function called');
+
+  // Fetch daily price history up to last 5 years
+  const response = await fetch(
+    `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
+  );
+
+  console.log('response', response);
+
+  // Parse the response data as JSON
+  const data = await response.json();
+  console.log(data);
+
+  // Return 1 week data
+  let oneWeekData = data.historical.slice(0, 5);
+  oneWeekData.reverse();
+  console.log(oneWeekData);
+
+  // Return 1 month data
+  let oneMonthData = data.historical.slice(0, 31);
+  oneMonthData.reverse();
+  console.log(oneMonthData);
+
+  // Return 6 months data
+  let dateSixMonthsAgo = new Date();
+  dateSixMonthsAgo.setMonth(dateSixMonthsAgo.getMonth() - 6);
+  dateSixMonthsAgo = dateSixMonthsAgo.toISOString().split('T')[0];
+  let sixMonthsData = data.historical.filter((day) => {
+    return day.date >= dateSixMonthsAgo;
+  });
+  sixMonthsData.reverse();
+  console.log(sixMonthsData);
+
+  // Return year to date
+  let currentYear = new Date().getFullYear().toString();
+  console.log(currentYear);
+  let yearToDateData = data.historical.filter((day) => {
+    return day.date.startsWith(currentYear);
+  });
+  yearToDateData.reverse();
+  console.log(yearToDateData);
+
+  // Return 1 year data
+  // Calculate the date one year ago from today
+  let oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+  oneYearAgo = oneYearAgo.toISOString().split('T')[0];
+  console.log(oneYearAgo);
+
+  // Filter the data for the last year
+  let lastYearData = data.historical.filter((day) => {
+    return day.date >= oneYearAgo;
+  });
+  lastYearData.reverse();
+
+  console.log(lastYearData);
+
+  // Return 5 years data
+  let fiveYearsData = data.historical.slice(0, 1825);
+  fiveYearsData.reverse();
+
+  return [
+    oneWeekData,
+    oneMonthData,
+    sixMonthsData,
+    yearToDateData,
+    lastYearData,
+    fiveYearsData,
+  ];
+};
+
+export {
+  fetchBiggestGainers,
+  fetchMostPopular,
+  fetchMostPopularBySector,
+  fetchStockPriceHistory5Mins,
+  fetchDailyCharts,
+};
