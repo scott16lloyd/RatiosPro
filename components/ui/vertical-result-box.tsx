@@ -12,7 +12,13 @@ import {
   LabelList,
 } from 'recharts';
 
-export function VerticalResultBox() {
+export function VerticalResultBox({
+  ratioName,
+  value,
+}: {
+  ratioName: string;
+  value: number[];
+}) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -28,22 +34,24 @@ export function VerticalResultBox() {
   const data = [
     {
       name: 'previous',
-      uv: 50,
-      max: 100,
+      uv: value[2],
+      max: 1,
     },
     {
       name: 'current',
-      uv: 100,
-      max: 100,
+      uv: value[1],
+      max: 1,
     },
   ];
+  console.log(value);
+  console.log(data);
 
   return isLoading ? (
     <BentoSkeleton />
   ) : (
     <div className="w-full h-full p-2 gap-1 md:px-4 lg:px-6 xl:px-2 2xl:px-8 bg-secondary rounded-2xl flex flex-col items-center justify-between">
       <div className="text-left w-full px-2 text-base md:text-lg lg:text-xl xl:text-2xl">
-        <span>PSR</span>
+        <span>{ratioName}</span>
       </div>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
@@ -65,7 +73,7 @@ export function VerticalResultBox() {
             </linearGradient>
           </defs>
           <XAxis dataKey="name" type="category" hide />
-          <YAxis type="number" domain={[0, 100]} hide />
+          <YAxis type="number" domain={[0, 1]} hide />
           <Bar dataKey="uv" radius={[8, 8, 8, 8]}>
             {data.map((entry, index) => (
               <Cell

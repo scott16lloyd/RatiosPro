@@ -145,10 +145,38 @@ const fetchDailyCharts = async ({ queryKey }) => {
   ];
 };
 
+const fetchBalanceSheet = async ({ queryKey }) => {
+  const [_key, symbol] = queryKey;
+
+  // Fetch stock ratios
+  const response = await fetch(
+    `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${symbol}?period=annual&apikey=${process.env.NEXT_PUBLIC_API_KEY}`
+  );
+
+  const data = await response.json();
+
+  return data;
+};
+
+const fetchIncomeStatement = async ({ queryKey }) => {
+  const [_key, symbol] = queryKey;
+
+  // Fetch stock ratios
+  const response = await fetch(
+    `https://financialmodelingprep.com/api/v3/income-statement/${symbol}?period=annual&apikey=${process.env.NEXT_PUBLIC_API_KEY}`
+  );
+
+  const data = await response.json();
+
+  return data;
+};
+
 export {
   fetchBiggestGainers,
   fetchMostPopular,
   fetchMostPopularBySector,
   fetchStockPriceHistory5Mins,
   fetchDailyCharts,
+  fetchBalanceSheet,
+  fetchIncomeStatement,
 };
