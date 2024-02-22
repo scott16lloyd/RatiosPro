@@ -11,7 +11,6 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
-import { is } from 'date-fns/locale';
 
 interface StockData {
   symbol: string;
@@ -34,8 +33,7 @@ export function LeftToRightGrid({
     queryFn: fetchFunction,
   });
 
-  if (isLoading) {
-  }
+  console.log('data:', data);
 
   return (
     <div className="flex w-full h-min-content px-0">

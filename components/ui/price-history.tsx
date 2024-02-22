@@ -254,10 +254,10 @@ export function PriceHistory({ TickerSymbol }: { TickerSymbol: string }) {
                   if (value.length === 19) {
                     formatString = 'yyyy-MM-dd HH:mm:ss';
                     displayFormat = 'HH:mm';
-                  } else if (currentData.length < 200) {
+                  } else if (currentData.length < 300) {
                     formatString = 'yyyy-MM-dd';
                     displayFormat = 'dd-MMM';
-                  } else if (currentData.length >= 200) {
+                  } else if (currentData.length >= 300) {
                     formatString = 'yyyy-MM-dd';
                     displayFormat = 'yyyy';
                   } else {

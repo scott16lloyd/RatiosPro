@@ -57,6 +57,17 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  .danger-gradient {
+    background: linear-gradient(
+      90deg,
+      hsla(0, 100%, 50%, 1),
+      hsla(0, 100%, 37%, 1)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 .noselect {

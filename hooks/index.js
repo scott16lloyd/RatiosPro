@@ -171,6 +171,20 @@ const fetchIncomeStatement = async ({ queryKey }) => {
   return data;
 };
 
+const fetchRatios = async ({ queryKey }) => {
+  const [_key, symbol] = queryKey;
+
+  // Fetch stock ratios
+  const response = await fetch(
+    `https://financialmodelingprep.com/api/v3/ratios/${symbol}?period=annual&apikey=${process.env.NEXT_PUBLIC_API_KEY}`
+  );
+
+  const data = await response.json();
+  console.log(data);
+
+  return data;
+};
+
 export {
   fetchBiggestGainers,
   fetchMostPopular,
@@ -179,4 +193,5 @@ export {
   fetchDailyCharts,
   fetchBalanceSheet,
   fetchIncomeStatement,
+  fetchRatios,
 };

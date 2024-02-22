@@ -10,6 +10,8 @@ import {
   Bar,
   Cell,
   LabelList,
+  Label,
+  Tooltip,
 } from 'recharts';
 
 export function VerticalResultBox({
@@ -17,7 +19,7 @@ export function VerticalResultBox({
   value,
 }: {
   ratioName: string;
-  value: number[];
+  value: number[][];
 }) {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -33,23 +35,28 @@ export function VerticalResultBox({
 
   const data = [
     {
-      name: 'previous',
-      uv: value[2],
+      name: value[1][1] ? value[1][1] : 'previous',
+      uv: value[1][0],
       max: 1,
     },
     {
-      name: 'current',
-      uv: value[1],
+      name: value[0][1] ? value[0][1] : 'current',
+      uv: value[0][0],
       max: 1,
     },
   ];
-  console.log(value);
-  console.log(data);
+
+  let barColor = 'white';
+  if (value[0][0] > value[1][0]) {
+    barColor = 'url(#greenGradient)';
+  } else {
+    barColor = 'url(#redGradient)';
+  }
 
   return isLoading ? (
     <BentoSkeleton />
   ) : (
-    <div className="w-full h-full p-2 gap-1 md:px-4 lg:px-6 xl:px-2 2xl:px-8 bg-secondary rounded-2xl flex flex-col items-center justify-between">
+    <div className="w-full h-full p-1 gap-1 md:px-4 lg:px-6 xl:px-2 2xl:px-3 bg-secondary rounded-2xl flex flex-col items-center justify-between">
       <div className="text-left w-full px-2 text-base md:text-lg lg:text-xl xl:text-2xl">
         <span>{ratioName}</span>
       </div>
@@ -58,10 +65,16 @@ export function VerticalResultBox({
           data={data}
           barCategoryGap={4}
           layout="horizontal"
-          margin={{ top: 20, bottom: 2, left: 2, right: 2 }}
+          margin={{ top: 20, bottom: 2, left: 0, right: 0 }}
         >
           <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient
+              id="greenGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+            >
               <stop
                 offset="50%"
                 style={{ stopColor: 'hsla(120, 65%, 53%, 1)' }}
@@ -71,14 +84,26 @@ export function VerticalResultBox({
                 style={{ stopColor: 'hsla(120, 100%, 37%, 1)' }}
               />
             </linearGradient>
+            <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop
+                offset="50%"
+                style={{ stopColor: 'hsla(0, 100%, 50%, 1)' }}
+              />
+              <stop
+                offset="100%"
+                style={{ stopColor: 'hsla(0, 100%, 37%, 1)' }}
+              />
+            </linearGradient>
           </defs>
-          <XAxis dataKey="name" type="category" hide />
+          <XAxis dataKey="name" type="category">
+            <Label offset={0} position="outside" />
+          </XAxis>
           <YAxis type="number" domain={[0, 1]} hide />
           <Bar dataKey="uv" radius={[8, 8, 8, 8]}>
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={index === 0 ? 'white' : 'url(#gradient)'}
+                fill={index === 0 ? 'white' : barColor}
               />
             ))}
             <LabelList
