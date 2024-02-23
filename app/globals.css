@@ -58,6 +58,17 @@
     -webkit-text-fill-color: transparent;
   }
 
+  .warning-gradient {
+    background: linear-gradient(
+      90deg,
+      hsla(40, 100%, 50%, 1),
+      hsla(36, 100%, 41%, 1)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .danger-gradient {
     background: linear-gradient(
       90deg,

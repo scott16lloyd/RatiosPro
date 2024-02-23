@@ -26,7 +26,7 @@ export function VerticalResultBox({
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000); // Adjust this delay to match the loading time of your chart
+    }, 2000);
 
     return () => {
       clearTimeout(timer);
@@ -49,6 +49,8 @@ export function VerticalResultBox({
   let barColor = 'white';
   if (value[0][0] > value[1][0]) {
     barColor = 'url(#greenGradient)';
+  } else if (value[0][0] === value[1][0]) {
+    barColor = 'grey';
   } else {
     barColor = 'url(#redGradient)';
   }
@@ -56,16 +58,16 @@ export function VerticalResultBox({
   return isLoading ? (
     <BentoSkeleton />
   ) : (
-    <div className="w-full h-full p-1 gap-1 md:px-4 lg:px-6 xl:px-2 2xl:px-3 bg-secondary rounded-2xl flex flex-col items-center justify-between">
-      <div className="text-left w-full px-2 text-base md:text-lg lg:text-xl xl:text-2xl">
-        <span>{ratioName}</span>
+    <div className="row-span-2 overflow-auto gap-1 md:px-4 lg:px-6 xl:px-2 2xl:px-3 bg-secondary rounded-2xl flex flex-col items-center justify-between">
+      <div className="text-left w-full px-2 md:px-0 py-2 text-lg md:text-3xl lg:text-4xl xl:text-4xl">
+        <span>{ratioName ? ratioName : 'null'}</span>
       </div>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="90%">
         <BarChart
-          data={data}
+          data={data ? data : []}
           barCategoryGap={4}
           layout="horizontal"
-          margin={{ top: 20, bottom: 2, left: 0, right: 0 }}
+          margin={{ top: 20, bottom: 2, left: 8, right: 8 }}
         >
           <defs>
             <linearGradient
@@ -119,7 +121,7 @@ export function VerticalResultBox({
                     fill={props.index === 0 ? 'grey' : 'white'}
                     textAnchor="middle"
                   >
-                    {value}
+                    {value ? value : 0}
                   </text>
                 );
               }}

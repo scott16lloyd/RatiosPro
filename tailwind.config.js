@@ -26,6 +26,10 @@ export const theme = {
     },
   },
   extend: {
+    gridTemplateColumns: {
+      custom: 'repeat(4, minmax(80px, 1fr))',
+      customSmall: 'repeat(3, minmax(80px, 1fr))',
+    },
     colors: {
       border: 'hsl(var(--border))',
       input: 'hsl(var(--input))',
@@ -82,6 +86,11 @@ export const theme = {
     },
     fontSize: {
       xxs: '0.5rem',
+      '1.5xl': '1.3rem',
+      '4.5xl': '2.4rem',
+      resultBoxSmall: '0.9rem',
+      resultBoxMedium: '1.7rem',
+      resultBoxLarge: '1.9rem',
     },
     height: {
       120: '30rem',
