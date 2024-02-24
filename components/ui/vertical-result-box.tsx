@@ -58,7 +58,7 @@ export function VerticalResultBox({
   return isLoading ? (
     <BentoSkeleton />
   ) : (
-    <div className="row-span-2 overflow-auto gap-1 md:px-4 lg:px-6 xl:px-2 2xl:px-3 bg-secondary rounded-2xl flex flex-col items-center justify-between">
+    <div className="row-span-2 overflow-auto gap-1 md:px-4 lg:px-6 xl:px-2 2xl:px-3 bg-secondary rounded-2xl flex flex-col items-center justify-between outline outline-zinc-700 outline-1">
       <div className="text-left w-full px-2 md:px-0 py-2 text-lg md:text-3xl lg:text-4xl xl:text-4xl">
         <span>{ratioName ? ratioName : 'null'}</span>
       </div>

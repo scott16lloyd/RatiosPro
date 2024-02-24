@@ -140,17 +140,17 @@ export function SmallResultBox({
   return isLoading ? (
     <BentoSkeleton />
   ) : (
-    <div className="aspect-square overflow-auto p-2 bg-secondary rounded-2xl flex flex-col">
+    <div className="aspect-square overflow-auto p-2 bg-secondary rounded-2xl flex flex-col outline outline-zinc-700 outline-1">
       <div className="flex flex-row justify-start md:p-2 w-full">
         <span className="text-lg md:text-3xl lg:text-4xl xl:text-4xl">
           {ratioName ? ratioName : 'null'}
         </span>
       </div>
       <div className="flex flex-row justify-center items-center h-full w-full">
-        <div className="flex flex-row">
+        <div className="flex flex-row lg:gap-2">
           <div className="flex flex-col items-center md:gap-1">
             <span
-              className={`text-1.5xl md:text-4.5xl font-bold ${prevValueColor}`}
+              className={`text-1.5xl md:text-5xl font-bold ${prevValueColor}`}
             >
               {prevValue ? prevValue : 'null'}
             </span>
@@ -161,7 +161,7 @@ export function SmallResultBox({
           <div className="border-l border-white h-8 md:h-12 mx-2"></div>
           <div className="flex flex-col items-center md:gap-1">
             <span
-              className={`text-1.5xl md:text-4.5xl font-bold ${currValueColor}`}
+              className={`text-1.5xl md:text-5xl font-bold ${currValueColor}`}
             >
               {currValue ? currValue : 'null'}
             </span>
