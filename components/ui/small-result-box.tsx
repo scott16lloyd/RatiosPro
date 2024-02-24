@@ -2,6 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
+import { Info } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 export function SmallResultBox({
   ratioName,
@@ -137,14 +144,35 @@ export function SmallResultBox({
     ? colorRules[ratioName as keyof typeof colorRules](currValue, prevValue)
     : 'warning-gradient';
 
+  const ratioDescriptions: { [key: string]: string } = {
+    CR: 'Current Ratio (CR) is a financial metric that is used to evaluate the liquidity of a company...',
+    QR: 'Quick Ratio (QR) is a measure of how well a company can meet its short-term financial liabilities...',
+    // Add more descriptions for each ratioName
+  };
+
   return isLoading ? (
     <BentoSkeleton />
   ) : (
-    <div className="aspect-square overflow-auto p-2 bg-secondary rounded-2xl flex flex-col outline outline-zinc-700 outline-1">
-      <div className="flex flex-row justify-start md:p-2 w-full">
+    <div className="aspect-square overflow-auto p-2 bg-secondary rounded-2xl flex flex-col outline outline-zinc-700 outline-1 shadow-md shadow-zinc-900">
+      <div className="flex flex-row justify-start md:p-2 w-full items-center gap-2">
         <span className="text-lg md:text-3xl lg:text-4xl xl:text-4xl">
           {ratioName ? ratioName : 'null'}
         </span>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info
+                size={22}
+                color="rgb(203 213 225)"
+                strokeWidth={1}
+                className="cursor-pointer"
+              />
+            </TooltipTrigger>
+            <TooltipContent style={{ maxWidth: '400px' }}>
+              <p>{ratioDescriptions[ratioName]}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       <div className="flex flex-row justify-center items-center h-full w-full">
         <div className="flex flex-row lg:gap-2">
