@@ -3,12 +3,18 @@
 import { useEffect, useState } from 'react';
 import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
 import { Info } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
+import Markdown from 'react-markdown';
 
 export function SmallResultBox({
   ratioName,
@@ -144,11 +150,34 @@ export function SmallResultBox({
     ? colorRules[ratioName as keyof typeof colorRules](currValue, prevValue)
     : 'warning-gradient';
 
-  const ratioDescriptions: { [key: string]: string } = {
-    CR: 'Current Ratio (CR) is a financial metric that is used to evaluate the liquidity of a company...',
-    QR: 'Quick Ratio (QR) is a measure of how well a company can meet its short-term financial liabilities...',
-    // Add more descriptions for each ratioName
-  };
+  const CRDescription = [
+    ['What is the Current Ratio?'],
+    [
+      `The **current ratio** measures a company’s ability to pay its **short-term obligations**—those due within a year. It provides insights into how effectively a company can utilize its current assets to cover its current debts and other payables. Investors and analysts use the current ratio to evaluate a company’s financial health.
+
+## **Formula and Calculation:**
+To calculate the current ratio, we compare a company’s **current assets** to its **current liabilities**. Let’s break it down:
+
+- 1. **Current Assets**: These are assets that are either cash or expected to be converted into cash within a year. They include items like cash, accounts receivable, and inventory.
+- 2. **Current Liabilities**: These are obligations that will be settled within a year. Examples include accounts payable, short-term debts, and taxes payable.
+
+`,
+    ],
+  ];
+
+  const markdown = `A paragraph with *emphasis* and **strong importance**.
+
+> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
+
+* Lists
+* [ ] todo
+* [x] done
+
+# A table:
+
+| a | b |
+| - | - |
+`;
 
   return isLoading ? (
     <BentoSkeleton />
@@ -158,21 +187,31 @@ export function SmallResultBox({
         <span className="text-lg md:text-3xl lg:text-4xl xl:text-4xl">
           {ratioName ? ratioName : 'null'}
         </span>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Info
-                size={22}
-                color="rgb(203 213 225)"
-                strokeWidth={1}
-                className="cursor-pointer"
-              />
-            </TooltipTrigger>
-            <TooltipContent style={{ maxWidth: '400px' }}>
-              <p>{ratioDescriptions[ratioName]}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Drawer>
+          <DrawerTrigger>
+            <Info
+              size={22}
+              color="rgb(203 213 225)"
+              strokeWidth={1}
+              className="cursor-pointer"
+            />
+          </DrawerTrigger>
+          <DrawerContent>
+            <div className="mx-auto w-full max-w-5xl">
+              <DrawerHeader>
+                <DrawerTitle>{CRDescription[0][0]}</DrawerTitle>
+                <DrawerDescription>
+                  <Markdown className="text-lg">{CRDescription[1][0]}</Markdown>
+                </DrawerDescription>
+              </DrawerHeader>
+            </div>
+            <DrawerFooter>
+              <DrawerClose>
+                <Button variant="outline">Close</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </div>
       <div className="flex flex-row justify-center items-center h-full w-full">
         <div className="flex flex-row lg:gap-2">

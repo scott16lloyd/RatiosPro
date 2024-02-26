@@ -98,3 +98,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* markdown-styles.module.css */
+.larger-text {
+  font-size: 20px;
+  /* Add other styles as needed */
+}
