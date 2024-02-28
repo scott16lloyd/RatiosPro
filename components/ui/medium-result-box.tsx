@@ -11,7 +11,13 @@ const data = [
 
 const COLORS = ['url(#gradient)', '#fff'];
 
-export function MediumResultBox() {
+export function MediumResultBox({
+  ratioName,
+  value,
+}: {
+  ratioName: string;
+  value: number;
+}) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -28,9 +34,11 @@ export function MediumResultBox() {
   ) : (
     <div className="w-full h-full p-2 bg-secondary rounded-2xl flex flex-row justify-center">
       <div className="w-1/2 h-full flex flex-col text-left pl-2 justify-center">
-        <span className="text-base md:text-lg lg:text-xl xl:text-2xl">PSR</span>
+        <span className="text-base md:text-lg lg:text-xl xl:text-2xl">
+          {ratioName ? ratioName : 'null'}
+        </span>
         <span className="text-3xl md:text-4xl lg:text-4xl 2xl:text-5xl text-gradient font-bold">
-          1.2
+          {value}
         </span>
       </div>
       <div className="w-1/2 h-full flex flex-col items-center justify-center">

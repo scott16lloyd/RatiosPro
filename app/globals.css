@@ -30,7 +30,7 @@
     --foreground: 0 0% 95%;
     --card: 24 9.8% 10%;
     --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
+    --popover: 240 4% 12%;
     --popover-foreground: 0 0% 95%;
     --primary: 142.1 70.6% 45.3%;
     --primary-foreground: 144.9 80.4% 25%;
@@ -57,6 +57,28 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  .warning-gradient {
+    background: linear-gradient(
+      90deg,
+      hsla(40, 100%, 50%, 1),
+      hsla(36, 100%, 41%, 1)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .danger-gradient {
+    background: linear-gradient(
+      90deg,
+      hsla(0, 100%, 50%, 1),
+      hsla(0, 100%, 37%, 1)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 .noselect {
@@ -75,4 +97,10 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* markdown-styles.module.css */
+.larger-text {
+  font-size: 20px;
+  /* Add other styles as needed */
 }

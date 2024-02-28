@@ -1,8 +1,6 @@
 'use client';
-import React, { useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import React from 'react';
 import { SmallBentoBox } from '@/components/ui/small-bento-box';
-import { ChevronLeftIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import {
@@ -35,7 +33,7 @@ export function LeftToRightGrid({
     queryFn: fetchFunction,
   });
 
-  if (error) return 'An error has occurred: ' + error.message;
+  console.log('data:', data);
 
   return (
     <div className="flex w-full h-min-content px-0">
@@ -56,35 +54,41 @@ export function LeftToRightGrid({
             }}
           >
             <CarouselContent className="w-full max-w-md">
-              {isLoading
-                ? // Display skeleton when data is loading
-                  Array.from({ length: 6 }).map((_, index) => (
-                    <CarouselItem
-                      key={index}
-                      className="basis-5/12 md:basis-7/12 lg:basis-9/12 xl:basis-10/12"
-                    >
-                      <div className="p-1 sm:w-32 md:w-52 sm:h-24 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48">
-                        <BentoSkeleton />
-                      </div>
-                    </CarouselItem>
-                  ))
-                : // Display data when it's loaded
-                  data &&
-                  data.map((data, index) => (
-                    <CarouselItem
-                      key={index}
-                      className="basis-5/12 md:basis-7/12 lg:basis-9/12 xl:basis-10/12"
-                    >
-                      <div className="p-1">
+              {isLoading ? (
+                // Display skeleton when data is loading
+                Array.from({ length: 6 }).map((_, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="basis-5/12 md:basis-7/12 lg:basis-9/12 xl:basis-10/12"
+                  >
+                    <div className="p-1 sm:w-32 md:w-52 sm:h-24 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48">
+                      <BentoSkeleton />
+                    </div>
+                  </CarouselItem>
+                ))
+              ) : error ? (
+                <div>Error: {error.message}</div>
+              ) : (
+                // Display data when it's loaded
+                Array.isArray(data) &&
+                data.map((data, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="basis-5/12 md:basis-7/12 lg:basis-9/12 xl:basis-10/12"
+                  >
+                    <div className="p-1">
+                      <Link href={`/details/${data.symbol}`}>
                         <SmallBentoBox
                           key={index}
                           symbol={data.symbol}
                           price={data.price}
                           changesPercentage={data.changesPercentage}
                         />
-                      </div>
-                    </CarouselItem>
-                  ))}
+                      </Link>
+                    </div>
+                  </CarouselItem>
+                ))
+              )}
             </CarouselContent>
 
             <CarouselPrevious className="md:flex hidden items-center justify-center" />

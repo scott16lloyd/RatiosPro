@@ -7,7 +7,7 @@ import { ReactQueryClientProvider } from '@/components/ReactQueryClientProvider'
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Financial Ratio Calculator',
+  title: 'RatiosPro | Financial Ratio Calculator',
   description: 'A simple UI for calculating financial ratios.',
 };
 

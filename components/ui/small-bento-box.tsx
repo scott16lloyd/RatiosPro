@@ -1,7 +1,4 @@
-import { CircleIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import Image from 'next/image';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface SmallBentoBoxProps {
   symbol: string;

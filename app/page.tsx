@@ -4,8 +4,6 @@ import { TopNavBar } from '@/components/ui/top-nav-bar';
 import { SearchBar } from '@/components/ui/search-bar';
 import { LeftToRightGrid } from '@/components/layouts/left-to-right-grid';
 import { UpDownGrid } from '@/components/layouts/up-down-grid';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { fetchBiggestGainers, fetchMostPopular } from '@/hooks/index';
 
 export default function Home() {
