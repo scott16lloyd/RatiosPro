@@ -29,6 +29,8 @@
     "react-loaders": "^3.0.1",
     "react-markdown": "^9.0.1",
     "recharts": "^2.10.4",
+    "rehype-katex": "^7.0.0",
+    "remark-math": "^6.0.0",
     "tailwind-merge": "^2.2.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
