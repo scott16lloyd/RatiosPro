@@ -94,9 +94,9 @@ export default function resultGridLayout({ data }: ResultGridLayoutProps) {
           <SmallResultBox
             ratioName="DE"
             prevValue={roundedData[1].debtEquityRatio}
-            prevYear={roundedData[0].calendarYear}
+            prevYear={roundedData[1].calendarYear}
             currValue={roundedData[0].debtEquityRatio}
-            currYear={roundedData[1].calendarYear}
+            currYear={roundedData[0].calendarYear}
           />
         ) : null}
         {roundedData[0].priceEarningsRatio &&
@@ -112,19 +112,19 @@ export default function resultGridLayout({ data }: ResultGridLayoutProps) {
         {roundedData[0].priceSalesRatio && roundedData[1].priceSalesRatio ? (
           <SmallResultBox
             ratioName="PSR"
-            prevValue={roundedData[0].priceSalesRatio}
-            prevYear={roundedData[0].calendarYear}
-            currValue={roundedData[1].priceSalesRatio}
-            currYear={roundedData[1].calendarYear}
+            prevValue={roundedData[1].priceSalesRatio}
+            prevYear={roundedData[1].calendarYear}
+            currValue={roundedData[0].priceSalesRatio}
+            currYear={roundedData[0].calendarYear}
           />
         ) : null}
         {roundedData[0].priceToBookValue && roundedData[1].priceToBookValue ? (
           <SmallResultBox
             ratioName="PBR"
-            prevValue={roundedData[0].priceToBookValue}
-            prevYear={roundedData[0].calendarYear}
-            currValue={roundedData[1].priceToBookValue}
-            currYear={roundedData[1].calendarYear}
+            prevValue={roundedData[1].priceToBookValue}
+            prevYear={roundedData[1].calendarYear}
+            currValue={roundedData[0].priceToBookValue}
+            currYear={roundedData[0].calendarYear}
           />
         ) : null}
       </div>
