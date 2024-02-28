@@ -13,12 +13,25 @@ import {
   Label,
 } from 'recharts';
 import { Info } from 'lucide-react';
+import Markdown from 'react-markdown';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
+import { Button } from './button';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
+import {
+  ROADescription,
+  RTDescription,
+  ROEDescription,
+} from '@/lib/ratioDescriptions';
 
 export function VerticalResultBox({
   ratioName,
@@ -61,10 +74,13 @@ export function VerticalResultBox({
     barColor = 'url(#redGradient)';
   }
 
-  const ratioDescriptions: { [key: string]: string } = {
-    CR: 'Current Ratio (CR) is a financial metric that is used to evaluate the liquidity of a company...',
-    QR: 'Quick Ratio (QR) is a measure of how well a company can meet its short-term financial liabilities...',
-    // Add more descriptions for each ratioName
+  type RatioName = 'ROA' | 'RT' | 'ROE';
+
+  // Select description based on selected ratio
+  const ratioDescriptions: Record<RatioName, string[][]> = {
+    ROA: ROADescription,
+    RT: RTDescription,
+    ROE: ROEDescription,
   };
 
   return isLoading ? (
@@ -73,21 +89,44 @@ export function VerticalResultBox({
     <div className="row-span-2 overflow-auto gap-1 md:px-4 lg:px-6 xl:px-2 2xl:px-3 bg-secondary rounded-2xl flex flex-col items-center justify-between outline outline-zinc-700 outline-1 shadow-md shadow-zinc-900">
       <div className="text-left w-full px-2 md:px-0 py-2 text-lg md:text-3xl lg:text-4xl xl:text-4xl flex flex-row items-center gap-2">
         <span>{ratioName ? ratioName : 'null'}</span>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Info
-                size={22}
-                color="rgb(203 213 225)"
-                strokeWidth={1}
-                className="cursor-pointer"
-              />
-            </TooltipTrigger>
-            <TooltipContent style={{ maxWidth: '400px' }}>
-              <p>{ratioDescriptions[ratioName]}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Drawer>
+          <DrawerTrigger>
+            <Info
+              size={22}
+              color="rgb(203 213 225)"
+              strokeWidth={1}
+              className="cursor-pointer"
+            />
+          </DrawerTrigger>
+          <DrawerContent>
+            <div className="mx-auto w-full max-w-5xl overflow-y-scroll scrollbar-hide">
+              <DrawerHeader>
+                <DrawerTitle>
+                  {ratioName in ratioDescriptions
+                    ? ratioDescriptions[ratioName as RatioName][0][0]
+                    : 'Default Title'}
+                </DrawerTitle>
+                <DrawerDescription>
+                  <Markdown
+                    className={'text-lg sm:text-base'}
+                    remarkPlugins={[remarkMath]}
+                    rehypePlugins={[rehypeKatex]}
+                    children={
+                      ratioName in ratioDescriptions
+                        ? ratioDescriptions[ratioName as RatioName][1][0]
+                        : 'Default title'
+                    }
+                  />
+                </DrawerDescription>
+              </DrawerHeader>
+            </div>
+            <DrawerFooter>
+              <DrawerClose>
+                <Button variant="outline">Close</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </div>
       <ResponsiveContainer width="100%" height="90%">
         <BarChart
