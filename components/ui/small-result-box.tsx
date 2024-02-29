@@ -26,6 +26,7 @@ import {
   PSRatioDescription,
   PBRatioDescription,
 } from '@/lib/ratioDescriptions';
+
 export function SmallResultBox({
   ratioName,
   prevValue,
@@ -190,7 +191,7 @@ export function SmallResultBox({
             />
           </DrawerTrigger>
           <DrawerContent>
-            <div className="mx-auto w-full max-w-5xl overflow-y-scroll scrollbar-hide">
+            <div className="mx-auto w-full max-w-5xl overflow-y-scroll">
               <DrawerHeader>
                 <DrawerTitle>
                   {ratioName in ratioDescriptions
@@ -199,12 +200,14 @@ export function SmallResultBox({
                 </DrawerTitle>
                 <DrawerDescription>
                   <Markdown
-                    className={'text-lg sm:text-base'}
+                    className={'text-lg'}
                     remarkPlugins={[remarkMath]}
                     rehypePlugins={[rehypeKatex]}
                     children={
                       ratioName in ratioDescriptions
-                        ? ratioDescriptions[ratioName as RatioName][1][0]
+                        ? ratioDescriptions[ratioName as RatioName]
+                            .flat()
+                            .join('\n')
                         : 'Default title'
                     }
                   />
