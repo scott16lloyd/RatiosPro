@@ -27,16 +27,40 @@ export default function resultGridLayout({ data }: ResultGridLayoutProps) {
   // Round the values to two decimal places
   const roundedData = data.map((item) => ({
     ...item,
-    calendarYear: parseFloat(item.calendarYear),
-    currentRatio: parseFloat(item.currentRatio.toFixed(1)),
-    quickRatio: parseFloat(item.quickRatio.toFixed(1)),
-    returnOnEquity: parseFloat(item.returnOnEquity.toFixed(1)),
-    returnonAssets: parseFloat(item.returnOnAssets.toFixed(1)),
-    receivablesTurnover: parseFloat(item.receivablesTurnover.toFixed(1)),
-    debtEquityRatio: parseFloat(item.debtEquityRatio.toFixed(1)),
-    priceEarningsRatio: parseFloat(item.priceEarningsRatio.toFixed(1)),
-    priceSalesRatio: parseFloat(item.priceToSalesRatio.toFixed(1)),
-    priceToBookValue: parseFloat(item.priceToBookRatio.toFixed(1)),
+    calendarYear:
+      item.calendarYear !== null ? parseFloat(item.calendarYear) : 0,
+    currentRatio:
+      item.currentRatio !== null ? parseFloat(item.currentRatio.toFixed(1)) : 0,
+    quickRatio:
+      item.quickRatio !== null ? parseFloat(item.quickRatio.toFixed(1)) : 0,
+    returnOnEquity:
+      item.returnOnEquity !== null
+        ? parseFloat(item.returnOnEquity.toFixed(1))
+        : 0,
+    returnonAssets:
+      item.returnOnAssets !== null
+        ? parseFloat(item.returnOnAssets.toFixed(1))
+        : 0,
+    receivablesTurnover:
+      item.receivablesTurnover !== null
+        ? parseFloat(item.receivablesTurnover.toFixed(1))
+        : 0,
+    debtEquityRatio:
+      item.debtEquityRatio !== null
+        ? parseFloat(item.debtEquityRatio.toFixed(1))
+        : 0,
+    priceEarningsRatio:
+      item.priceEarningsRatio !== null
+        ? parseFloat(item.priceEarningsRatio.toFixed(1))
+        : 0,
+    priceSalesRatio:
+      item.priceToSalesRatio !== null
+        ? parseFloat(item.priceToSalesRatio.toFixed(1))
+        : 0,
+    priceToBookValue:
+      item.priceToBookRatio !== null
+        ? parseFloat(item.priceToBookRatio.toFixed(1))
+        : 0,
   }));
 
   console.log(roundedData);

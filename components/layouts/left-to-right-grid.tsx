@@ -50,7 +50,7 @@ export function LeftToRightGrid({
           <Carousel
             className="w-full"
             opts={{
-              align: 'start',
+              align: 'end',
             }}
           >
             <CarouselContent className="w-full max-w-md">
@@ -71,7 +71,7 @@ export function LeftToRightGrid({
               ) : (
                 // Display data when it's loaded
                 Array.isArray(data) &&
-                data.map((data, index) => (
+                data.slice(0, 15).map((data, index) => (
                   <CarouselItem
                     key={index}
                     className="basis-5/12 md:basis-7/12 lg:basis-9/12 xl:basis-10/12"
