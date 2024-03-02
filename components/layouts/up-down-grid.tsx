@@ -26,6 +26,8 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
     queryFn: fetchMostPopularBySector,
   });
 
+  console.log(data);
+
   if (error) return 'An error has occurred: ' + error.message;
 
   return (
@@ -54,7 +56,7 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
               ))}
           </div>
         </div>
-        <div className="grid grid-flow-row gap-4 sm:gap-6 md:gap-7 xl:gap-12 md:px-10 lg:px-14 xl:px-18 2xl:px-28 snap-mandatory scrollbar-hide items-center w-full">
+        <div className="grid grid-flow-row gap-4 sm:gap-4 md:gap-5 xl:gap-7 pt-2 md:px-10 lg:px-14 xl:px-18 2xl:px-28 snap-mandatory scrollbar-hide items-center w-full">
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
                 <div className="p-1 w-full sm:h-24 md:h-36 lg:h-44">
@@ -67,6 +69,7 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
                 <HorizontalBentoBox
                   key={index}
                   symbol={stock.symbol}
+                  name={stock.companyName}
                   price={stock.price}
                   industry={stock.industry}
                 />
