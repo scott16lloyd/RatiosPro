@@ -4,7 +4,8 @@ const fetchBiggestGainers = async () => {
     `https://financialmodelingprep.com/api/v3/stock_market/gainers?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
   );
   const data = await response.json();
-  return data;
+  let filteredData = data.filter((item) => item.price >= 1);
+  return filteredData;
 };
 
 const fetchMostPopular = async () => {
@@ -14,6 +15,7 @@ const fetchMostPopular = async () => {
     `https://financialmodelingprep.com/api/v3/stock_market/actives?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
   );
   const data = await response.json();
+  console.log(data);
   return data;
 };
 
