@@ -81,7 +81,7 @@ export default function resultGridLayout({ data }: ResultGridLayoutProps) {
             ratioName="ROA"
             value={[
               [roundedData[0].returnonAssets, roundedData[0].calendarYear],
-              [roundedData[1].returnonAssets, roundedData[0].calendarYear],
+              [roundedData[1].returnonAssets, roundedData[1].calendarYear],
             ]}
           />
         ) : null}
