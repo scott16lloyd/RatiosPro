@@ -4,7 +4,22 @@ const fetchBiggestGainers = async () => {
     `https://financialmodelingprep.com/api/v3/stock_market/gainers?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
   );
   const data = await response.json();
-  let filteredData = data.filter((item) => item.price >= 1);
+
+  // Filter out non-company stocks
+  let companyStocks = data.filter((stock) => {
+    let name = stock.name.toLowerCase();
+    return !(
+      name.includes('etf') ||
+      name.includes('shares') ||
+      name.includes('trust') ||
+      name.includes('fund') ||
+      name.includes('index')
+    );
+  });
+
+  // Filter by price
+  let filteredData = companyStocks.filter((item) => item.price >= 1);
+
   return filteredData;
 };
 
@@ -15,8 +30,23 @@ const fetchMostPopular = async () => {
     `https://financialmodelingprep.com/api/v3/stock_market/actives?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
   );
   const data = await response.json();
-  console.log(data);
-  return data;
+
+  // Filter out non-company stocks
+  let companyStocks = data.filter((stock) => {
+    let name = stock.name.toLowerCase();
+    return !(
+      name.includes('etf') ||
+      name.includes('shares') ||
+      name.includes('trust') ||
+      name.includes('fund') ||
+      name.includes('index')
+    );
+  });
+
+  // Filter by price
+  let filteredData = companyStocks.filter((item) => item.price >= 1);
+  console.log(filteredData);
+  return filteredData;
 };
 
 /**
