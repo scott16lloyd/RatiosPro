@@ -8,7 +8,7 @@ import { fetchBiggestGainers, fetchMostPopular } from '@/hooks/index';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center gap-4 overflow-x-hidden">
+    <main className="flex min-h-screen flex-col items-center md:gap-4 overflow-x-hidden">
       <TopNavBar />
       <SearchBar />
       <LeftToRightGrid title="Favourites" fetchFunction={fetchBiggestGainers} />

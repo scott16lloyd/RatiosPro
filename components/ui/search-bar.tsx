@@ -4,7 +4,7 @@ import { Search } from 'lucide-react';
 
 export function SearchBar() {
   return (
-    <div className="flex w-11/12 md:w-7/12 lg:w-6/12 xl:w-4/12 items-center space-x-2 h-12">
+    <div className="flex w-11/12 md:w-7/12 lg:w-6/12 xl:w-4/12 items-center space-x-2 mb-4 h-12">
       <Input
         type="email"
         placeholder="Search with a ticker symbol e.g. APPL"
