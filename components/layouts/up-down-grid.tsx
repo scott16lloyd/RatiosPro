@@ -34,10 +34,10 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
     <div className="group relative flex items-center justify-center p-4 gap-2 w-full h-min-content px-0">
       <div className="w-full relative z-0 px-4 items-center">
         <div className="flex flex-row items-center justify-between">
-          <h2 className="mb-6 text-2xl xs:text-sm sm:text-lg lg:text-xl font-semibold">
+          <h2 className="mb-6 sm:mb-2 text-2xl xs:text-sm sm:text-lg lg:text-xl font-semibold">
             {title}
           </h2>
-          <Link className="mb-6 text-sm underline" href="#">
+          <Link className="mb-6 sm:mb-2 text-sm underline" href="#">
             View all
           </Link>
         </div>

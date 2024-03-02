@@ -36,13 +36,13 @@ export function LeftToRightGrid({
   console.log('data:', data);
 
   return (
-    <div className="flex w-full h-min-content px-0">
+    <div className="flex w-full h-min-content py-2">
       <div className="w-full px-4">
         <div className="flex flex-row items-center justify-between">
-          <h2 className="text-2xl xs:text-sm sm:text-lg lg:text-xl font-semibold">
+          <h2 className="text-2xl md:mb-2 xs:text-sm sm:text-lg lg:text-xl font-semibold">
             {title}
           </h2>
-          <Link className="text-sm underline" href="#">
+          <Link className="text-sm md:mb-2 underline" href="#">
             View all
           </Link>
         </div>
