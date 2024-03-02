@@ -72,7 +72,7 @@ const fetchMostPopularBySector = async () => {
   // Group stocks by sector and sort by volume
   const sectors = {};
   for (const stock of stocks) {
-    if (!stock.sector) continue;
+    if (!stock.sector || stock.isEtf || stock.isFund) continue;
     if (!sectors[stock.sector]) {
       sectors[stock.sector] = [];
     }

@@ -3,26 +3,33 @@ import { Card, CardContent } from './card';
 
 interface HorizontalBentoBoxProps {
   symbol: string;
+  name: string;
   price: number;
   industry: string;
 }
 
 export function HorizontalBentoBox({
   symbol,
+  name,
   price,
   industry,
 }: HorizontalBentoBoxProps) {
   return (
-    <Card className="snap-start w-full sm:h-24 md:h-36 lg:h-44 border-none p-1 noselect flex items-center">
-      <CardContent className="p-2 md:p-4 lg:p-6 xl:p-8 flex justify-between w-full">
-        <div className="flex items-center justify-center content-start flex-row gap-2 md:gap-8 lg:gap-10 md:pb-2 lg:pb-4 xl:pb-5">
-          <span className="text-3xl md:text-5xl lg:text-6xl">{symbol}</span>
+    <Card className="snap-start w-auto sm:h-24 md:h-36 lg:h-44 border-none p-1 noselect flex items-center">
+      <CardContent className="p-2 md:p-4 lg:p-6 xl:p-8 flex justify-between items-center w-full">
+        <div className="flex justify-center content-start flex-col gap-2 max-w-44 md:max-w-96 lg:max-w-xl xl:max-w-4xl overflow-hidden">
+          <span className="w-full sm:text-lg md:text-2xl lg:text-3xl text-zinc-600 truncate">
+            {name}
+          </span>
+          <span className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl truncate">
+            {symbol}
+          </span>
         </div>
-        <div className="flex flex-col md:gap-4 lg:gap-6 items-end">
-          <p className="text-2xl md:text-4xl lg:text-5xl font-semibold ">
+        <div className="flex justify-center flex-col gap-2 overflow-hidden items-end">
+          <p className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-semibold truncate">
             ${price.toFixed(2)}
           </p>
-          <p className="text-lg md:text-2xl lg:text-3xl font-light text-gradient">
+          <p className="text-sm sm:text-lg md:text-2xl lg:text-3xl font-light text-gradient max-w-36 md:max-w-60 lg:max-w-96 truncate">
             {industry}
           </p>
         </div>
