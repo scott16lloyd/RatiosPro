@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Link } from 'lucide-react';
+import Link from 'next/link';
 import { Button } from '../ui/button';
 import { HorizontalBentoBox } from '../ui/horizontal-bento-box';
 import { useQuery } from '@tanstack/react-query';
@@ -33,8 +33,8 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
   return (
     <div className="group relative flex items-center justify-center p-4 gap-2 w-full h-min-content px-0">
       <div className="w-full relative z-0 px-4 items-center">
-        <div className="flex flex-row justify-between w-full">
-          <h2 className="mb-6 text-2xl xs:text-sm sm:text-lg lg:text-xl font-semibold w-full">
+        <div className="flex flex-row items-center justify-between">
+          <h2 className="mb-6 text-2xl xs:text-sm sm:text-lg lg:text-xl font-semibold">
             {title}
           </h2>
           <Link className="mb-6 text-sm underline" href="#">
@@ -48,6 +48,7 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
                 <Button
                   key={sector}
                   variant="outline"
+                  size="sm"
                   onClick={() => changeColor(sector)}
                   className={getButtonClass(sector)}
                 >
@@ -66,13 +67,15 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
             : data &&
               data[activeButton] &&
               data[activeButton].map((stock: any, index: number) => (
-                <HorizontalBentoBox
-                  key={index}
-                  symbol={stock.symbol}
-                  name={stock.companyName}
-                  price={stock.price}
-                  industry={stock.industry}
-                />
+                <Link href={`/details/${stock.symbol}`}>
+                  <HorizontalBentoBox
+                    key={index}
+                    symbol={stock.symbol}
+                    name={stock.companyName}
+                    price={stock.price}
+                    industry={stock.industry}
+                  />
+                </Link>
               ))}
         </div>
       </div>

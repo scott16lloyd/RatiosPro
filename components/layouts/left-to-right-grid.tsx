@@ -36,8 +36,8 @@ export function LeftToRightGrid({
   console.log('data:', data);
 
   return (
-    <div className="flex w-full h-min-content px-0">
-      <div className="w-full px-4">
+    <div className="group relative flex items-center justify-center p-4 gap-2 w-full h-min-content px-0 ">
+      <div className="w-full relative z-0 px-4 items-center">
         <div className="flex flex-row items-center justify-between">
           <h2 className="mb-6 text-2xl xs:text-sm sm:text-lg lg:text-xl font-semibold">
             {title}
