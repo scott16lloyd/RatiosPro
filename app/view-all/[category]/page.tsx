@@ -11,6 +11,7 @@ import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { HorizontalBentoBox } from '@/components/ui/horizontal-bento-box';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
 
 export default function ViewAllPage({
   params,
@@ -61,10 +62,6 @@ export default function ViewAllPage({
 
   console.log(queryResult);
 
-  if (queryResult.isLoading) {
-    return <div>Loading...</div>;
-  }
-
   if (queryResult.error) {
     return <div>Error: {queryResult.error.message}</div>;
   }
@@ -109,17 +106,25 @@ export default function ViewAllPage({
           </div>
         </div>
         <div className="grid gap-y-4 grid-cols-1 items-center w-full max-w-2/3 px-4 md:px-16 lg:px-24 xl:px-44">
-          {params.category === 'Discover' &&
-            queryResult.data &&
-            queryResult.data[activeButton].map((stock: any, index: number) => (
-              <HorizontalBentoBox
-                key={index}
-                symbol={stock.symbol}
-                name={stock.companyName}
-                price={stock.price}
-                industryOrChange={stock.industry}
-              />
-            ))}
+          {queryResult.isLoading
+            ? Array.from({ length: 6 }).map((_, index) => (
+                <div className="p-1 w-full sm:h-24 md:h-36 lg:h-44">
+                  <BentoSkeleton key={index} />
+                </div>
+              ))
+            : params.category === 'Discover' &&
+              queryResult.data &&
+              queryResult.data[activeButton].map(
+                (stock: any, index: number) => (
+                  <HorizontalBentoBox
+                    key={index}
+                    symbol={stock.symbol}
+                    name={stock.companyName}
+                    price={stock.price}
+                    industryOrChange={stock.industry}
+                  />
+                )
+              )}
           {params.category !== 'Discover' &&
             Array.isArray(queryResult.data) &&
             queryResult.data.map((data, index) => (
