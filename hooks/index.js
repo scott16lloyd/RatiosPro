@@ -81,7 +81,6 @@ const fetchMostPopularBySector = async () => {
   // Sort each sector's stocks by volume and take the top 10
   for (const sector in sectors) {
     sectors[sector].sort((a, b) => b.volume - a.volume);
-    sectors[sector] = sectors[sector].slice(0, 10);
   }
 
   return sectors;

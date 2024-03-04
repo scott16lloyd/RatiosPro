@@ -37,7 +37,10 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
           <h2 className="mb-6 sm:mb-2 text-2xl xs:text-sm sm:text-lg lg:text-xl font-semibold">
             {title}
           </h2>
-          <Link className="mb-6 sm:mb-2 text-sm underline" href="#">
+          <Link
+            className="mb-6 sm:mb-2 text-sm underline"
+            href={`/view-all/${title}`}
+          >
             View all
           </Link>
         </div>
@@ -66,17 +69,17 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
               ))
             : data &&
               data[activeButton] &&
-              data[activeButton].map((stock: any, index: number) => (
-                <Link href={`/details/${stock.symbol}`}>
+              data[activeButton]
+                .slice(0, 8)
+                .map((stock: any, index: number) => (
                   <HorizontalBentoBox
                     key={index}
                     symbol={stock.symbol}
                     name={stock.companyName}
                     price={stock.price}
-                    industry={stock.industry}
+                    industryOrChange={stock.industry}
                   />
-                </Link>
-              ))}
+                ))}
         </div>
       </div>
     </div>

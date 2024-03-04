@@ -11,7 +11,10 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center md:gap-4 overflow-x-hidden">
       <TopNavBar />
       <SearchBar />
-      <LeftToRightGrid title="Favourites" fetchFunction={fetchBiggestGainers} />
+      <LeftToRightGrid
+        title="Biggest Gainers"
+        fetchFunction={fetchBiggestGainers}
+      />
       <LeftToRightGrid title="Trending" fetchFunction={fetchMostPopular} />
       <UpDownGrid title="Discover" />
     </main>
