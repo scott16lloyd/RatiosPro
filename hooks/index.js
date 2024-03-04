@@ -24,7 +24,6 @@ const fetchBiggestGainers = async () => {
 };
 
 const fetchMostPopular = async () => {
-  console.log(process.env.NEXT_PUBLIC_API_KEY);
   // Provides a list of the stocks that have the highest trading volume on a given day
   const response = await fetch(
     `https://financialmodelingprep.com/api/v3/stock_market/actives?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
@@ -82,7 +81,6 @@ const fetchMostPopularBySector = async () => {
   // Sort each sector's stocks by volume and take the top 10
   for (const sector in sectors) {
     sectors[sector].sort((a, b) => b.volume - a.volume);
-    sectors[sector] = sectors[sector].slice(0, 10);
   }
 
   return sectors;

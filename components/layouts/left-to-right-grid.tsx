@@ -34,7 +34,7 @@ export function LeftToRightGrid({
   });
 
   console.log('data:', data);
-
+  console.log(title);
   return (
     <div className="flex w-full h-min-content py-2">
       <div className="w-full px-4">
@@ -42,7 +42,10 @@ export function LeftToRightGrid({
           <h2 className="text-2xl md:mb-2 xs:text-sm sm:text-lg lg:text-xl font-semibold">
             {title}
           </h2>
-          <Link className="text-sm md:mb-2 underline" href="#">
+          <Link
+            className="text-sm md:mb-2 underline"
+            href={`/view-all/${title}`}
+          >
             View all
           </Link>
         </div>
@@ -77,14 +80,12 @@ export function LeftToRightGrid({
                     className="basis-5/12 md:basis-7/12 lg:basis-9/12 xl:basis-10/12"
                   >
                     <div className="p-1">
-                      <Link href={`/details/${data.symbol}`}>
-                        <SmallBentoBox
-                          key={index}
-                          symbol={data.symbol}
-                          price={data.price}
-                          changesPercentage={data.changesPercentage}
-                        />
-                      </Link>
+                      <SmallBentoBox
+                        key={index}
+                        symbol={data.symbol}
+                        price={data.price}
+                        changesPercentage={data.changesPercentage}
+                      />
                     </div>
                   </CarouselItem>
                 ))
