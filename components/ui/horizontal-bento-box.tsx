@@ -37,9 +37,15 @@ export function HorizontalBentoBox({
               {!isIndustry && (
                 <div className="flex items-center">
                   {industryOrChange > 0 ? (
-                    <ArrowUpRight color="hsla(120, 100%, 37%, 1)" />
+                    <ArrowUpRight
+                      color="hsla(120, 100%, 37%, 1)"
+                      className="h-6 w-6 md:h-8 md:w-8 lg:h-10 lg:w-10"
+                    />
                   ) : (
-                    <ArrowDownRight color="hsla(0, 100%, 37%, 1)" />
+                    <ArrowDownRight
+                      color="hsla(0, 100%, 37%, 1)"
+                      className="h-6 w-6 md:h-8 md:w-8 lg:h-10 lg:w-10"
+                    />
                   )}
                 </div>
               )}
