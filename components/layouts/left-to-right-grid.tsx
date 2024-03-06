@@ -83,6 +83,7 @@ export function LeftToRightGrid({
                       <SmallBentoBox
                         key={index}
                         symbol={data.symbol}
+                        name={data.name}
                         price={data.price}
                         changesPercentage={data.changesPercentage}
                       />
