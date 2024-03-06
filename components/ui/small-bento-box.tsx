@@ -17,10 +17,10 @@ export function SmallBentoBox({
 }: SmallBentoBoxProps) {
   return (
     <Link href={`/details/${symbol}`}>
-      <Card className="sm:w-32 md:w-52 sm:h-24 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48 border-none p-1 noselect">
-        <CardContent className="p-2 gap-1">
-          <div className="flex flex-row w-full">
-            <span className="w-full sm:text-sm md:text-lg lg:text-xl text-zinc-600 truncate">
+      <Card className="sm:w-32 md:w-52 sm:h-24 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48 border-none p-2 md:p-4 noselect ring-zinc-700 ring-1">
+        <CardContent className="p-0 h-full flex flex-col justify-evenly lg:gap-1">
+          <div className="flex flex-row w-full items-start">
+            <span className="w-full sm:text-xxs md:text-sm lg:text-lg text-zinc-600 truncate">
               {name}
             </span>
           </div>
