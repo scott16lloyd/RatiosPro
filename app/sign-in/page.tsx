@@ -78,6 +78,7 @@ export default function SignInPage() {
               </Label>
               <Input
                 type="email"
+                id="email"
                 placeholder="Email"
                 className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
               />
@@ -92,6 +93,7 @@ export default function SignInPage() {
               <Input
                 type="password"
                 placeholder="Password"
+                id="password"
                 className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
               />
             </div>
