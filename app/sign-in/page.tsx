@@ -10,13 +10,15 @@ import Link from 'next/link';
 
 export default function SignInPage() {
   return (
-    <div className="h-screen w-full py-4 px-3">
-      <Card className="h-full w-full ring-zinc-700 ring-1">
-        <CardContent className="p-4 h-full w-full flex flex-col space-y-4">
+    <div className="h-screen w-full py-4 px-3 flex flex-col items-center justify-center xl:items-start">
+      <Card className="h-full w-full md:w-3/4 md:h-3/4 xl:w-5/12 xl:h-full ring-zinc-700 ring-1 flex flex-col items-center">
+        <CardContent className="p-4 h-full w-full md:w-2/3 flex flex-col space-y-4">
           <div className="flex flex-col w-full gap-5 flex-grow-1">
             <div className="flex flex-col w-max text-left">
-              <span className="text-3xl font-light">Welcome back</span>
-              <span className="text-md font-light text-zinc-500">
+              <span className="text-3xl md:text-4xl font-light">
+                Welcome back
+              </span>
+              <span className="text-md md:text-lg lg:text-xl xl:text-2xl font-light text-zinc-500">
                 Sign in to your account
               </span>
             </div>
@@ -34,7 +36,9 @@ export default function SignInPage() {
                       objectFit="contain"
                     />{' '}
                   </div>
-                  <span className="text-lg font-light">Apple</span>
+                  <span className="text-lg md:text-xl lg:text-2xl font-light">
+                    Apple
+                  </span>
                 </div>
               </Button>
               <Button
@@ -50,41 +54,51 @@ export default function SignInPage() {
                       objectFit="contain"
                     />{' '}
                   </div>
-                  <span className="text-lg font-light">Google</span>
+                  <span className="text-lg md:text-xl lg:text-2xl font-light">
+                    Google
+                  </span>
                 </div>
               </Button>
             </div>
             <div className="w-full flex flex-row items-center justify-center gap-2 overflow-hidden">
               <Separator className="w-1/2" />
-              <span className="text-xs font-medium text-zinc-700">or</span>
+              <span className="text-xs md:text-sm lg:text-md font-medium text-zinc-700">
+                or
+              </span>
               <Separator className="w-1/2" />
             </div>
           </div>
           <div className="flex flex-col flex-grow-2 gap-4 w-full">
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="email" className="text-zinc-500 font-light">
+            <div className="grid w-full items-center gap-1.5">
+              <Label
+                htmlFor="email"
+                className="text-zinc-500 font-light md:text-sm lg:text-md"
+              >
                 Email
               </Label>
               <Input
                 type="email"
                 placeholder="Email"
-                className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1"
+                className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
               />
             </div>
-            <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="password" className="text-zinc-500 font-light">
+            <div className="grid w-full items-center gap-1.5">
+              <Label
+                htmlFor="password"
+                className="text-zinc-500 font-light md:text-sm lg:text-md"
+              >
                 Password
               </Label>
               <Input
                 type="password"
                 placeholder="Password"
-                className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1"
+                className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
               />
             </div>
             <Button className="p-5">
-              <span className="text-white">Sign In</span>
+              <span className="text-white md:text-lg lg:text-xl">Sign In</span>
             </Button>
-            <span className="text-zinc-500 font-light text-center text-xs">
+            <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
               Don’t have an account?{' '}
               <Link href={'#'} className="underline">
                 Sign Up Now
@@ -92,7 +106,7 @@ export default function SignInPage() {
             </span>
           </div>
           <div className="flex flex-col h-full justify-end">
-            <span className="text-zinc-500 font-light text-center text-xs">
+            <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
               By continuing, you agree to Ratio Pro’s{' '}
               <Link href={'#'} className="underline">
                 Terms of service
