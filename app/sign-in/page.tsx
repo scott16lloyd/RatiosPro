@@ -7,10 +7,71 @@ import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
+import { CardStack } from '@/components/ui/card-stack';
+import { cn } from '@/utils/cn';
+
+export const Highlight = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <span
+      className={cn(
+        'font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-700/[0.2] dark:text-emerald-500 px-1 py-0.5',
+        className
+      )}
+    >
+      {children}
+    </span>
+  );
+};
 
 export default function SignInPage() {
+  const CARDS = [
+    {
+      id: 0,
+      name: 'Manu Arora',
+      designation: 'Senior Software Engineer',
+      content: (
+        <p>
+          These cards are amazing, <Highlight>I want to use them</Highlight> in
+          my project. Framer motion is a godsend ngl tbh fam 🙏
+        </p>
+      ),
+    },
+    {
+      id: 1,
+      name: 'Elon Musk',
+      designation: 'Senior Shitposter',
+      content: (
+        <p>
+          I dont like this Twitter thing,{' '}
+          <Highlight>deleting it right away</Highlight> because yolo. Instead, I
+          would like to call it <Highlight>X.com</Highlight> so that it can
+          easily be confused with adult sites.
+        </p>
+      ),
+    },
+    {
+      id: 2,
+      name: 'Tyler Durden',
+      designation: 'Manager Project Mayhem',
+      content: (
+        <p>
+          The first rule of
+          <Highlight>Fight Club</Highlight> is that you do not talk about fight
+          club. The second rule of
+          <Highlight>Fight club</Highlight> is that you DO NOT TALK about fight
+          club.
+        </p>
+      ),
+    },
+  ];
   return (
-    <div className="h-screen w-full py-4 px-3 flex flex-col items-center justify-center xl:items-start">
+    <div className="h-screen w-full py-4 px-3 flex flex-row items-center justify-center xl:justify-start">
       <Card className="h-full w-full md:w-3/4 md:h-3/4 xl:w-5/12 xl:h-full ring-zinc-700 ring-1 flex flex-col items-center">
         <CardContent className="p-4 h-full w-full md:w-2/3 flex flex-col space-y-4">
           <div className="flex flex-col w-full gap-5 flex-grow-1">
@@ -122,6 +183,9 @@ export default function SignInPage() {
           </div>
         </CardContent>
       </Card>
+      <div className="hidden xl:flex w-7/12 h-full flex-col justify-center items-center">
+        <CardStack items={CARDS} />
+      </div>
     </div>
   );
 }
