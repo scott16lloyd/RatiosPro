@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { CardStack } from '@/components/ui/card-stack';
 import { cn } from '@/utils/cn';
 
-export const Highlight = ({
+const Highlight = ({
   children,
   className,
 }: {
