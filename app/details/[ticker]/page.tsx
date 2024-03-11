@@ -40,6 +40,8 @@ export default function DetailsPage({
     // Data is available
     console.log('Fetched data:', ratios.data);
 
+    const stockName = localStorage.getItem('stockName');
+
     return (
       <>
         <div className="w-full h-screen flex flex-col justify-start">
@@ -50,8 +52,9 @@ export default function DetailsPage({
               </Link>
             </Button>
           </div>
-          <div className="flex items-center justify-center">
-            <h1 className="text-2xl font-semibold">{symbol}</h1>
+          <div className="flex flex-row items-center justify-center gap-4">
+            <h1 className="text-2xl font-semibold">{stockName}</h1>
+            <h1 className="text-2xl font-light text-zinc-600">({symbol})</h1>
           </div>
           {ratios.data && ratios.data.length > 0 ? (
             <>
