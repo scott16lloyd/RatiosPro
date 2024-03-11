@@ -52,9 +52,13 @@ export default function DetailsPage({
               </Link>
             </Button>
           </div>
-          <div className="flex flex-row items-center justify-center gap-4">
-            <h1 className="text-2xl font-semibold">{stockName}</h1>
-            <h1 className="text-2xl font-light text-zinc-600">({symbol})</h1>
+          <div className="flex flex-col items-center justify-center px-6 lg:gap-4">
+            <h1 className="text-lg md:text-xl lg:text-2xl font-semibold truncate text-wrap text-center">
+              {stockName}
+            </h1>
+            <h1 className="text-lg md:text-xl lg:text-2xl font-light text-zinc-600">
+              ({symbol})
+            </h1>
           </div>
           {ratios.data && ratios.data.length > 0 ? (
             <>
