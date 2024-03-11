@@ -4,12 +4,6 @@ import { supabase } from '@/utils/supabase/supabaseClient';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-export async function getUsers() {
-  let { data: users, error } = await supabase.from('users').select('*');
-  if (error) throw error;
-  return users;
-}
-
 export async function signUpNewUser(email: string, password: string) {
   const { data, error } = await supabase.auth.signUp({
     email: email,
@@ -45,9 +39,20 @@ export async function signInWithEmail(email: string, password: string) {
 
 export async function signOut() {
   const { error } = await supabase.auth.signOut();
+  console.log('User is signed out');
 
   if (error) {
     console.log(error);
     throw new Error(error.message);
+  }
+}
+
+export async function getUser() {
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data?.user) {
+    console.log(error);
+  } else {
+    console.log(data.user);
+    return data;
   }
 }
