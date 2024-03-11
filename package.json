@@ -15,6 +15,8 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@supabase/ssr": "^0.1.0",
+    "@supabase/supabase-js": "^2.39.7",
     "@tanstack/react-query": "^5.22.2",
     "@tanstack/react-query-devtools": "^5.18.0",
     "class-variance-authority": "^0.7.0",
