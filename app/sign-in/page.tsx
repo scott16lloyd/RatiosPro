@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
@@ -9,6 +11,8 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { CardStack } from '@/components/ui/card-stack';
 import { cn } from '@/utils/cn';
+import { signUpNewUser, signInWithEmail } from '@/utils/supabase/dbFunctions';
+import { useState, useEffect } from 'react';
 
 const Highlight = ({
   children,
@@ -30,6 +34,31 @@ const Highlight = ({
 };
 
 export default function SignInPage() {
+  // Manage form inputs
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setError(null); // Clear the error state when isSignUp changes
+  }, [isSignUp]);
+
+  const handleAction =
+    (action: (...args: any[]) => Promise<void>, ...args: any[]) =>
+    async () => {
+      try {
+        await action(...args);
+        setError(null); // Clear the error state if action is successful
+      } catch (error) {
+        if ((error as Error).message === 'Email rate limit exceeded') {
+          setError('To many login attempts, please wait and try again.');
+        } else {
+          setError((error as Error).message); // Set the error state if an error is thrown
+        }
+      }
+    };
+
   const CARDS = [
     {
       id: 0,
@@ -77,10 +106,10 @@ export default function SignInPage() {
           <div className="flex flex-col w-full gap-5 flex-grow-1">
             <div className="flex flex-col w-max text-left">
               <span className="text-3xl md:text-4xl font-light">
-                Welcome back
+                {!isSignUp ? 'Welcome back' : 'Get started'}
               </span>
               <span className="text-md md:text-lg lg:text-xl xl:text-2xl font-light text-zinc-500">
-                Sign in to your account
+                {!isSignUp ? 'Sign in to your account' : 'Create an account'}
               </span>
             </div>
             <div className="w-full flex flex-col gap-4 h-full justify-evenly">
@@ -141,6 +170,8 @@ export default function SignInPage() {
                 type="email"
                 id="email"
                 placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
               />
             </div>
@@ -155,16 +186,37 @@ export default function SignInPage() {
                 type="password"
                 placeholder="Password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
               />
             </div>
-            <Button className="p-5">
-              <span className="text-white md:text-lg lg:text-xl">Sign In</span>
+            {error && <div className="error-message text-red-500">{error}</div>}
+            <Button
+              className="p-5"
+              onClick={
+                !isSignUp
+                  ? handleAction(signUpNewUser, email, password)
+                  : handleAction(signInWithEmail, email, password)
+              }
+            >
+              <span className="text-white md:text-lg lg:text-xl">
+                {!isSignUp ? 'Sign In' : 'Sign Up'}
+              </span>
             </Button>
             <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
-              Don’t have an account?{' '}
-              <Link href={'#'} className="underline">
-                Sign Up Now
+              {!isSignUp
+                ? 'Don’t have an account?'
+                : 'Already have an account?'}
+              <Link
+                href={'#'}
+                onClick={(event) => {
+                  event.preventDefault();
+                  !isSignUp ? setIsSignUp(true) : setIsSignUp(false);
+                }}
+                className="underline ml-2"
+              >
+                {!isSignUp ? 'Sign Up Now' : 'Sign in'}
               </Link>
             </span>
           </div>
@@ -173,8 +225,8 @@ export default function SignInPage() {
               By continuing, you agree to Ratio Pro’s{' '}
               <Link href={'#'} className="underline">
                 Terms of service
-              </Link>{' '}
-              and{' '}
+              </Link>
+              and
               <Link href={'#'} className="underline">
                 Privacy Policy
               </Link>
