@@ -12,9 +12,6 @@ import { useState } from 'react';
 
 export function TopNavBar() {
   const [error, setError] = useState<string | null>(null);
-  getUser().then((userData) => {
-    console.log(userData);
-  });
 
   const handleAction =
     (action: (...args: any[]) => Promise<void>, ...args: any[]) =>
