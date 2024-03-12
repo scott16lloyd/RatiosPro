@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { CardStack } from '@/components/ui/card-stack';
 import { cn } from '@/utils/cn';
-import { signUpNewUser, signInWithEmail } from '@/utils/supabase/dbFunctions';
+import { login, signup } from '@/utils/supabase/dbFunctions';
 import { useState, useEffect } from 'react';
 
 const Highlight = ({
@@ -158,68 +158,63 @@ export default function SignInPage() {
               <Separator className="w-1/2" />
             </div>
           </div>
-          <div className="flex flex-col flex-grow-2 gap-4 w-full">
-            <div className="grid w-full items-center gap-1.5">
-              <Label
-                htmlFor="email"
-                className="text-zinc-500 font-light md:text-sm lg:text-md"
-              >
-                Email
-              </Label>
-              <Input
-                type="email"
-                id="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
-              />
-            </div>
-            <div className="grid w-full items-center gap-1.5">
-              <Label
-                htmlFor="password"
-                className="text-zinc-500 font-light md:text-sm lg:text-md"
-              >
-                Password
-              </Label>
-              <Input
-                type="password"
-                placeholder="Password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
-              />
-            </div>
-            {error && <div className="error-message text-red-500">{error}</div>}
-            <Button
-              className="p-5"
-              onClick={
-                !isSignUp
-                  ? handleAction(signInWithEmail, email, password)
-                  : handleAction(signUpNewUser, email, password)
-              }
-            >
-              <span className="text-white md:text-lg lg:text-xl">
-                {!isSignUp ? 'Sign In' : 'Sign Up'}
+          <form>
+            <div className="flex flex-col flex-grow-2 gap-4 w-full">
+              <div className="grid w-full items-center gap-1.5">
+                <Label
+                  htmlFor="email"
+                  className="text-zinc-500 font-light md:text-sm lg:text-md"
+                >
+                  Email
+                </Label>
+                <Input
+                  type="email"
+                  id="email"
+                  placeholder="Email"
+                  required
+                  className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
+                />
+              </div>
+              <div className="grid w-full items-center gap-1.5">
+                <Label
+                  htmlFor="password"
+                  className="text-zinc-500 font-light md:text-sm lg:text-md"
+                >
+                  Password
+                </Label>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  id="password"
+                  required
+                  className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
+                />
+              </div>
+              {error && (
+                <div className="error-message text-red-500">{error}</div>
+              )}
+              <Button className="p-5" formAction={login}>
+                <span className="text-white md:text-lg lg:text-xl">
+                  {!isSignUp ? 'Sign In' : 'Sign Up'}
+                </span>
+              </Button>
+              <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
+                {!isSignUp
+                  ? 'Don’t have an account?'
+                  : 'Already have an account?'}
+                <Link
+                  href={'#'}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    !isSignUp ? setIsSignUp(true) : setIsSignUp(false);
+                  }}
+                  className="underline ml-2"
+                >
+                  {!isSignUp ? 'Sign Up Now' : 'Sign in'}
+                </Link>
               </span>
-            </Button>
-            <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
-              {!isSignUp
-                ? 'Don’t have an account?'
-                : 'Already have an account?'}
-              <Link
-                href={'#'}
-                onClick={(event) => {
-                  event.preventDefault();
-                  !isSignUp ? setIsSignUp(true) : setIsSignUp(false);
-                }}
-                className="underline ml-2"
-              >
-                {!isSignUp ? 'Sign Up Now' : 'Sign in'}
-              </Link>
-            </span>
-          </div>
+            </div>
+          </form>
           <div className="flex flex-col h-full justify-end">
             <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
               By continuing, you agree to Ratio Pro’s{' '}

@@ -1,10 +1,19 @@
-import { type NextRequest } from 'next/server';
-import { updateSession } from '@/utils/supabase/middleware';
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
+import { NextResponse, NextRequest } from 'next/server';
 
-export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+export async function middleware(req: NextRequest) {
+  const res = NextResponse.next();
+
+  // Create a Supabase client configured to use cookies
+  const supabase = createMiddlewareClient({ req, res });
+
+  // Refresh session if expired - required for Server Components
+  await supabase.auth.getUser();
+
+  return res;
 }
 
+// Ensure the middleware is only called for relevant paths.
 export const config = {
   matcher: [
     /*
@@ -14,6 +23,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * Feel free to modify this pattern to include more paths.
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 };

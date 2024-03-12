@@ -5,13 +5,8 @@ import { SearchBar } from '@/components/ui/search-bar';
 import { LeftToRightGrid } from '@/components/layouts/left-to-right-grid';
 import { UpDownGrid } from '@/components/layouts/up-down-grid';
 import { fetchBiggestGainers, fetchMostPopular } from '@/hooks/index';
-import { useEffect } from 'react';
-import { protectedRoute } from '@/utils/supabase/dbFunctions';
 
-export default async function Home() {
-  useEffect(() => {
-    protectedRoute();
-  }, [protectedRoute]);
+export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center md:gap-4 overflow-x-hidden">
       <TopNavBar />
