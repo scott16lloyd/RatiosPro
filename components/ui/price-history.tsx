@@ -25,33 +25,6 @@ type DataItem = {
   volume: number;
 };
 
-// let data1D = [
-//   { date: '22-12-2023', price: 193.6 },
-//   { date: '22-12-2023', price: 193.65 },
-//   { date: '22-12-2023', price: 193.7 },
-//   { date: '22-12-2023', price: 193.75 },
-//   { date: '22-12-2023', price: 193.8 },
-//   { date: '22-12-2023', price: 193.85 },
-//   { date: '22-12-2023', price: 193.6 },
-//   { date: '22-12-2023', price: 193.65 },
-//   { date: '22-12-2023', price: 193.7 },
-//   { date: '22-12-2023', price: 193.75 },
-//   { date: '22-12-2023', price: 193.8 },
-//   { date: '22-12-2023', price: 193.85 },
-//   { date: '22-12-2023', price: 194.1 },
-//   { date: '22-12-2023', price: 194.15 },
-// ];
-
-// const data1W: SetStateAction<{ date: string; price: number }[]> = [];
-
-// const dataYTD: SetStateAction<{ date: string; price: number }[]> = [];
-
-// const dataY: SetStateAction<{ date: string; price: number }[]> = [];
-
-// const data5Y: SetStateAction<{ date: string; price: number }[]> = [];
-
-// const dataMax: SetStateAction<{ date: string; price: number }[]> = [];
-
 // Calculates the domain and interval for the Y axis
 function calculateDomain(data: DataItem[]) {
   const prices = data.map((item) => item.close);

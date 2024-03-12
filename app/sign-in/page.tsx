@@ -196,8 +196,8 @@ export default function SignInPage() {
               className="p-5"
               onClick={
                 !isSignUp
-                  ? handleAction(signUpNewUser, email, password)
-                  : handleAction(signInWithEmail, email, password)
+                  ? handleAction(signInWithEmail, email, password)
+                  : handleAction(signUpNewUser, email, password)
               }
             >
               <span className="text-white md:text-lg lg:text-xl">

@@ -6,22 +6,24 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@radix-ui/react-separator';
+import { Separator } from '@/components/ui/separator';
 import { signOut, getUser } from '@/utils/supabase/dbFunctions';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createClient } from '@/utils/supabase/supabaseClient';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 export function TopNavBar() {
   const [error, setError] = useState<string | null>(null);
-  getUser().then((userData) => {
-    console.log(userData);
-  });
+  const [user, setUser] = useState<any>(null);
 
   const handleAction =
-    (action: (...args: any[]) => Promise<void>, ...args: any[]) =>
+    (action: (...args: any[]) => Promise<any>, ...args: any[]) =>
     async () => {
       try {
-        await action(...args);
+        const result = await action(...args);
         setError(null); // Clear the error state if action is successful
+        return result;
       } catch (error) {
         if ((error as Error).message === 'Email rate limit exceeded') {
           setError('To many login attempts, please wait and try again.');
@@ -30,6 +32,15 @@ export function TopNavBar() {
         }
       }
     };
+
+  useEffect(() => {
+    handleAction(getUser)().then((user) => {
+      console.log(user);
+      setUser(user);
+    });
+  }, []);
+
+  console.log(user?.user.email);
 
   return (
     <nav className="w-full">
@@ -53,8 +64,8 @@ export function TopNavBar() {
           </PopoverTrigger>
           <PopoverContent>
             <div className="flex flex-col w-max h-max">
-              <span></span>
-              <Separator className="w-max" />
+              <span>{user?.user.email}</span>
+              <Separator className="w-full h-0.5 my-2" />
               <Button variant="link" onClick={handleAction(signOut)}>
                 Sign out
               </Button>

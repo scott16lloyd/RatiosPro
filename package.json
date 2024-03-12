@@ -34,6 +34,7 @@
     "react-loader-spinner": "^6.1.6",
     "react-loaders": "^3.0.1",
     "react-markdown": "^9.0.1",
+    "react-query": "^3.39.3",
     "recharts": "^2.10.4",
     "rehype-katex": "^7.0.0",
     "remark-math": "^6.0.0",
