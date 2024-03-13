@@ -7,11 +7,7 @@ import {
 } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { signOut, getUser } from '@/utils/supabase/dbFunctions';
 import { useState, useEffect } from 'react';
-import { createClient } from '@/utils/supabase/supabaseClient';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 export function TopNavBar() {
   const [error, setError] = useState<string | null>(null);
@@ -32,15 +28,6 @@ export function TopNavBar() {
         }
       }
     };
-
-  useEffect(() => {
-    handleAction(getUser)().then((user) => {
-      console.log(user);
-      setUser(user);
-    });
-  }, []);
-
-  console.log(user?.user.email);
 
   return (
     <nav className="w-full">
@@ -66,9 +53,7 @@ export function TopNavBar() {
             <div className="flex flex-col w-max h-max">
               <span>{user?.user.email}</span>
               <Separator className="w-full h-0.5 my-2" />
-              <Button variant="link" onClick={handleAction(signOut)}>
-                Sign out
-              </Button>
+              <Button variant="link">Sign out</Button>
             </div>
           </PopoverContent>
         </Popover>

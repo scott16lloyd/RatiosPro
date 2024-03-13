@@ -1,14 +1,15 @@
 'use server';
 
-import { createClient } from '@/utils/supabase/supabaseClient';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { createClient } from '@/utils/supabase/supabaseClient';
+
+// Supabase client instance
+const supabase = createClient();
 
 export async function login(formData: FormData) {
-  const supabase = createClient();
-
-  console.log(formData);
-
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
   const data = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
@@ -19,16 +20,14 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect('/error');
+    return error.message;
   }
 
   revalidatePath('/', 'layout');
-  redirect('/');
+  redirect('/home');
 }
 
 export async function signup(formData: FormData) {
-  const supabase = createClient();
-
   // type-casting here for convenience
   // in practice, you should validate your inputs
   const data = {
@@ -44,4 +43,11 @@ export async function signup(formData: FormData) {
 
   revalidatePath('/', 'layout');
   redirect('/');
+}
+
+export async function signout() {
+  const { error } = await supabase.auth.signOut();
+  console.log(error);
+  revalidatePath('/', 'layout');
+  redirect('/sign-in');
 }
