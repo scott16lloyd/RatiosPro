@@ -11,8 +11,9 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { CardStack } from '@/components/ui/card-stack';
 import { cn } from '@/utils/cn';
-import { login } from '@/utils/supabase/dbFunctions';
+import { login, signup } from '@/utils/supabase/dbFunctions';
 import { useState } from 'react';
+import { ReloadIcon } from '@radix-ui/react-icons';
 
 const Highlight = ({
   children,
@@ -39,10 +40,13 @@ export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Handle form submission
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
+    setIsLoading(true);
 
     // Clear the error message when the form is submitted
     setError(null);
@@ -51,11 +55,19 @@ export default function SignInPage() {
     formData.append('email', email);
     formData.append('password', password);
 
-    const errorMessage = await login(formData);
+    let errorMessage;
+
+    if (isSignUp) {
+      errorMessage = await signup(formData);
+    } else if (!isSignUp) {
+      errorMessage = await login(formData);
+    }
 
     if (errorMessage) {
       setError(errorMessage);
     }
+
+    setIsLoading(false);
   };
 
   const CARDS = [
@@ -198,11 +210,20 @@ export default function SignInPage() {
               {error && (
                 <div className="error-message text-red-500">{error}</div>
               )}
-              <Button className="p-5" type="submit">
-                <span className="text-white md:text-lg lg:text-xl">
-                  {!isSignUp ? 'Sign In' : 'Sign Up'}
-                </span>
-              </Button>
+              {isLoading ? (
+                <Button disabled className="p-5">
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin text-white" />
+                  <span className="text-white md:text-lg lg:text-xl">
+                    Please wait
+                  </span>
+                </Button>
+              ) : (
+                <Button className="p-5" type="submit">
+                  <span className="text-white md:text-lg lg:text-xl">
+                    {!isSignUp ? 'Sign In' : 'Sign Up'}
+                  </span>
+                </Button>
+              )}
               <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
                 {!isSignUp
                   ? 'Don’t have an account?'
@@ -222,12 +243,12 @@ export default function SignInPage() {
           </form>
           <div className="flex flex-col h-full justify-end">
             <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
-              By continuing, you agree to Ratio Pro’s{' '}
-              <Link href={'#'} className="underline">
+              By continuing, you agree to Ratio Pro’s
+              <Link href={'#'} className="underline px-1">
                 Terms of service
               </Link>
               and
-              <Link href={'#'} className="underline">
+              <Link href={'#'} className="underline px-1">
                 Privacy Policy
               </Link>
               , and to receive periodic emails with updates.
