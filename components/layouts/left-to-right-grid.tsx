@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 import { SmallBentoBox } from '@/components/ui/small-bento-box';
 import { useQuery } from '@tanstack/react-query';
@@ -11,6 +12,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
+import { fetchBiggestGainers, fetchMostPopular } from '@/hooks/index';
 
 interface StockData {
   symbol: string;
@@ -19,22 +21,21 @@ interface StockData {
   changesPercentage: number;
 }
 
-interface LeftToRightGridProps {
-  title: string;
-  fetchFunction: () => Promise<StockData[]>;
-}
-
 export function LeftToRightGrid({
   title,
-  fetchFunction,
-}: LeftToRightGridProps) {
+  fetchType,
+}: {
+  title: string;
+  fetchType: string;
+}) {
+  const fetchFunction =
+    fetchType === 'Biggest Gainers' ? fetchBiggestGainers : fetchMostPopular;
+
   const { isLoading, error, data } = useQuery({
     queryKey: [title],
     queryFn: fetchFunction,
   });
 
-  console.log('data:', data);
-  console.log(title);
   return (
     <div className="flex w-full h-min-content py-2">
       <div className="w-full px-4">

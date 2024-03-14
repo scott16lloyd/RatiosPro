@@ -11,8 +11,8 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { CardStack } from '@/components/ui/card-stack';
 import { cn } from '@/utils/cn';
-import { login, signup } from '@/utils/supabase/dbFunctions';
-import { useState, useEffect } from 'react';
+import { login } from '@/utils/supabase/dbFunctions';
+import { useState } from 'react';
 
 const Highlight = ({
   children,

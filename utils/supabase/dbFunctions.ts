@@ -15,12 +15,13 @@ export async function login(formData: FormData) {
     password: formData.get('password') as string,
   };
 
-  console.log(data);
-
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
+    console.log(error);
     return error.message;
+  } else {
+    supabase.auth.refreshSession();
   }
 
   revalidatePath('/', 'layout');
@@ -42,12 +43,26 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout');
-  redirect('/');
+  redirect('/home');
 }
 
 export async function signout() {
-  const { error } = await supabase.auth.signOut();
-  console.log(error);
+  const { error } = await supabase.auth.signOut({ scope: 'local' });
+  if (error) {
+    console.log(error);
+  }
   revalidatePath('/', 'layout');
   redirect('/sign-in');
+}
+
+export async function getuser() {
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
+    console.error(error);
+    redirect('/sign-in');
+  } else {
+    return data;
+  }
 }
