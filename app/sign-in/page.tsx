@@ -11,8 +11,9 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { CardStack } from '@/components/ui/card-stack';
 import { cn } from '@/utils/cn';
-import { signUpNewUser, signInWithEmail } from '@/utils/supabase/dbFunctions';
-import { useState, useEffect } from 'react';
+import { login, signup } from '@/utils/supabase/dbFunctions';
+import { useState } from 'react';
+import { ReloadIcon } from '@radix-ui/react-icons';
 
 const Highlight = ({
   children,
@@ -35,29 +36,39 @@ const Highlight = ({
 
 export default function SignInPage() {
   // Manage form inputs
+  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setError(null); // Clear the error state when isSignUp changes
-  }, [isSignUp]);
+  // Handle form submission
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
 
-  const handleAction =
-    (action: (...args: any[]) => Promise<void>, ...args: any[]) =>
-    async () => {
-      try {
-        await action(...args);
-        setError(null); // Clear the error state if action is successful
-      } catch (error) {
-        if ((error as Error).message === 'Email rate limit exceeded') {
-          setError('To many login attempts, please wait and try again.');
-        } else {
-          setError((error as Error).message); // Set the error state if an error is thrown
-        }
-      }
-    };
+    setIsLoading(true);
+
+    // Clear the error message when the form is submitted
+    setError(null);
+
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+
+    let errorMessage;
+
+    if (isSignUp) {
+      errorMessage = await signup(formData);
+    } else if (!isSignUp) {
+      errorMessage = await login(formData);
+    }
+
+    if (errorMessage) {
+      setError(errorMessage);
+    }
+
+    setIsLoading(false);
+  };
 
   const CARDS = [
     {
@@ -158,76 +169,86 @@ export default function SignInPage() {
               <Separator className="w-1/2" />
             </div>
           </div>
-          <div className="flex flex-col flex-grow-2 gap-4 w-full">
-            <div className="grid w-full items-center gap-1.5">
-              <Label
-                htmlFor="email"
-                className="text-zinc-500 font-light md:text-sm lg:text-md"
-              >
-                Email
-              </Label>
-              <Input
-                type="email"
-                id="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
-              />
-            </div>
-            <div className="grid w-full items-center gap-1.5">
-              <Label
-                htmlFor="password"
-                className="text-zinc-500 font-light md:text-sm lg:text-md"
-              >
-                Password
-              </Label>
-              <Input
-                type="password"
-                placeholder="Password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
-              />
-            </div>
-            {error && <div className="error-message text-red-500">{error}</div>}
-            <Button
-              className="p-5"
-              onClick={
-                !isSignUp
-                  ? handleAction(signUpNewUser, email, password)
-                  : handleAction(signInWithEmail, email, password)
-              }
-            >
-              <span className="text-white md:text-lg lg:text-xl">
-                {!isSignUp ? 'Sign In' : 'Sign Up'}
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-col flex-grow-2 gap-4 w-full">
+              <div className="grid w-full items-center gap-1.5">
+                <Label
+                  htmlFor="email"
+                  className="text-zinc-500 font-light md:text-sm lg:text-md"
+                >
+                  Email
+                </Label>
+                <Input
+                  type="email"
+                  id="email"
+                  placeholder="Email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
+                />
+              </div>
+              <div className="grid w-full items-center gap-1.5">
+                <Label
+                  htmlFor="password"
+                  className="text-zinc-500 font-light md:text-sm lg:text-md"
+                >
+                  Password
+                </Label>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  id="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
+                />
+              </div>
+              {error && (
+                <div className="error-message text-red-500">{error}</div>
+              )}
+              {isLoading ? (
+                <Button disabled className="p-5">
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin text-white" />
+                  <span className="text-white md:text-lg lg:text-xl">
+                    Please wait
+                  </span>
+                </Button>
+              ) : (
+                <Button className="p-5" type="submit">
+                  <span className="text-white md:text-lg lg:text-xl">
+                    {!isSignUp ? 'Sign In' : 'Sign Up'}
+                  </span>
+                </Button>
+              )}
+              <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
+                {!isSignUp
+                  ? 'Don’t have an account?'
+                  : 'Already have an account?'}
+                <Link
+                  href={'#'}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    !isSignUp ? setIsSignUp(true) : setIsSignUp(false);
+                  }}
+                  className="underline ml-2"
+                >
+                  {!isSignUp ? 'Sign Up Now' : 'Sign in'}
+                </Link>
               </span>
-            </Button>
-            <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
-              {!isSignUp
-                ? 'Don’t have an account?'
-                : 'Already have an account?'}
-              <Link
-                href={'#'}
-                onClick={(event) => {
-                  event.preventDefault();
-                  !isSignUp ? setIsSignUp(true) : setIsSignUp(false);
-                }}
-                className="underline ml-2"
-              >
-                {!isSignUp ? 'Sign Up Now' : 'Sign in'}
-              </Link>
-            </span>
-          </div>
+            </div>
+          </form>
           <div className="flex flex-col h-full justify-end">
             <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
-              By continuing, you agree to Ratio Pro’s{' '}
-              <Link href={'#'} className="underline">
+              By continuing, you agree to Ratio Pro’s
+              <Link href={'#'} className="underline px-1">
                 Terms of service
               </Link>
               and
-              <Link href={'#'} className="underline">
+              <Link href={'#'} className="underline px-1">
                 Privacy Policy
               </Link>
               , and to receive periodic emails with updates.

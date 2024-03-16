@@ -26,8 +26,6 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
     queryFn: fetchMostPopularBySector,
   });
 
-  console.log(data);
-
   if (error) return 'An error has occurred: ' + error.message;
 
   return (

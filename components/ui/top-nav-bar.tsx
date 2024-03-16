@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
 import {
@@ -6,27 +8,34 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@radix-ui/react-separator';
-import { signOut, getUser } from '@/utils/supabase/dbFunctions';
-import { useState } from 'react';
+import { Separator } from '@/components/ui/separator';
+import { useEffect, useState } from 'react';
+import { getuser } from '@/utils/supabase/dbFunctions';
+import { User } from 'lucide-react';
+import { signout } from '@/utils/supabase/dbFunctions';
+
+type User = {
+  id: string;
+  email: string;
+  role: string;
+};
 
 export function TopNavBar() {
-  const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
-  const handleAction =
-    (action: (...args: any[]) => Promise<void>, ...args: any[]) =>
-    async () => {
-      try {
-        await action(...args);
-        setError(null); // Clear the error state if action is successful
-      } catch (error) {
-        if ((error as Error).message === 'Email rate limit exceeded') {
-          setError('To many login attempts, please wait and try again.');
-        } else {
-          setError((error as Error).message); // Set the error state if an error is thrown
-        }
-      }
-    };
+  useEffect(() => {
+    getuser()
+      .then((userObject) =>
+        setUser({
+          id: userObject?.user.id || '',
+          email: userObject?.user.email || '',
+          role: userObject?.user.role || '',
+        })
+      )
+      .catch((error) => {
+        console.error('Failed to fetch user:', error);
+      });
+  }, []);
 
   return (
     <nav className="w-full">
@@ -50,9 +59,9 @@ export function TopNavBar() {
           </PopoverTrigger>
           <PopoverContent>
             <div className="flex flex-col w-max h-max">
-              <span></span>
-              <Separator className="w-max" />
-              <Button variant="link" onClick={handleAction(signOut)}>
+              <span>{user?.email ? user?.email : 'Not logged in'}</span>
+              <Separator className="w-full h-0.5 my-2" />
+              <Button variant="link" onClick={() => signout()}>
                 Sign out
               </Button>
             </div>
