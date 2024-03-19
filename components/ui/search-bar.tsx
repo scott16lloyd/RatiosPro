@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/popover';
 import { Label } from '@/components/ui/label';
 import { SetStateAction, useEffect, useState } from 'react';
+import { Separator } from './separator';
 
 export function SearchBar() {
   const [searchString, setSearchString] = useState('');
@@ -25,17 +26,19 @@ export function SearchBar() {
     target: { value: SetStateAction<string> };
   }) => {
     setSearchString(event.target.value);
-    () => refetch();
+    refetch();
     setIsOpen(true);
   };
 
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ['search', searchString],
     queryFn: fetchSearchResults,
-    enabled: false,
+    enabled: true,
   });
 
-  if (isLoading) return 'Loading...';
+  if (data) console.log(data);
+
+  // if (isLoading) return 'Loading...';
   if (error) return 'An error has occurred: ' + error.message;
 
   return (
@@ -59,14 +62,26 @@ export function SearchBar() {
           </div>
         </PopoverTrigger>
         <PopoverContent
-          className="w-full"
-          align="start"
+          align="center"
+          className="w-11/12"
           onOpenAutoFocus={(event) => {
             event.preventDefault();
           }}
         >
-          <div className="grid gap-4">
-            <span>search data</span>
+          <div className="flex flex-col justify-between overflow-hidden">
+            {data?.map((result: any, index: number) => {
+              return (
+                <div key={index}>
+                  <div className="py-2 flex flex-row gap-2">
+                    <span className="text-md font-normal">{result.symbol}</span>
+                    <span className=" text-zinc-500 truncate text-ellipsis">
+                      {result.name}
+                    </span>
+                  </div>
+                  <Separator />
+                </div>
+              );
+            })}
           </div>
         </PopoverContent>
       </Popover>

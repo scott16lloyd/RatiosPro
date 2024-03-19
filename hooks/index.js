@@ -228,6 +228,7 @@ const fetchSearchResults = async ({ queryKey }) => {
 
   return data;
 };
+fetchSearchResults({ queryKey: ['search', 'SA'] });
 
 export {
   fetchBiggestGainers,
