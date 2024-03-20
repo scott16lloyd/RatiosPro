@@ -13,20 +13,17 @@ import {
 import { Label } from '@/components/ui/label';
 import { SetStateAction, useEffect, useState } from 'react';
 import { Separator } from './separator';
+import { debounce } from 'lodash';
 
 export function SearchBar() {
   const [searchString, setSearchString] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    setIsOpen(searchString.length > 0);
-  }, [searchString]);
-
   const handleSearchChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
     setSearchString(event.target.value);
-    refetch();
+    debouncedRefetch();
     setIsOpen(true);
   };
 
@@ -35,6 +32,12 @@ export function SearchBar() {
     queryFn: fetchSearchResults,
     enabled: true,
   });
+
+  const debouncedRefetch = debounce(refetch, 300);
+
+  useEffect(() => {
+    setIsOpen(searchString.length > 0);
+  }, [searchString]);
 
   if (data) console.log(data);
 
@@ -62,19 +65,25 @@ export function SearchBar() {
           </div>
         </PopoverTrigger>
         <PopoverContent
-          align="center"
-          className="w-11/12"
+          side="bottom"
+          align="start"
+          style={{
+            width: 'var(--radix-popover-trigger-width)',
+            height: '50vh',
+            overflowY: 'scroll',
+          }}
+          onPointerDownOutside={() => setIsOpen(false)}
           onOpenAutoFocus={(event) => {
             event.preventDefault();
           }}
         >
-          <div className="flex flex-col justify-between overflow-hidden">
+          <div className="flex flex-col justify-between lg:gap-4 overflow-hidden">
             {data?.map((result: any, index: number) => {
               return (
                 <div key={index}>
-                  <div className="py-2 flex flex-row gap-2">
-                    <span className="text-md font-normal">{result.symbol}</span>
-                    <span className=" text-zinc-500 truncate text-ellipsis">
+                  <div className="p-2 flex flex-row gap-2 text-md md:text-lg lg:text-2xl hover:cursor-pointer hover:bg-zinc-700 hover:rounded-sm">
+                    <span className="font-normal">{result.symbol}</span>
+                    <span className=" text-zinc-500 font-light truncate text-ellipsis">
                       {result.name}
                     </span>
                   </div>
