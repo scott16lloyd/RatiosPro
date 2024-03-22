@@ -7,6 +7,7 @@ import { UpDownGrid } from '@/components/layouts/up-down-grid';
 import { getuser } from '@/utils/supabase/dbFunctions';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseClient';
+import { DataContextProvider } from '@/components/ContextProvider';
 
 export default async function Home() {
   const supabase = createClient();

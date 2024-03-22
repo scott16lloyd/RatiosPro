@@ -10,14 +10,17 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from '@/components/ui/popover';
-import { Label } from '@/components/ui/label';
 import { SetStateAction, useEffect, useState } from 'react';
 import { Separator } from './separator';
 import { debounce } from 'lodash';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export function SearchBar() {
   const [searchString, setSearchString] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
 
   const handleSearchChange = (event: {
     target: { value: SetStateAction<string> };
@@ -51,14 +54,24 @@ export function SearchBar() {
           <div className="flex flex-row w-full h-full space-x-2">
             <Input
               type="text"
+              value={searchString}
               placeholder="Search with a ticker symbol e.g. APPL"
               className="h-full w-11/12 xs:text-xs md:text-lg"
               onChange={handleSearchChange}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  router.push(`/view-all/search/${searchString}`);
+                }
+              }}
             />
             <Button
               className="bg-primary h-full w-14"
               type="submit"
               size="icon"
+              onClick={() => {
+                router.push(`/view-all/search/${searchString}`);
+              }}
             >
               <Search size={20} />
             </Button>
@@ -80,15 +93,22 @@ export function SearchBar() {
           <div className="flex flex-col justify-between lg:gap-4 overflow-hidden">
             {data?.map((result: any, index: number) => {
               return (
-                <div key={index}>
-                  <div className="p-2 flex flex-row gap-2 text-md md:text-lg lg:text-2xl hover:cursor-pointer hover:bg-zinc-700 hover:rounded-sm">
-                    <span className="font-normal">{result.symbol}</span>
-                    <span className=" text-zinc-500 font-light truncate text-ellipsis">
-                      {result.name}
-                    </span>
+                <Link
+                  href={`/details/${result.symbol}`}
+                  onClick={() => {
+                    localStorage.setItem('stockName', result.name);
+                  }}
+                >
+                  <div key={index}>
+                    <div className="p-2 flex flex-row gap-2 text-md md:text-lg lg:text-2xl hover:cursor-pointer hover:bg-zinc-700 hover:rounded-sm">
+                      <span className="font-normal">{result.symbol}</span>
+                      <span className=" text-zinc-500 font-light truncate text-ellipsis">
+                        {result.name}
+                      </span>
+                    </div>
+                    <Separator />
                   </div>
-                  <Separator />
-                </div>
+                </Link>
               );
             })}
           </div>
