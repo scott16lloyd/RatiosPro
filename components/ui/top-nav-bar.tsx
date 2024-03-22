@@ -40,7 +40,7 @@ export function TopNavBar() {
   return (
     <nav className="w-full">
       <div className="container py-8 mx-auto flex justify-between items-center 6xl:max-w-6xl">
-        <Link href="/">
+        <Link href="/home">
           <div className="flex flex-col">
             <span className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-semibold text-gradient">
               Ratios Pro

@@ -3,10 +3,10 @@
 import { Button } from '@/components/ui/button';
 import { PriceHistory } from '@/components/ui/price-history';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 import { fetchRatios } from '@/hooks/index';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import ResultGridLayout from '@/components/layouts/result-grid-layout';
+import { useRouter } from 'next/navigation';
 
 export default function DetailsPage({
   params,
@@ -14,6 +14,7 @@ export default function DetailsPage({
   params: { ticker: string; name: string };
 }) {
   const symbol = params.ticker;
+  const router = useRouter();
 
   // Define query options
   type QueryResult = {
@@ -38,18 +39,18 @@ export default function DetailsPage({
     console.error('Error fetching data:', ratios.error);
   } else if (ratios.data || ratios.data.length > 0) {
     // Data is available
-    console.log('Fetched data:', ratios.data);
-
     const stockName = localStorage.getItem('stockName');
 
     return (
       <>
         <div className="w-full h-screen flex flex-col justify-start">
           <div className="w-full flex justify-start p-4">
-            <Button size="icon" variant="secondary">
-              <Link href="/">
-                <ArrowLeft />
-              </Link>
+            <Button
+              size="icon"
+              variant="secondary"
+              onClick={() => router.back()}
+            >
+              <ArrowLeft />
             </Button>
           </div>
           <div className="flex flex-col items-center justify-center px-6 lg:gap-4">

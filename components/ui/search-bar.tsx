@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { fetchSearchResults } from '@/hooks/index';
+import { fetchSearchResultsPerformant } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import {
   Popover,
@@ -32,17 +32,15 @@ export function SearchBar() {
 
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ['search', searchString],
-    queryFn: fetchSearchResults,
+    queryFn: fetchSearchResultsPerformant,
     enabled: true,
   });
 
-  const debouncedRefetch = debounce(refetch, 300);
+  const debouncedRefetch = debounce(refetch, 500);
 
   useEffect(() => {
     setIsOpen(searchString.length > 0);
   }, [searchString]);
-
-  if (data) console.log(data);
 
   // if (isLoading) return 'Loading...';
   if (error) return 'An error has occurred: ' + error.message;
