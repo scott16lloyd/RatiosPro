@@ -211,10 +211,24 @@ const fetchRatios = async ({ queryKey }) => {
   );
 
   const data = await response.json();
+
+  return data;
+};
+
+const fetchSearchResults = async ({ queryKey }) => {
+  const [_key, search] = queryKey;
+
+  // Fetch stock ratios
+  const response = await fetch(
+    `https://financialmodelingprep.com/api/v3/search?query=${search}&apikey=${process.env.NEXT_PUBLIC_API_KEY}`
+  );
+
+  const data = await response.json();
   console.log(data);
 
   return data;
 };
+fetchSearchResults({ queryKey: ['search', 'SA'] });
 
 export {
   fetchBiggestGainers,
@@ -225,4 +239,5 @@ export {
   fetchBalanceSheet,
   fetchIncomeStatement,
   fetchRatios,
+  fetchSearchResults,
 };
