@@ -92,9 +92,9 @@ export function SearchBar() {
             {data?.map((result: any, index: number) => {
               return (
                 <Link
-                  href={`/details/${result.symbol}`}
-                  onClick={() => {
-                    localStorage.setItem('stockName', result.name);
+                  href={{
+                    pathname: `/details/${result.symbol}`,
+                    query: { name: result.name },
                   }}
                 >
                   <div key={index}>
