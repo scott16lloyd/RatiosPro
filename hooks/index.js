@@ -225,6 +225,29 @@ const fetchSearchResultsPerformant = async ({ queryKey }) => {
 
   const data = await response.json();
 
+  // Define the order of exchanges
+  const exchangeOrder = ['NASDAQ', 'NYSE'];
+
+  // Sort the data
+  data.sort((a, b) => {
+    const aExchangeIndex = exchangeOrder.indexOf(a.exchangeShortName);
+    const bExchangeIndex = exchangeOrder.indexOf(b.exchangeShortName);
+
+    if (aExchangeIndex === -1 && bExchangeIndex === -1) {
+      // Neither stock is in NASDAQ or NYSE, sort alphabetically
+      return a.exchangeShortName.localeCompare(b.exchangeShortName);
+    } else if (aExchangeIndex === -1) {
+      // Stock 'a' is not in NASDAQ or NYSE, 'b' comes first
+      return 1;
+    } else if (bExchangeIndex === -1) {
+      // Stock 'b' is not in NASDAQ or NYSE, 'a' comes first
+      return -1;
+    } else {
+      // Both stocks are in NASDAQ or NYSE, sort based on the order in `exchangeOrder`
+      return aExchangeIndex - bExchangeIndex;
+    }
+  });
+
   return data;
 };
 
@@ -237,6 +260,29 @@ const fetchSearchResults = async ({ queryKey }) => {
   );
 
   const data = await response.json();
+
+  // Define the order of exchanges
+  const exchangeOrder = ['NASDAQ', 'NYSE'];
+
+  // Sort the data
+  data.sort((a, b) => {
+    const aExchangeIndex = exchangeOrder.indexOf(a.exchangeShortName);
+    const bExchangeIndex = exchangeOrder.indexOf(b.exchangeShortName);
+
+    if (aExchangeIndex === -1 && bExchangeIndex === -1) {
+      // Neither stock is in NASDAQ or NYSE, sort alphabetically
+      return a.exchangeShortName.localeCompare(b.exchangeShortName);
+    } else if (aExchangeIndex === -1) {
+      // Stock 'a' is not in NASDAQ or NYSE, 'b' comes first
+      return 1;
+    } else if (bExchangeIndex === -1) {
+      // Stock 'b' is not in NASDAQ or NYSE, 'a' comes first
+      return -1;
+    } else {
+      // Both stocks are in NASDAQ or NYSE, sort based on the order in `exchangeOrder`
+      return aExchangeIndex - bExchangeIndex;
+    }
+  });
 
   return data;
 };

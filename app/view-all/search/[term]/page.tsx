@@ -7,7 +7,6 @@ import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
 import { TopNavBar } from '@/components/ui/top-nav-bar';
 import { fetchSearchResults } from '@/hooks/index';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 
 export default function SearchPage({ params }: { params: { term: string } }) {
   const term = params.term;
