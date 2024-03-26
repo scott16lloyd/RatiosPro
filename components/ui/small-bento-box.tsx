@@ -2,7 +2,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import {
+  addLikedStock,
+  checkLikedStock,
+  removeLikedStock,
+} from '@/utils/supabase/dbFunctions';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface SmallBentoBoxProps {
   symbol: string;
@@ -18,8 +24,27 @@ export function SmallBentoBox({
   changesPercentage,
 }: SmallBentoBoxProps) {
   const [isHeartFilled, setIsHeartFilled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      setIsLoading(true);
+      const isLiked = await checkLikedStock(symbol);
+      setIsHeartFilled(isLiked ? true : false);
+      setIsLoading(false);
+    };
+
+    checkIfLiked();
+  }, [symbol]);
 
   const handleHeartClick = (event: React.MouseEvent) => {
+    if (!isHeartFilled) {
+      addLikedStock(symbol, name, price, changesPercentage);
+    } else if (isHeartFilled) {
+      removeLikedStock(symbol);
+      queryClient.invalidateQueries({ queryKey: ['likedStocks'] });
+    }
     event.preventDefault();
     event.stopPropagation();
     setIsHeartFilled(!isHeartFilled);
