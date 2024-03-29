@@ -293,6 +293,24 @@ const fetchSearchResults = async ({ queryKey }) => {
   return data;
 };
 
+const fetchCompantProfile = async ({ queryKey }) => {
+  const [_key, ticker] = queryKey;
+
+  // Fetch stock ratios
+  const response = await fetch(
+    `https://financialmodelingprep.com/api/v3/profile/${ticker}?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
+  );
+  const data = await response.json();
+  console.log(data);
+  // Extract specific values
+  if (Array.isArray(data) && data.length > 0) {
+    const { symbol, price, companyName, changes } = data[0];
+    return { symbol, price, companyName, changes };
+  } else {
+    return null;
+  }
+};
+
 export {
   fetchBiggestGainers,
   fetchMostPopular,
@@ -304,4 +322,5 @@ export {
   fetchRatios,
   fetchSearchResults,
   fetchSearchResultsPerformant,
+  fetchCompantProfile,
 };

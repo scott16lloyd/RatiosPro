@@ -23,7 +23,6 @@ interface ResultGridLayoutProps {
 }
 
 export default function resultGridLayout({ data }: ResultGridLayoutProps) {
-  console.log(data);
   // Round the values to two decimal places
   const roundedData = data.map((item) => ({
     ...item,
