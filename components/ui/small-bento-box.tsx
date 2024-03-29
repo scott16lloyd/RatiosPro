@@ -27,6 +27,24 @@ export function SmallBentoBox({
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
 
+  // Function to update the local storage
+  function updateLocalStorage(symbol: string, isLiked: boolean) {
+    let likedStocks = JSON.parse(localStorage.getItem('likedStocks') || '[]');
+    if (isLiked) {
+      likedStocks.push(symbol);
+    } else {
+      likedStocks = likedStocks.filter((stock: string) => stock !== symbol);
+    }
+    localStorage.setItem('likedStocks', JSON.stringify(likedStocks));
+  }
+
+  // Initialize the state from local storage
+  useEffect(() => {
+    const likedStocks = JSON.parse(localStorage.getItem('likedStocks') || '[]');
+    setIsHeartFilled(likedStocks.includes(symbol));
+    console.log(likedStocks);
+  }, [symbol]);
+
   useEffect(() => {
     const checkIfLiked = async () => {
       setIsLoading(true);
@@ -38,16 +56,27 @@ export function SmallBentoBox({
     checkIfLiked();
   }, [symbol]);
 
-  const handleHeartClick = (event: React.MouseEvent) => {
-    if (!isHeartFilled) {
-      addLikedStock(symbol, name, price, changesPercentage);
-    } else if (isHeartFilled) {
-      removeLikedStock(symbol);
-      queryClient.invalidateQueries({ queryKey: ['likedStocks'] });
-    }
+  const handleHeartClick = async (event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    setIsHeartFilled(!isHeartFilled);
+
+    // Update the state and local storage immediately
+    setIsHeartFilled(isHeartFilled);
+    updateLocalStorage(symbol, isHeartFilled);
+
+    try {
+      if (!isHeartFilled) {
+        await addLikedStock(symbol, name, price, changesPercentage);
+      } else {
+        await removeLikedStock(symbol);
+      }
+      queryClient.invalidateQueries({ queryKey: ['likedStocks'] });
+    } catch (error) {
+      // If the operation fails, revert the changes and show an error message
+      setIsHeartFilled(!isHeartFilled);
+      updateLocalStorage(symbol, isHeartFilled);
+      console.error(error);
+    }
   };
   return (
     <Link href={{ pathname: `/details/${symbol}`, query: { name } }}>

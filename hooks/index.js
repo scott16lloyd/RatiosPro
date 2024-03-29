@@ -4,9 +4,12 @@ const fetchBiggestGainers = async () => {
     `https://financialmodelingprep.com/api/v3/stock_market/gainers?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
   );
   const data = await response.json();
+  console.log(data);
 
   // Filter out non-company stocks
   let companyStocks = data.filter((stock) => {
+    if (!stock.name) return false;
+
     let name = stock.name.toLowerCase();
     return !(
       name.includes('etf') ||
@@ -19,6 +22,7 @@ const fetchBiggestGainers = async () => {
 
   // Filter by price
   let filteredData = companyStocks.filter((item) => item.price >= 1);
+  console.log(filteredData);
 
   return filteredData;
 };
@@ -32,6 +36,8 @@ const fetchMostPopular = async () => {
 
   // Filter out non-company stocks
   let companyStocks = data.filter((stock) => {
+    if (!stock.name) return false;
+
     let name = stock.name.toLowerCase();
     return !(
       name.includes('etf') ||

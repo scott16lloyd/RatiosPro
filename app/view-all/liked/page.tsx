@@ -26,7 +26,7 @@ export default function LikedPage() {
           <span className="text-2xl lg:text-3xl px-4">{`Liked stocks`}</span>
         </div>
         {isLoading ? (
-          <div className="grid place-items-center gap-x-8 gap-y-4 md:gap-y-8 grid-cols-2 md:grid-cols-3 xl:grid-cols-4 items-center px-4 max-w-10/12">
+          <div className="grid place-items-center gap-x-8 gap-y-4 md:gap-y-8 grid-cols-2 md:grid-cols-3 items-center px-4 max-w-10/12">
             {Array.from({ length: 8 }).map((_, index) => (
               <div className="sm:w-32 md:w-52 sm:h-24 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48">
                 <BentoSkeleton key={index} />
@@ -34,7 +34,7 @@ export default function LikedPage() {
             ))}
           </div>
         ) : data && data.length > 0 ? (
-          <div className="grid place-items-center gap-x-8 gap-y-4 md:gap-y-8 grid-cols-2 md:grid-cols-3 xl:grid-cols-4 items-center px-4 max-w-10/12">
+          <div className="grid place-items-center gap-x-8 gap-y-4 md:gap-y-8 grid-cols-2 md:grid-cols-3 xl:grid-cols-3 items-center px-4 max-w-10/12">
             {data.map((stock: any, index: number) => (
               <SmallBentoBox
                 key={index}

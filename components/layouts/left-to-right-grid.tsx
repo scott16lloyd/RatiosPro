@@ -37,6 +37,10 @@ export function LeftToRightGrid({
     queryFn: fetchFunction,
   });
 
+  if (fetchType === 'Biggest Gainers') {
+    console.log(data);
+  }
+
   const StockNameContext = createContext('No title');
 
   return (
