@@ -19,14 +19,14 @@ export default function LikedPage() {
 
   if (error) return 'An error has occurred: ' + error.message;
   return (
-    <div className="flex h-screen flex-col items-center justify-center md:gap-4 overflow-x-hidden">
+    <div className="flex h-screen flex-col items-center justify-center md:gap-4 overflow-x-hidden pb-6">
       <TopNavBar />
-      <div className="flex-1 justify-center items-center flex-col h-full w-10/12">
+      <div className="flex items-center flex-col h-full w-full px-4 md:px-8">
         <div className="w-full text-left pb-4">
-          <span className="text-2xl lg:text-3xl px-4">{`Liked stocks`}</span>
+          <span className="text-2xl lg:text-3xl">Liked stocks</span>
         </div>
         {isLoading ? (
-          <div className="grid place-items-center gap-x-8 gap-y-4 md:gap-y-8 grid-cols-2 md:grid-cols-3 items-center px-4 max-w-10/12">
+          <div className="grid place-items-center gap-x-8 gap-y-4 md:gap-y-8 grid-cols-2 md:grid-cols-3 xl:grid-cols-3 items-center w-full xl:w-10/12">
             {Array.from({ length: 8 }).map((_, index) => (
               <div className="sm:w-32 md:w-52 sm:h-24 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48">
                 <BentoSkeleton key={index} />
@@ -34,7 +34,7 @@ export default function LikedPage() {
             ))}
           </div>
         ) : data && data.length > 0 ? (
-          <div className="grid place-items-center gap-x-8 gap-y-4 md:gap-y-8 grid-cols-2 md:grid-cols-3 xl:grid-cols-3 items-center px-4 max-w-10/12">
+          <div className="grid place-items-center gap-x-4 md:gap-x-8 gap-y-4 md:gap-y-8 grid-cols-2 md:grid-cols-3 xl:grid-cols-3 items-center w-full">
             {data.map((stock: any, index: number) => (
               <SmallBentoBox
                 key={index}

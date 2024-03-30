@@ -10,6 +10,7 @@ export const prefix = '';
 export const theme = {
   screens: {
     sm: '360px',
+    smd: '430px',
     md: '768px',
     lg: '1024px',
     xl: '1200px',
