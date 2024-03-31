@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/carousel';
 import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
 import { fetchBiggestGainers, fetchMostPopular } from '@/hooks/index';
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 interface StockData {
   symbol: string;
@@ -36,10 +36,6 @@ export function LeftToRightGrid({
     queryKey: [title],
     queryFn: fetchFunction,
   });
-
-  if (fetchType === 'Biggest Gainers') {
-    console.log(data);
-  }
 
   const StockNameContext = createContext('No title');
 

@@ -134,6 +134,8 @@ export async function checkLikedStock(stockName: string) {
     .eq('user_id', user.id)
     .eq('stock_symbol', stockName);
 
+  console.log(data, error);
+
   if (error) {
     console.error(error);
   }
