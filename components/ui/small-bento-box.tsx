@@ -2,6 +2,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { LikeButton } from '@/components/like-button';
+import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
+import { checkLikedStock } from '@/utils/supabase/dbFunctions';
+import { useState, useEffect } from 'react';
 
 interface SmallBentoBoxProps {
   symbol: string;
@@ -16,7 +19,24 @@ export function SmallBentoBox({
   price,
   changesPercentage,
 }: SmallBentoBoxProps) {
-  return (
+  const [isLoading, setIsLoading] = useState(false);
+  const [isHeartFilled, setIsHeartFilled] = useState(false);
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      setIsLoading(true);
+      const isLiked = await checkLikedStock(symbol);
+      setIsHeartFilled(isLiked ? true : false);
+      setIsLoading(false);
+    };
+
+    checkIfLiked();
+  }, [symbol]);
+
+  return isLoading ? (
+    <div className="sm:w-32 smd:w-40 md:w-52 sm:h-24 smd:h-28 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48 border-none py-1 px-2 md:p-4 noselect">
+      <BentoSkeleton />
+    </div>
+  ) : (
     <Link href={{ pathname: `/details/${symbol}`, query: { name } }}>
       <Card className="sm:w-32 smd:w-40 md:w-52 sm:h-24 smd:h-28 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48 border-none py-1 px-2 md:p-4 noselect ring-zinc-700 ring-1">
         <CardContent className="p-0 h-full flex flex-col justify-evenly lg:gap-1">
@@ -29,6 +49,8 @@ export function SmallBentoBox({
               name={name}
               price={price}
               changesPercentage={changesPercentage}
+              isLoading={isLoading}
+              isHeartFilledProp={isHeartFilled}
             />
           </div>
           <div className="flex items-center content-start flex-row gap-2 md:gap-4 lg:gap-6">

@@ -12,6 +12,8 @@ interface LikeButtonProps {
   name: string;
   price: number;
   changesPercentage: number;
+  isLoading: boolean;
+  isHeartFilledProp: boolean;
 }
 
 export function LikeButton({
@@ -19,21 +21,10 @@ export function LikeButton({
   name,
   price,
   changesPercentage,
+  isHeartFilledProp,
 }: LikeButtonProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isHeartFilled, setIsHeartFilled] = useState(false);
+  const [isHeartFilled, setIsHeartFilled] = useState(isHeartFilledProp);
   const queryClient = useQueryClient();
-
-  useEffect(() => {
-    const checkIfLiked = async () => {
-      setIsLoading(true);
-      const isLiked = await checkLikedStock(symbol);
-      setIsHeartFilled(isLiked ? true : false);
-      setIsLoading(false);
-    };
-
-    checkIfLiked();
-  }, [symbol]);
 
   const handleHeartClick = async (event: React.MouseEvent) => {
     event.preventDefault();
