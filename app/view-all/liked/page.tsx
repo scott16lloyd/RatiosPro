@@ -45,8 +45,6 @@ export default function LikedPage() {
                 name={stock.stock_name}
                 price={stock.stock_price}
                 changesPercentage={stock.stock_change_percentage}
-                isHeartFilled={isHeartFilled}
-                setIsHeartFilled={setIsHeartFilled}
               />
             ))}
           </div>
