@@ -52,17 +52,11 @@ export default function DetailsPage({
       setIsLoading(true);
       const isLiked = await checkLikedStock(symbol);
       setIsHeartFilled(isLiked ? true : false);
-
-      console.log('isHeartFilled:', isHeartFilled);
       setIsLoading(false);
     };
 
     checkIfLiked();
   }, [symbol]);
-
-  useEffect(() => {
-    console.log('isHeartFilled:', isHeartFilled);
-  }, [isHeartFilled]);
 
   if (ratios.isLoading) {
     // Data is still loading

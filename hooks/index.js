@@ -301,7 +301,6 @@ const fetchCompantProfile = async ({ queryKey }) => {
     `https://financialmodelingprep.com/api/v3/profile/${ticker}?apikey=${process.env.NEXT_PUBLIC_API_KEY}`
   );
   const data = await response.json();
-  console.log(data);
   // Extract specific values
   if (Array.isArray(data) && data.length > 0) {
     const { symbol, price, companyName, changes } = data[0];

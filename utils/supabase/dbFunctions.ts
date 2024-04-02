@@ -134,8 +134,6 @@ export async function checkLikedStock(stockName: string) {
     .eq('user_id', user.id)
     .eq('stock_symbol', stockName);
 
-  console.log(data, error);
-
   if (error) {
     console.error(error);
   }
@@ -157,8 +155,6 @@ export async function getUsersLikedStocks() {
     .from('liked_stocks')
     .select('*')
     .eq('user_id', user.id);
-
-  console.log(data, error);
 
   if (error) {
     console.error(error);

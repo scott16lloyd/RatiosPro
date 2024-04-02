@@ -1,10 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
-import {
-  addLikedStock,
-  checkLikedStock,
-  removeLikedStock,
-} from '@/utils/supabase/dbFunctions';
+import { addLikedStock, removeLikedStock } from '@/utils/supabase/dbFunctions';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface LikeButtonProps {
@@ -21,6 +17,7 @@ export function LikeButton({
   name,
   price,
   changesPercentage,
+  isLoading,
   isHeartFilledProp,
 }: LikeButtonProps) {
   const [isHeartFilled, setIsHeartFilled] = useState(isHeartFilledProp);
@@ -30,7 +27,9 @@ export function LikeButton({
     event.preventDefault();
     event.stopPropagation();
 
-    // Update the state and local storage immediately
+    // Update local storage
+    localStorage.setItem(`liked-${symbol}`, JSON.stringify(!isHeartFilled));
+    // Update component state
     setIsHeartFilled(!isHeartFilled);
 
     try {
@@ -47,7 +46,9 @@ export function LikeButton({
     }
   };
 
-  return (
+  return isLoading ? (
+    <></>
+  ) : (
     <>
       {isHeartFilled ? (
         <FaHeart
