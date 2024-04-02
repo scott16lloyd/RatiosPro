@@ -1,7 +1,7 @@
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Card, CardContent } from './card';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
+import { LikeButton } from '@/components/like-button';
 
 interface HorizontalBentoBoxProps {
   symbol: string;

@@ -3,10 +3,13 @@
 import { Button } from '@/components/ui/button';
 import { PriceHistory } from '@/components/ui/price-history';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
-import { fetchRatios } from '@/hooks/index';
+import { fetchRatios, fetchCompantProfile } from '@/hooks/index';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import ResultGridLayout from '@/components/layouts/result-grid-layout';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { LikeButton } from '@/components/like-button';
+import { useEffect, useState } from 'react';
+import { checkLikedStock } from '@/utils/supabase/dbFunctions';
 
 export default function DetailsPage({
   params,
@@ -34,6 +37,27 @@ export default function DetailsPage({
 
   const ratios: QueryResult = useQuery(queryRatio);
 
+  // Queries company profile
+  const queryProfile: UseQueryOptions<any, Error> = {
+    queryKey: ['fetchProfile', symbol],
+    queryFn: fetchCompantProfile,
+  };
+
+  const profile: QueryResult = useQuery(queryProfile);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isHeartFilled, setIsHeartFilled] = useState(false);
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      setIsLoading(true);
+      const isLiked = await checkLikedStock(symbol);
+      setIsHeartFilled(isLiked ? true : false);
+      setIsLoading(false);
+    };
+
+    checkIfLiked();
+  }, [symbol]);
+
   if (ratios.isLoading) {
     // Data is still loading
     console.log('Loading data...');
@@ -42,7 +66,9 @@ export default function DetailsPage({
     console.error('Error fetching data:', ratios.error);
   }
 
-  return (
+  return isLoading ? (
+    <></>
+  ) : (
     <>
       <div className="w-full h-screen flex flex-col justify-start">
         <div className="w-full flex justify-start p-4">
@@ -54,9 +80,19 @@ export default function DetailsPage({
           <h1 className="text-lg md:text-xl lg:text-2xl font-semibold truncate text-wrap text-center">
             {title}
           </h1>
-          <h1 className="text-lg md:text-xl lg:text-2xl font-light text-zinc-600">
-            ({symbol})
-          </h1>
+          <div className="flex flex-row items-center gap-2 md:gap-4">
+            <h1 className="text-lg md:text-xl lg:text-2xl font-light text-zinc-600">
+              ({symbol})
+            </h1>
+            <LikeButton
+              symbol={symbol}
+              name={profile.data ? profile.data.name : ''}
+              price={profile.data ? profile.data.price : 0}
+              changesPercentage={profile.data ? profile.data.changes : 0}
+              isLoading={isLoading}
+              isHeartFilledProp={isHeartFilled}
+            />
+          </div>
         </div>
         {ratios.data && ratios.data.length > 0 ? (
           <>

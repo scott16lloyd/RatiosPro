@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/carousel';
 import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
 import { fetchBiggestGainers, fetchMostPopular } from '@/hooks/index';
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 interface StockData {
   symbol: string;

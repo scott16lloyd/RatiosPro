@@ -7,6 +7,7 @@ import { HorizontalBentoBox } from '../ui/horizontal-bento-box';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMostPopularBySector } from '@/hooks';
 import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
+import { findIndex } from 'lodash';
 
 export function UpDownGrid({ title = 'No title' }: { title: string }) {
   const [activeButton, setActiveButton] = useState('Technology');
@@ -61,7 +62,7 @@ export function UpDownGrid({ title = 'No title' }: { title: string }) {
         <div className="grid grid-flow-row gap-4 sm:gap-4 md:gap-5 xl:gap-7 pt-2 md:px-10 lg:px-14 xl:px-18 2xl:px-28 snap-mandatory scrollbar-hide items-center w-full">
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
-                <div className="p-1 w-full sm:h-24 md:h-36 lg:h-44">
+                <div className="p-1 w-full sm:h-24 md:h-36 lg:h-44" key={index}>
                   <BentoSkeleton key={index} />
                 </div>
               ))

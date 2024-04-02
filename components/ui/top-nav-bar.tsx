@@ -57,9 +57,19 @@ export function TopNavBar() {
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </PopoverTrigger>
-          <PopoverContent>
-            <div className="flex flex-col w-max h-max">
-              <span>{user?.email ? user?.email : 'Not logged in'}</span>
+          <PopoverContent avoidCollisions={true} collisionPadding={10}>
+            <div className="flex flex-col w-max h-max justify-evenly">
+              <div className="w-full h-full flex flex-col gap-1 justify-between">
+                <span className="text-md hover:cursor-pointer hover:bg-zinc-700 hover:rounded-[5px] p-1">
+                  {user?.email ? user?.email : 'Not logged in'}
+                </span>
+                <Link
+                  href={'/view-all/liked'}
+                  className="text-md hover:cursor-pointer hover:bg-zinc-700 hover:rounded-[5px] p-1"
+                >
+                  <span>Liked stocks</span>
+                </Link>
+              </div>
               <Separator className="w-full h-0.5 my-2" />
               <Button variant="link" onClick={() => signout()}>
                 Sign out
