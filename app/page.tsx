@@ -1,20 +1,14 @@
 'use client';
-
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import PaymentForm from '@/components/ui/PaymentsForm';
-
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
-
+import { getuser } from '@/utils/supabase/dbFunctions';
 export default function LandingPage() {
+  const redirectToCheckout = async () => {
+    const { user } = await getuser();
+    window.location.href = `https://buy.stripe.com/test_9AQ3gagMB7G41dC7ss?userId=${user.id}`;
+  };
   return (
     <>
       <h1>Landing Page</h1>
-      <Elements stripe={stripePromise}>
-        <PaymentForm />
-      </Elements>
+      <button onClick={redirectToCheckout}>check out</button>
     </>
   );
 }

@@ -3,6 +3,8 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseClient';
+import { Subscript } from 'lucide-react';
+import { sub } from 'date-fns';
 
 export async function login(formData: FormData) {
   // Supabase client instance
@@ -161,4 +163,36 @@ export async function getUsersLikedStocks() {
   }
 
   return data || [];
+}
+
+export async function updateUserSubscription() {
+  console.log('updateUserSubscription');
+  const supabase = createClient();
+  const { user } = await getuser();
+  console.log(user);
+
+  if (!user) {
+    return;
+  }
+
+  const timestampz = new Date().toISOString();
+  const start_date = new Date();
+  let end_date = new Date(start_date);
+  end_date.setMonth(end_date.getMonth() + 1);
+  const start_date_str = start_date.toLocaleDateString();
+  const end_date_str = end_date.toLocaleDateString();
+
+  const data = {
+    user_id: user.id,
+    subscription_status: true,
+    created_at: timestampz,
+    subscription_start: start_date_str,
+    subscription_end: end_date_str,
+    trial: false,
+  };
+
+  const { error } = await supabase.from('subscriptions').insert([data]);
+
+  if (error) console.error('Error inserting data:', error);
+  else console.log('Data inserted successfully!');
 }
