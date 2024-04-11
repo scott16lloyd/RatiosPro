@@ -6,6 +6,7 @@ import { LeftToRightGrid } from '@/components/layouts/left-to-right-grid';
 import { UpDownGrid } from '@/components/layouts/up-down-grid';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseClient';
+import CheckoutButton from '@/components/ui/checkoutButton';
 
 export default async function Home() {
   const supabase = createClient();
@@ -20,6 +21,7 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col items-center md:gap-4 overflow-x-hidden">
       <TopNavBar />
       <SearchBar />
+      <CheckoutButton />
       <LeftToRightGrid title="Biggest Gainers" fetchType="Biggest Gainers" />
       <LeftToRightGrid title="Trending" fetchType="Trending" />
       <UpDownGrid title="Discover" />

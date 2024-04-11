@@ -1,9 +1,15 @@
 'use client';
+
+import axios from 'axios';
 import { getuser } from '@/utils/supabase/dbFunctions';
+
 export default function LandingPage() {
-  const redirectToCheckout = async () => {
-    const { user } = await getuser();
-    window.location.href = `https://buy.stripe.com/test_9AQ3gagMB7G41dC7ss?userId=${user.id}`;
+  const redirectToCheckout = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    const { data } = await axios.post('/api/payment', {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    window.location.assign(data);
   };
   return (
     <>

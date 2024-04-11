@@ -3,8 +3,6 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseClient';
-import { Subscript } from 'lucide-react';
-import { sub } from 'date-fns';
 
 export async function login(formData: FormData) {
   // Supabase client instance
@@ -64,6 +62,7 @@ export async function getuser() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.getUser();
+  console.log(data);
 
   if (error) {
     console.error(error);
@@ -165,16 +164,11 @@ export async function getUsersLikedStocks() {
   return data || [];
 }
 
-export async function updateUserSubscription() {
+export async function updateUserSubscription(user: any) {
   console.log('updateUserSubscription');
   const supabase = createClient();
-  const { user } = await getuser();
   console.log(user);
-
-  if (!user) {
-    return;
-  }
-
+  console.log(user.user.id);
   const timestampz = new Date().toISOString();
   const start_date = new Date();
   let end_date = new Date(start_date);
@@ -185,14 +179,22 @@ export async function updateUserSubscription() {
   const data = {
     user_id: user.id,
     subscription_status: true,
-    created_at: timestampz,
-    subscription_start: start_date_str,
-    subscription_end: end_date_str,
+    created_at: '2024-04-09 19:25:28+00',
+    subscription_start: '2002-04-12',
+    subscription_end: '2003-02-12',
     trial: false,
+    trial_end_date: '2003-04-12',
   };
 
-  const { error } = await supabase.from('subscriptions').insert([data]);
+  const { error } = await supabase
+    .from('subscriptions')
+    .upsert([data], { onConflict: 'user_id' });
 
-  if (error) console.error('Error inserting data:', error);
-  else console.log('Data inserted successfully!');
+  if (error) {
+    console.error('Error inserting data:', error);
+    return { error };
+  } else {
+    console.log('Data inserted successfully!');
+    return {};
+  }
 }
