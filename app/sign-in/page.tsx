@@ -11,9 +11,10 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { CardStack } from '@/components/ui/card-stack';
 import { cn } from '@/utils/cn';
-import { login, signup } from '@/utils/supabase/dbFunctions';
+// import { login, signup } from '@/utils/supabase/dbFunctions';
 import { useState } from 'react';
 import { ReloadIcon } from '@radix-ui/react-icons';
+import { login, signup } from '@/app/sign-in/actions';
 
 const Highlight = ({
   children,
@@ -55,17 +56,17 @@ export default function SignInPage() {
     formData.append('email', email);
     formData.append('password', password);
 
-    let errorMessage;
+    // let errorMessage;
 
-    if (isSignUp) {
-      errorMessage = await signup(formData);
-    } else if (!isSignUp) {
-      errorMessage = await login(formData);
-    }
+    // if (isSignUp) {
+    //   errorMessage = await signup(formData);
+    // } else if (!isSignUp) {
+    //   errorMessage = await login(formData);
+    // }
 
-    if (errorMessage) {
-      setError(errorMessage);
-    }
+    // if (errorMessage) {
+    //   setError(errorMessage);
+    // }
 
     setIsLoading(false);
   };
@@ -169,7 +170,7 @@ export default function SignInPage() {
               <Separator className="w-1/2" />
             </div>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form>
             <div className="flex flex-col flex-grow-2 gap-4 w-full">
               <div className="grid w-full items-center gap-1.5">
                 <Label
@@ -218,7 +219,7 @@ export default function SignInPage() {
                   </span>
                 </Button>
               ) : (
-                <Button className="p-5" type="submit">
+                <Button className="p-5" formAction={!isSignUp ? login : signup}>
                   <span className="text-white md:text-lg lg:text-xl">
                     {!isSignUp ? 'Sign In' : 'Sign Up'}
                   </span>

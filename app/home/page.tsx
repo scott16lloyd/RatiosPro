@@ -5,7 +5,7 @@ import { SearchBar } from '@/components/ui/search-bar';
 import { LeftToRightGrid } from '@/components/layouts/left-to-right-grid';
 import { UpDownGrid } from '@/components/layouts/up-down-grid';
 import { redirect } from 'next/navigation';
-import { createClient } from '@/utils/supabase/supabaseClient';
+import { createClient } from '@/utils/supabase/supabaseServerClient';
 import CheckoutButton from '@/components/ui/checkoutButton';
 
 export default async function Home() {

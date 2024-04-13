@@ -2,7 +2,9 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient } from '@/utils/supabase/supabaseClient';
+import { createClient } from '@/utils/supabase/supabaseServerClient';
+import stripe from 'stripe';
+import { sub } from 'date-fns';
 
 export async function login(formData: FormData) {
   // Supabase client instance
@@ -164,30 +166,40 @@ export async function getUsersLikedStocks() {
   return data || [];
 }
 
-export async function updateUserSubscription(user: any) {
+export async function updateUserSubscription(
+  userID: string | null,
+  subscriptionId: string | stripe.Subscription | null
+) {
   console.log('updateUserSubscription');
   const supabase = createClient();
-  console.log(user);
-  console.log(user.user.id);
-  const timestampz = new Date().toISOString();
-  const start_date = new Date();
-  let end_date = new Date(start_date);
-  end_date.setMonth(end_date.getMonth() + 1);
-  const start_date_str = start_date.toLocaleDateString();
-  const end_date_str = end_date.toLocaleDateString();
+
+  const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
+
+  const subscription = await stripeInstance.subscriptions.retrieve(
+    subscriptionId as string
+  );
 
   const data = {
-    user_id: user.id,
-    subscription_status: true,
-    created_at: '2024-04-09 19:25:28+00',
-    subscription_start: '2002-04-12',
-    subscription_end: '2003-02-12',
-    trial: false,
-    trial_end_date: '2003-04-12',
+    user_id: userID,
+    subscription_id: subscription.id,
+    status: subscription.status,
+    subscription_period_start: new Date(
+      subscription.current_period_start * 1000
+    ).toISOString(),
+    subscription_period_end: new Date(
+      subscription.current_period_end * 1000
+    ).toISOString(),
+    subscription_start: new Date(subscription.start_date * 1000).toISOString(),
+    subscription_end: subscription.ended_at
+      ? new Date(subscription.ended_at * 1000).toISOString()
+      : null,
+    stripe_customer_id: subscription.customer,
   };
 
+  console.log(data);
+
   const { error } = await supabase
-    .from('subscriptions')
+    .from('subscribers')
     .upsert([data], { onConflict: 'user_id' });
 
   if (error) {
