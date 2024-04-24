@@ -12,8 +12,6 @@ export default async function SubscribePage() {
   if (error || !data?.user) {
     console.log(error);
     redirect('/sign-in');
-  } else {
-    const isSubscribed = await getSubscription(data.user.id);
   }
   return (
     <>
