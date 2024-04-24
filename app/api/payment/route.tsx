@@ -13,6 +13,7 @@ export async function POST() {
   }
   try {
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
+    console.log('STRIPE KEY: ' + process.env.STRIPE_SECRET_KEY!);
     // Calculate the Unix timestamp for 30 days from now
     const futureDate = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60;
     const session = await stripeInstance.checkout.sessions.create({
