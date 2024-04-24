@@ -11,10 +11,10 @@ export async function POST() {
     console.log(error);
     redirect('/sign-in');
   }
-  console.log('USER: ' + data);
-  console.log(data.user);
   try {
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
+    // Calculate the Unix timestamp for 30 days from now
+    const futureDate = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60;
     const session = await stripeInstance.checkout.sessions.create({
       line_items: [
         {
@@ -24,8 +24,9 @@ export async function POST() {
       ],
       mode: 'subscription',
       success_url: 'http://localhost:3000/success',
-      cancel_url: 'http://localhost:3000/error',
+      cancel_url: 'http://localhost:3000/home',
       client_reference_id: data.user.id,
+      subscription_data: { billing_cycle_anchor: futureDate },
     });
 
     return NextResponse.json(session.url);

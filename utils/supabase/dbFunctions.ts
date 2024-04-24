@@ -3,8 +3,8 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseServerClient';
+import { createLocalClient } from '@/utils/supabase/supabaseClient';
 import stripe from 'stripe';
-import { sub } from 'date-fns';
 
 export async function login(formData: FormData) {
   // Supabase client instance
@@ -50,9 +50,9 @@ export async function signup(formData: FormData) {
 
 export async function signout() {
   // Supabase client instance
-  const supabase = createClient();
+  const supabase = createLocalClient();
 
-  const { error } = await supabase.auth.signOut({ scope: 'local' });
+  const { error } = await supabase.auth.signOut();
   if (error) {
     console.log(error);
   }
@@ -64,7 +64,6 @@ export async function getuser() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.getUser();
-  console.log(data);
 
   if (error) {
     console.error(error);
@@ -171,6 +170,7 @@ export async function updateUserSubscription(
   subscriptionId: string | stripe.Subscription | null
 ) {
   console.log('updateUserSubscription');
+
   const supabase = createClient();
 
   const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
@@ -178,6 +178,8 @@ export async function updateUserSubscription(
   const subscription = await stripeInstance.subscriptions.retrieve(
     subscriptionId as string
   );
+
+  console.log(userID);
 
   const data = {
     user_id: userID,
@@ -208,5 +210,42 @@ export async function updateUserSubscription(
   } else {
     console.log('Data inserted successfully!');
     return {};
+  }
+}
+
+export async function removeUserSubscription(stripeCustomerID: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('subscribers')
+    .update({ status: 'inactive' })
+    .eq('stripe_customer_id', stripeCustomerID);
+
+  if (error) {
+    console.error('Error removing user subscription', error);
+    return { error };
+  } else {
+    console.log('User subscription updated successfully!');
+    return {};
+  }
+}
+
+export async function getSubscription(userID: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('subscribers')
+    .select('*')
+    .eq('user_id', userID);
+
+  if (error) {
+    console.error('Error getting subscription', error);
+    return { error };
+  }
+
+  if (data[0].status === 'active') {
+    return true;
+  } else {
+    return false;
   }
 }

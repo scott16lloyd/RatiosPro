@@ -1,5 +1,3 @@
-'use server';
-
 import { TopNavBar } from '@/components/ui/top-nav-bar';
 import { SearchBar } from '@/components/ui/search-bar';
 import { LeftToRightGrid } from '@/components/layouts/left-to-right-grid';
@@ -7,11 +5,18 @@ import { UpDownGrid } from '@/components/layouts/up-down-grid';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseServerClient';
 import CheckoutButton from '@/components/ui/checkoutButton';
+import { getSubscription } from '@/utils/supabase/dbFunctions';
 
 export default async function Home() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.getUser();
+  const isSubscribed = await getSubscription(data.user!.id);
+
+  if (!isSubscribed) {
+    redirect('/subscribe');
+  }
+
   if (error || !data?.user) {
     console.log(error);
     redirect('/sign-in');

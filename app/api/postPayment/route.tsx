@@ -1,15 +1,15 @@
 import stripe from 'stripe';
 import { NextResponse, NextRequest } from 'next/server';
-import { updateUserSubscription } from '@/utils/supabase/dbFunctions';
-import { sub } from 'date-fns';
+import {
+  removeUserSubscription,
+  updateUserSubscription,
+} from '@/utils/supabase/dbFunctions';
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
-    const webhookSecret =
-      'whsec_de6e045c06143722f008c29ec0517c7928394b3cbcee4cfcedd3c1326744f324';
-
-    console.log('Received webhook event');
+    // Local development secret
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
     const payload = await req.text();
     const sig = req.headers.get('stripe-signature')!;
@@ -32,11 +32,33 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     event = stripeInstance.webhooks.constructEvent(payload, sig, webhookSecret);
 
-    console.log(event);
-
     let userID: string | undefined;
     let subscriptionID: string | stripe.Subscription | undefined;
     let customerMetadata: stripe.Metadata | undefined;
+
+    async function handleSubscriptionUpdate(
+      stripeInstance: any,
+      subscriptionID: string | stripe.Subscription
+    ) {
+      const subscription = event!.data.object as stripe.Subscription;
+      subscriptionID = subscription.id;
+      const stripeCustomer = await stripeInstance.customers.retrieve(
+        subscription.customer as string
+      );
+
+      if (!stripeCustomer || stripeCustomer.deleted) {
+        console.error('Customer retrieval failed');
+      } else if ('metadata' in stripeCustomer && stripeCustomer.metadata) {
+        userID = stripeCustomer.metadata.userID;
+      }
+      console.log(userID);
+      console.log(subscriptionID);
+      if (userID && subscriptionID) {
+        await updateUserSubscription(userID, subscriptionID);
+      } else {
+        console.error('No user ID or subscription ID found');
+      }
+    }
 
     switch (event.type) {
       case 'checkout.session.completed':
@@ -46,48 +68,39 @@ export async function POST(req: NextRequest, res: NextResponse) {
           session.customer as string,
           { metadata: { userID: session.client_reference_id } }
         );
-        console.log(customer);
-        console.log(session);
-        console.log(session.subscription);
         subscriptionID = session.subscription!;
         customerMetadata = customer.metadata;
 
         break;
       case 'customer.subscription.created':
         console.log('New subscription!');
-        const subscription = event.data.object as stripe.Subscription;
-        subscriptionID = subscription.id;
-        console.log(subscription);
-        const stripeCustomer = await stripeInstance.customers.retrieve(
-          subscription.customer as string
+        const customerSubscriptionCreated = event.data.object;
+        await handleSubscriptionUpdate(
+          stripeInstance,
+          customerSubscriptionCreated.id
         );
-
-        console.log(stripeCustomer);
-
-        if ('metadata' in stripeCustomer && stripeCustomer.metadata) {
-          userID = stripeCustomer.metadata.userID;
-        }
-        console.log(userID);
-        console.log(subscriptionID);
-        if (userID && subscriptionID) {
-          await updateUserSubscription(userID, subscriptionID);
-        } else {
-          console.error('No user ID or subscription ID found');
-        }
-        // Fetch the user from your database using the customerId
         break;
-      case 'invoice.paid':
+      case 'customer.subscription.deleted':
+        const customerSubscriptionDeleted = event.data.object;
+        await removeUserSubscription(
+          customerSubscriptionDeleted.customer as string
+        );
+      case 'customer.subscription.paused':
+        const customerSubscriptionPaused = event.data.object;
+        await removeUserSubscription(
+          customerSubscriptionPaused.customer as string
+        );
+        break;
+      case 'customer.subscription.resumed':
         console.log('Subscription renewed!');
-        if (userID && subscriptionID) {
-          await updateUserSubscription(userID, subscriptionID);
-        } else {
-          console.error('No user ID or subscription ID found');
-        }
+        const customerSubscriptionResumed = event.data.object;
+        console.log(customerSubscriptionResumed);
+        await handleSubscriptionUpdate(
+          stripeInstance,
+          customerSubscriptionResumed.id
+        );
+        break;
 
-        break;
-      case 'payment_intent.succeeded':
-        console.log('PaymentIntent was successful!');
-        break;
       default:
         // Handle other cases
         break;
