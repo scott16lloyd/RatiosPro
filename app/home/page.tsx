@@ -4,7 +4,6 @@ import { LeftToRightGrid } from '@/components/layouts/left-to-right-grid';
 import { UpDownGrid } from '@/components/layouts/up-down-grid';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseServerClient';
-import CheckoutButton from '@/components/ui/checkoutButton';
 import { getSubscription } from '@/utils/supabase/dbFunctions';
 
 export default async function Home() {
@@ -16,10 +15,7 @@ export default async function Home() {
     console.log(error);
     redirect('/sign-in');
   } else {
-    console.log(data.user);
     const isSubscribed = await getSubscription(data.user.id);
-
-    console.log(isSubscribed);
 
     if (!isSubscribed) {
       redirect('/subscribe');
@@ -30,7 +26,6 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col items-center md:gap-4 overflow-x-hidden">
       <TopNavBar />
       <SearchBar />
-      <CheckoutButton />
       <LeftToRightGrid title="Biggest Gainers" fetchType="Biggest Gainers" />
       <LeftToRightGrid title="Trending" fetchType="Trending" />
       <UpDownGrid title="Discover" />
