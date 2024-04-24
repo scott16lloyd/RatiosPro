@@ -11,19 +11,19 @@ export default async function Home() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.getUser();
-  const isSubscribed = await getSubscription(data.user!.id);
-
-  console.log(isSubscribed);
-
-  if (!isSubscribed) {
-    redirect('/subscribe');
-  }
 
   if (error || !data?.user) {
     console.log(error);
     redirect('/sign-in');
   } else {
     console.log(data.user);
+    const isSubscribed = await getSubscription(data.user.id);
+
+    console.log(isSubscribed);
+
+    if (!isSubscribed) {
+      redirect('/subscribe');
+    }
   }
 
   return (
