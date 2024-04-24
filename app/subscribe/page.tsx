@@ -14,10 +14,6 @@ export default async function SubscribePage() {
     redirect('/sign-in');
   } else {
     const isSubscribed = await getSubscription(data.user.id);
-
-    if (!isSubscribed) {
-      redirect('/subscribe');
-    }
   }
   return (
     <>
