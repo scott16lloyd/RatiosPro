@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ReactQueryClientProvider } from '@/components/ReactQueryClientProvider';
-import { createClient } from '@/utils/supabase/supabaseServerClient';
+import { createLocalClient } from '@/utils/supabase/supabaseClient';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: 'A simple UI for calculating financial ratios.',
 };
 
-const supabase = createClient();
+const supabase = createLocalClient();
 
 export default async function RootLayout({
   children,

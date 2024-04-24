@@ -13,6 +13,8 @@ export default async function Home() {
   const { data, error } = await supabase.auth.getUser();
   const isSubscribed = await getSubscription(data.user!.id);
 
+  console.log(isSubscribed);
+
   if (!isSubscribed) {
     redirect('/subscribe');
   }
@@ -20,6 +22,8 @@ export default async function Home() {
   if (error || !data?.user) {
     console.log(error);
     redirect('/sign-in');
+  } else {
+    console.log(data.user);
   }
 
   return (
