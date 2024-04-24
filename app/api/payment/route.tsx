@@ -23,8 +23,8 @@ export async function POST() {
         },
       ],
       mode: 'subscription',
-      success_url: 'http://localhost:3000/success',
-      cancel_url: 'http://localhost:3000/home',
+      success_url: process.env.SUCCESS_URL || 'http://localhost:3000/success',
+      cancel_url: process.env.CANCEL_URL || 'http://localhost:3000/home',
       client_reference_id: data.user.id,
       subscription_data: { billing_cycle_anchor: futureDate },
     });
