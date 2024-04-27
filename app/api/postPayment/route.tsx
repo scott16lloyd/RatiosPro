@@ -32,7 +32,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       });
     }
 
-    event = stripeInstance.webhooks.constructEvent(payload, sig, webhookSecret);
+    // event = stripeInstance.webhooks.constructEvent(payload, sig, webhookSecret);
 
     let userID: string | undefined;
     let subscriptionID: string | stripe.Subscription | undefined;
