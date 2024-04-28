@@ -8,7 +8,7 @@ export async function POST() {
 
   const { data, error } = await supabase.auth.getUser();
   if (error || !data?.user) {
-    return NextResponse.redirect('https://ratios-pro.vercel.app/sign-in');
+    redirect('https://ratios-pro.vercel.app/sign-in');
   }
   try {
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
@@ -34,6 +34,6 @@ export async function POST() {
   } catch (error) {
     NextResponse.json({ message: 'Internal Server Error', error });
     console.error(error);
-    return NextResponse.redirect('https://ratios-pro.vercel.app/error');
+    redirect('https://ratios-pro.vercel.app/error');
   }
 }
