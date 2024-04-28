@@ -1,3 +1,5 @@
+'use server';
+
 import stripe from 'stripe';
 import { NextResponse } from 'next/server';
 import { redirect } from 'next/navigation';
@@ -8,7 +10,7 @@ export async function POST() {
 
   const { data, error } = await supabase.auth.getUser();
   if (error || !data?.user) {
-    redirect('https://ratios-pro.vercel.app/sign-in');
+    return NextResponse.redirect('https://ratios-pro.vercel.app/sign-in');
   }
   try {
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
@@ -34,6 +36,6 @@ export async function POST() {
   } catch (error) {
     NextResponse.json({ message: 'Internal Server Error', error });
     console.error(error);
-    redirect('https://ratios-pro.vercel.app/error');
+    return NextResponse.redirect('https://ratios-pro.vercel.app/error');
   }
 }
