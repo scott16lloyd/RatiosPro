@@ -8,8 +8,7 @@ export async function POST() {
 
   const { data, error } = await supabase.auth.getUser();
   if (error || !data?.user) {
-    console.log(error);
-    redirect('/sign-in');
+    return NextResponse.redirect('/sign-in');
   }
   try {
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
@@ -29,9 +28,12 @@ export async function POST() {
       subscription_data: { billing_cycle_anchor: futureDate },
     });
 
+    console.log(session.client_reference_id);
+
     return NextResponse.json(session.url);
   } catch (error) {
+    NextResponse.json({ message: 'Internal Server Error', error });
     console.error(error);
-    return NextResponse.json({ message: 'Internal Server Error', error });
+    return NextResponse.redirect('localhost:3000/error');
   }
 }

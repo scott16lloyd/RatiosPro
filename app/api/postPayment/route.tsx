@@ -12,9 +12,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
     const payload = await req.text();
-    console.log('Payload:', payload);
     const sig = req.headers.get('stripe-signature')!;
-    console.log('Signature:', sig);
 
     let event: stripe.Event | null = null;
 
@@ -32,8 +30,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       });
     }
 
-    // event = stripeInstance.webhooks.constructEvent(payload, sig, webhookSecret);
-
     let userID: string | undefined;
     let subscriptionID: string | stripe.Subscription | undefined;
     let customerMetadata: stripe.Metadata | undefined;
@@ -47,6 +43,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
       const stripeCustomer = await stripeInstance.customers.retrieve(
         subscription.customer as string
       );
+
+      console.log(stripeCustomer);
 
       if (!stripeCustomer || stripeCustomer.deleted) {
         console.error('Customer retrieval failed');
