@@ -63,7 +63,7 @@
     "autoprefixer": "^10.0.1",
     "drizzle-kit": "^0.20.14",
     "eslint": "^8",
-    "eslint-config-next": "14.0.4",
+    "eslint-config-next": "^14.2.3",
     "postcss": "^8",
     "react-heart": "^1.0.6",
     "supabase": "^1.151.1",
