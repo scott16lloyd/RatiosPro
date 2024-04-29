@@ -1,9 +1,5 @@
 'use client';
 
-export default function LandingPage() {
-  return (
-    <>
-      <h1>Landing Page</h1>
-    </>
-  );
+export default async function LandingPage() {
+  return <h1>Landing Page</h1>;
 }
