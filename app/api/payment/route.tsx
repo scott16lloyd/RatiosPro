@@ -2,7 +2,6 @@
 
 import stripe from 'stripe';
 import { NextResponse } from 'next/server';
-import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseServerClient';
 
 export async function POST() {
@@ -29,8 +28,6 @@ export async function POST() {
       client_reference_id: data.user.id,
       subscription_data: { billing_cycle_anchor: futureDate },
     });
-
-    console.log(session.client_reference_id);
 
     return NextResponse.json(session.url);
   } catch (error) {
