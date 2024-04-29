@@ -43,9 +43,8 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Handle form submission
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
     setIsLoading(true);
 
     // Clear the error message when the form is submitted
@@ -55,19 +54,41 @@ export default function SignInPage() {
     formData.append('email', email);
     formData.append('password', password);
 
-    // let errorMessage;
+    try {
+      await login(formData);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        throw error;
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    // if (isSignUp) {
-    //   errorMessage = await signup(formData);
-    // } else if (!isSignUp) {
-    //   errorMessage = await login(formData);
-    // }
+  const handleSignup = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-    // if (errorMessage) {
-    //   setError(errorMessage);
-    // }
+    // Clear the error message when the form is submitted
+    setError(null);
 
-    setIsLoading(false);
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+
+    try {
+      await signup(formData);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        throw error;
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const CARDS = [
@@ -218,7 +239,10 @@ export default function SignInPage() {
                   </span>
                 </Button>
               ) : (
-                <Button className="p-5" formAction={!isSignUp ? login : signup}>
+                <Button
+                  className="p-5"
+                  onClick={!isSignUp ? handleLogin : handleSignup}
+                >
                   <span className="text-white md:text-lg lg:text-xl">
                     {!isSignUp ? 'Sign In' : 'Sign Up'}
                   </span>
