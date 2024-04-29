@@ -18,7 +18,7 @@ export default function LikedPage() {
 
   if (error) return 'An error has occurred: ' + error.message;
   return (
-    <div className="flex h-screen flex-col items-center justify-center md:gap-4 overflow-x-hidden pb-6">
+    <div className="flex min-h-screen flex-col items-center md:gap-4 overflow-x-hidden pb-6">
       <TopNavBar />
       <div className="flex items-center flex-col h-full w-full px-4 md:px-8">
         <div className="w-full text-left pb-4">
