@@ -179,8 +179,6 @@ export async function updateUserSubscription(
     subscriptionId as string
   );
 
-  console.log(userID);
-
   const data = {
     user_id: userID,
     subscription_id: subscription.id,
@@ -197,8 +195,6 @@ export async function updateUserSubscription(
       : null,
     stripe_customer_id: subscription.customer,
   };
-
-  console.log(data);
 
   const { error } = await supabase
     .from('subscribers')

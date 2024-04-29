@@ -1,16 +1,12 @@
 'use client';
 
-import { SearchResultBentoBox } from '@/components/ui/search-result-bento-box';
 import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
 import { SmallBentoBox } from '@/components/ui/small-bento-box';
 import { TopNavBar } from '@/components/ui/top-nav-bar';
 import { getUsersLikedStocks } from '@/utils/supabase/dbFunctions';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 
 export default function LikedPage() {
-  const [isHeartFilled, setIsHeartFilled] = useState(false);
-
   const fetchLikedStocks = async () => {
     const likedStocks = await getUsersLikedStocks();
     return likedStocks;

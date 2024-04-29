@@ -8,7 +8,7 @@ import {
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
-    // Local development secret
+    // Webhook secret
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
     const payload = await req.text();
@@ -44,15 +44,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
         subscription.customer as string
       );
 
-      console.log(stripeCustomer);
-
       if (!stripeCustomer || stripeCustomer.deleted) {
         console.error('Customer retrieval failed');
       } else if ('metadata' in stripeCustomer && stripeCustomer.metadata) {
         userID = stripeCustomer.metadata.userID;
       }
-      console.log(userID);
-      console.log(subscriptionID);
       if (userID && subscriptionID) {
         await updateUserSubscription(userID, subscriptionID);
       } else {
