@@ -81,6 +81,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         await removeUserSubscription(
           customerSubscriptionDeleted.customer as string
         );
+        break;
       case 'customer.subscription.paused':
         const customerSubscriptionPaused = event.data.object;
         await removeUserSubscription(
