@@ -58,10 +58,11 @@ export default function SignInPage() {
       await login(formData);
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message === 'Error: Invalid login credentials') {
+        console.log(error);
+        if (error.message === 'Invalid login credentials') {
           setError('Invalid login credentials. Please try again.');
         } else {
-          setError('An unexpected error occurred');
+          setError('An error occurred during login. Please try again.');
         }
       } else {
         throw error;
@@ -86,10 +87,17 @@ export default function SignInPage() {
       await signup(formData);
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message === 'Error: Invalid login credentials') {
-          setError('Invalid login credentials. Please try again.');
+        console.log(error);
+        if (error.message === 'Password should be at least 6 characters.') {
+          setError(
+            'Password should be at least 6 characters. Please try again.'
+          );
+        } else if (
+          error.message === 'Unable to validate email address: invalid format'
+        ) {
+          setError('Invalid email address. Please try again.');
         } else {
-          setError('An unexpected error occurred');
+          setError('An error occurred during login. Please try again.');
         }
       } else {
         throw error;
