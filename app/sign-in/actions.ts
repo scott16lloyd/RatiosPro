@@ -18,7 +18,7 @@ export async function login(formData: FormData) {
 
   if (error) {
     console.log(error);
-    throw new Error(error.message || 'An error occurred during login');
+    throw new Error(error.name || 'An error occurred during login');
   }
 
   revalidatePath('/', 'layout');
@@ -43,7 +43,7 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    throw new Error(error.message || 'An error occurred during login');
+    throw new Error(error.stack || 'An error occurred during login');
   }
 
   revalidatePath('/', 'layout');
