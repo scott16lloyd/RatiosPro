@@ -82,7 +82,9 @@ export default function SignInPage() {
       await signup(formData);
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message);
+        if (error.message === 'Invalid login credentials') {
+          setError('Invalid login credentials. Please try again.');
+        }
       } else {
         throw error;
       }

@@ -34,7 +34,10 @@ export async function signup(formData: FormData) {
   };
   const { data: session, error: sessionError } =
     await supabase.auth.getSession();
-  console.log(sessionError);
+
+  if (sessionError) {
+    throw new Error(sessionError.message || 'An error occurred during login');
+  }
 
   const { error } = await supabase.auth.signUp(data);
 
