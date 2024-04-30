@@ -58,7 +58,7 @@ export default function SignInPage() {
       await login(formData);
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message === 'Invalid login credentials') {
+        if (error.message === 'Error: Invalid login credentials') {
           setError('Invalid login credentials. Please try again.');
         } else {
           setError('An unexpected error occurred');
@@ -86,7 +86,7 @@ export default function SignInPage() {
       await signup(formData);
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message === 'Invalid login credentials') {
+        if (error.message === 'Error: Invalid login credentials') {
           setError('Invalid login credentials. Please try again.');
         } else {
           setError('An unexpected error occurred');
