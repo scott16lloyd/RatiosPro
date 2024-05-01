@@ -55,18 +55,19 @@ export default function SignInPage() {
     formData.append('password', password);
 
     try {
-      await login(formData);
-    } catch (error) {
-      if (error instanceof Error) {
+      const { error } = await login(formData);
+      console.log(error);
+      if (error) {
         console.log(error);
-        if (error.message === 'Invalid login credentials') {
+        if (error === 'Invalid login credentials') {
+          // Handle the custom error
           setError('Invalid login credentials. Please try again.');
         } else {
           setError('An error occurred during login. Please try again.');
         }
-      } else {
-        throw error;
       }
+    } catch (error) {
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -84,24 +85,25 @@ export default function SignInPage() {
     formData.append('password', password);
 
     try {
-      await signup(formData);
-    } catch (error) {
-      if (error instanceof Error) {
+      const { error } = await signup(formData);
+      console.log(error);
+      if (error) {
         console.log(error);
-        if (error.message === 'Password should be at least 6 characters.') {
+        if (error === 'Password should be at least 6 characters.') {
+          // Handle the custom error
           setError(
             'Password should be at least 6 characters. Please try again.'
           );
         } else if (
-          error.message === 'Unable to validate email address: invalid format'
+          error === 'Unable to validate email address: invalid format'
         ) {
           setError('Invalid email address. Please try again.');
         } else {
           setError('An error occurred during login. Please try again.');
         }
-      } else {
-        throw error;
       }
+    } catch (error) {
+      console.log(error);
     } finally {
       setIsLoading(false);
     }

@@ -17,12 +17,17 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    console.log(error);
-    throw new Error(error.name || 'An error occurred during login');
+    console.log('error', error);
+
+    if (error) {
+      // Return a plain object with the error message
+      return { error: error.message };
+    }
   }
 
   revalidatePath('/', 'layout');
   redirect('/home');
+  return { error: null };
 }
 
 export async function signup(formData: FormData) {
@@ -43,9 +48,14 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    throw new Error(error.stack || 'An error occurred during login');
-  }
+    console.log('error', error);
 
-  revalidatePath('/', 'layout');
-  redirect('/home');
+    if (error) {
+      // Return a plain object with the error message
+      return { error: error.message };
+    }
+
+    revalidatePath('/', 'layout');
+    redirect('/home');
+  }
 }
