@@ -43,9 +43,8 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Handle form submission
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
     setIsLoading(true);
 
     // Clear the error message when the form is submitted
@@ -55,19 +54,59 @@ export default function SignInPage() {
     formData.append('email', email);
     formData.append('password', password);
 
-    // let errorMessage;
+    try {
+      const { error } = await login(formData);
+      console.log(error);
+      if (error) {
+        console.log(error);
+        if (error === 'Invalid login credentials') {
+          // Handle the custom error
+          setError('Invalid login credentials. Please try again.');
+        } else {
+          setError('An error occurred during login. Please try again.');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    // if (isSignUp) {
-    //   errorMessage = await signup(formData);
-    // } else if (!isSignUp) {
-    //   errorMessage = await login(formData);
-    // }
+  const handleSignup = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-    // if (errorMessage) {
-    //   setError(errorMessage);
-    // }
+    // Clear the error message when the form is submitted
+    setError(null);
 
-    setIsLoading(false);
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+
+    try {
+      const { error } = await signup(formData);
+      console.log(error);
+      if (error) {
+        console.log(error);
+        if (error === 'Password should be at least 6 characters.') {
+          // Handle the custom error
+          setError(
+            'Password should be at least 6 characters. Please try again.'
+          );
+        } else if (
+          error === 'Unable to validate email address: invalid format'
+        ) {
+          setError('Invalid email address. Please try again.');
+        } else {
+          setError('An error occurred during login. Please try again.');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const CARDS = [
@@ -218,7 +257,10 @@ export default function SignInPage() {
                   </span>
                 </Button>
               ) : (
-                <Button className="p-5" formAction={!isSignUp ? login : signup}>
+                <Button
+                  className="p-5"
+                  onClick={!isSignUp ? handleLogin : handleSignup}
+                >
                   <span className="text-white md:text-lg lg:text-xl">
                     {!isSignUp ? 'Sign In' : 'Sign Up'}
                   </span>

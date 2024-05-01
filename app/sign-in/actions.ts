@@ -17,12 +17,17 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    console.log(error);
-    redirect('/error');
+    console.log('error', error);
+
+    if (error) {
+      // Return a plain object with the error message
+      return { error: error.message };
+    }
   }
 
   revalidatePath('/', 'layout');
   redirect('/home');
+  return { error: null };
 }
 
 export async function signup(formData: FormData) {
@@ -33,17 +38,24 @@ export async function signup(formData: FormData) {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   };
-  const { data: session, error: sessionError } =
-    await supabase.auth.getSession();
-  console.log(sessionError);
+  const { error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError) {
+    return { error: sessionError.message };
+  }
 
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    console.log(error);
-    redirect('/error');
+    console.log('error', error);
+
+    if (error) {
+      // Return a plain object with the error message
+      return { error: error.message };
+    }
   }
 
   revalidatePath('/', 'layout');
   redirect('/home');
+  return { error: null };
 }
