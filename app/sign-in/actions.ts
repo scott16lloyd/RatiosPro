@@ -38,11 +38,10 @@ export async function signup(formData: FormData) {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   };
-  const { data: session, error: sessionError } =
-    await supabase.auth.getSession();
+  const { error: sessionError } = await supabase.auth.getSession();
 
   if (sessionError) {
-    throw new Error(sessionError.message || 'An error occurred during login');
+    return { error: sessionError.message };
   }
 
   const { error } = await supabase.auth.signUp(data);
@@ -54,8 +53,9 @@ export async function signup(formData: FormData) {
       // Return a plain object with the error message
       return { error: error.message };
     }
-
-    revalidatePath('/', 'layout');
-    redirect('/home');
   }
+
+  revalidatePath('/', 'layout');
+  redirect('/home');
+  return { error: null };
 }
