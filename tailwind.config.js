@@ -27,6 +27,9 @@ export const theme = {
     },
   },
   extend: {
+    aspectRatio: {
+      '4/3': '4 / 3',
+    },
     gridTemplateColumns: {
       custom: 'repeat(4, minmax(80px, 1fr))',
       customSmall: 'repeat(3, minmax(80px, 1fr))',
