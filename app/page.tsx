@@ -180,7 +180,7 @@ export default function LandingPage() {
         </Button>
       </div>
       <div className="h-min w-full items-center">
-        <TracingBeam className="px-6">
+        <TracingBeam className="px-6 h-min">
           <div className="max-w-2xl mx-auto antialiased pt-4 px-2 relative">
             {dummyContent.map((item, index) => (
               <div key={`content-${index}`} className="mb-10">
