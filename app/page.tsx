@@ -6,86 +6,83 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { TracingBeam } from '@/components/ui/tracing-beam';
 import { twMerge } from 'tailwind-merge';
+import { Input } from '@/components/ui/input';
+import ratioUiScreenshot from '/public/ratio-ui-screenshot.png';
+import priceHistoryScreenshot from '/public/price-history-ui.png';
 
 export default function LandingPage() {
   const dummyContent = [
     {
-      title: 'Lorem Ipsum Dolor Sit Amet',
+      title: 'Ratios for all pubically traded companies',
       description: (
         <>
           <p>
-            Sit duis est minim proident non nisi velit non consectetur. Esse
-            adipisicing laboris consectetur enim ipsum reprehenderit eu deserunt
-            Lorem ut aliqua anim do. Duis cupidatat qui irure cupidatat
-            incididunt incididunt enim magna id est qui sunt fugiat. Laboris do
-            duis pariatur fugiat Lorem aute sit ullamco. Qui deserunt non
-            reprehenderit dolore nisi velit exercitation Lorem qui do enim
-            culpa. Aliqua eiusmod in occaecat reprehenderit laborum nostrud
-            fugiat voluptate do Lorem culpa officia sint labore. Tempor
-            consectetur excepteur ut fugiat veniam commodo et labore dolore
-            commodo pariatur.
-          </p>
-          <p>
-            Dolor minim irure ut Lorem proident. Ipsum do pariatur est ad ad
-            veniam in commodo id reprehenderit adipisicing. Proident duis
-            exercitation ad quis ex cupidatat cupidatat occaecat adipisicing.
-          </p>
-          <p>
-            Tempor quis dolor veniam quis dolor. Sit reprehenderit eiusmod
-            reprehenderit deserunt amet laborum consequat adipisicing officia
-            qui irure id sint adipisicing. Adipisicing fugiat aliqua nulla
-            nostrud. Amet culpa officia aliquip deserunt veniam deserunt officia
-            adipisicing aliquip proident officia sunt.
+            Designed for both novice investors and seasoned financial analysts,
+            this feature provides a comprehensive suite of key financial ratios
+            for all publicly traded companies. With just a few taps, gain
+            insights into a company’s profitability, liquidity, leverage, and
+            efficiency. Our intuitive interface presents these crucial metrics
+            in an easy-to-digest format, simplifying decision-making and
+            empowering you to make informed investment choices. Whether you’re
+            conducting a quick comparison or a deep dive into financial health,
+            our app ensures that the vital data you need is always at your
+            fingertips, presented in clear, concise, and actionable terms.
           </p>
         </>
       ),
-      badge: 'React',
-      image:
-        'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=3540&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      badge: 'Features',
+      image: ratioUiScreenshot,
+    },
+    // {
+    //   title: 'Ratio Breakdown',
+    //   description: (
+    //     <>
+    //       <p>
+    //         This tool takes you through the financial ratios of any publicly
+    //         traded company, showing you the numbers that matter. You’ll see how
+    //         ratios like earnings against stock prices or assets versus
+    //         liabilities are calculated, with each step explained in
+    //         straightforward terms. It’s your personal guide to understanding the
+    //         financial health of companies without the jargon, making it perfect
+    //         for both new learners and seasoned analysts.
+    //       </p>
+    //     </>
+    //   ),
+    //   image: ratioBreakdownScreenshot,
+    // },
+    {
+      title: 'Full price history',
+      description: (
+        <>
+          <p>
+            Easily access the entire price history of any stock, from the very
+            latest data to information that goes back five years. It provides a
+            comprehensive view of how the stock has performed over time,
+            offering insights into trends and patterns that can help inform your
+            investment decisions. The data is updated live, ensuring you have
+            the most current information at your fingertips.
+          </p>
+        </>
+      ),
+
+      image: priceHistoryScreenshot,
     },
     {
-      title: 'Lorem Ipsum Dolor Sit Amet',
+      title: 'Like your favorite stocks',
       description: (
         <>
           <p>
-            Ex irure dolore veniam ex velit non aute nisi labore ipsum occaecat
-            deserunt cupidatat aute. Enim cillum dolor et nulla sunt
-            exercitation non voluptate qui aliquip esse tempor. Ullamco ut sunt
-            consectetur sint qui qui do do qui do. Labore laborum culpa magna
-            reprehenderit ea velit id esse adipisicing deserunt amet dolore.
-            Ipsum occaecat veniam commodo proident aliqua id ad deserunt dolor
-            aliquip duis veniam sunt.
-          </p>
-          <p>
-            In dolore veniam excepteur eu est et sunt velit. Ipsum sint esse
-            veniam fugiat esse qui sint ad sunt reprehenderit do qui proident
-            reprehenderit. Laborum exercitation aliqua reprehenderit ea sint
-            cillum ut mollit.
+            With a simple tap, add any stock to your favourites list and keep
+            all your top picks in one convenient location. This tailored
+            watchlist ensures you never miss a beat on the stocks that matter
+            most to you. Monitor their performance, receive updates, and manage
+            your investments with ease, all from a single, user-friendly
+            dashboard designed to streamline your investment journey.
           </p>
         </>
       ),
-      badge: 'Changelog',
-      image:
-        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=3540&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      title: 'Lorem Ipsum Dolor Sit Amet',
-      description: (
-        <>
-          <p>
-            Ex irure dolore veniam ex velit non aute nisi labore ipsum occaecat
-            deserunt cupidatat aute. Enim cillum dolor et nulla sunt
-            exercitation non voluptate qui aliquip esse tempor. Ullamco ut sunt
-            consectetur sint qui qui do do qui do. Labore laborum culpa magna
-            reprehenderit ea velit id esse adipisicing deserunt amet dolore.
-            Ipsum occaecat veniam commodo proident aliqua id ad deserunt dolor
-            aliquip duis veniam sunt.
-          </p>
-        </>
-      ),
-      badge: 'Launch Week',
-      image:
-        'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&q=80&w=3506&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+
+      video: 'like-button-video.mp4',
     },
   ];
   return (
@@ -150,13 +147,13 @@ export default function LandingPage() {
       </Sheet>
       <div className="w-full flex flex-row items-center md:pt-4 justify-between pb-6 md:pb-10">
         <div className="flex flex-col px-6 gap-4 md:w-1/2">
-          <span className="text-4xl lg:text-5xl xl:text-7xl font-bold text-center md:text-left tracking-wide xl:leading-tight">
+          <span className="text-4xl lg:text-5xl xl:text-6xl font-bold text-center md:text-left tracking-wide xl:leading-tight">
             Empowering Investors with{' '}
             <span className="text-gradient tracking-wide xl:leading-tight">
               Essential Financial Ratios
             </span>
           </span>
-          <span className="text-center font md:text-left lg:text-xl xl:text-3xl leading-relaxed">
+          <span className="text-center font md:text-left lg:text-xl xl:text-xl leading-relaxed">
             Designed to assist in analyzing stocks by providing essential
             financial ratios. Users can effortlessly access key metrics for any
             publicly traded company.
@@ -171,7 +168,12 @@ export default function LandingPage() {
           />
         </div>
       </div>
-      <div className="w-full flex flex-row justify-center items-center">
+      <div className="w-full flex flex-col gap-4 justify-center items-center py-10">
+        <Input
+          className="w-72 md:w-96 text-lg xl:text-xl h-12"
+          type="email"
+          placeholder="Email"
+        />
         <Button className="relative inline-flex w-max h-12 overflow-hidden p-[1px] outline-none md:self-center">
           <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
           <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl xl:text-2xl hover:bg-slate-900/90">
@@ -180,17 +182,23 @@ export default function LandingPage() {
         </Button>
       </div>
       <div className="h-min w-full items-center">
-        <TracingBeam className="px-6 h-min">
+        <TracingBeam className="px-6 h-fit">
           <div className="max-w-2xl mx-auto antialiased pt-4 px-2 relative">
             {dummyContent.map((item, index) => (
               <div key={`content-${index}`} className="mb-10">
-                <h2 className="bg-black text-white rounded-full text-sm w-fit px-4 py-1 mb-4">
-                  {item.badge}
-                </h2>
+                {item.badge != null && (
+                  <h2 className="bg-black text-white rounded-full text-md md:text-lg w-fit px-4 py-1 mb-4">
+                    {item.badge}
+                  </h2>
+                )}
 
-                <p className={twMerge('text-xl mb-4')}>{item.title}</p>
+                <p
+                  className={twMerge('text-xl md:text-2xl font-semibold mb-4')}
+                >
+                  {item.title}
+                </p>
 
-                <div className="text-sm prose prose-sm dark:prose-invert">
+                <div className="text-md md:text-lg prose prose-sm dark:prose-invert flex flex-col">
                   {item?.image && (
                     <Image
                       src={item.image}
@@ -200,12 +208,39 @@ export default function LandingPage() {
                       className="rounded-lg mb-10 object-cover"
                     />
                   )}
+                  {item?.video && (
+                    <video
+                      height="241"
+                      width="384"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="rounded-lg mb-10 self-center"
+                    >
+                      <source src={item.video} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
                   {item.description}
                 </div>
               </div>
             ))}
           </div>
         </TracingBeam>
+      </div>
+      <div className="w-full flex flex-col gap-4 justify-center items-center py-10">
+        <Input
+          className="w-72 md:w-96 text-lg xl:text-xl h-12"
+          type="email"
+          placeholder="Email"
+        />
+        <Button className="relative inline-flex w-max h-12 overflow-hidden p-[1px] outline-none md:self-center">
+          <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+          <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl xl:text-2xl hover:bg-slate-900/90">
+            Join the Waitlist
+          </span>
+        </Button>
       </div>
     </div>
   );
