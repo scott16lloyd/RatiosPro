@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -9,8 +12,54 @@ import { twMerge } from 'tailwind-merge';
 import { Input } from '@/components/ui/input';
 import ratioUiScreenshot from '/public/ratio-ui-screenshot.png';
 import priceHistoryScreenshot from '/public/price-history-ui.png';
+import searchScreenshot from '/public/search-ui.png';
+import Footer from '@/components/ui/footer';
+import descriptionScreenshot from '/public/description-ui.png';
+import { ReloadIcon } from '@radix-ui/react-icons';
+import { addWaitlister } from '@/utils/supabase/dbFunctions';
 
 export default function LandingPage() {
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [waitlisted, setWaitlisted] = useState(false);
+
+  const handleJoinWaitlist = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    // Clear the error message when the form is submitted
+    setError(null);
+
+    try {
+      if (!email) {
+        setError('Email is required');
+        return;
+      }
+      if (!email.includes('@')) {
+        setError('Please enter a valid email address');
+        return;
+      } else {
+        await addWaitlister(email);
+        setWaitlisted(true);
+      }
+    } catch (error: any) {
+      if (error instanceof Error) {
+        console.log(error);
+        if (error.message === '23505')
+          console.error('Error joining waitlist:', error);
+        setError('Error joining waitlist');
+      } else {
+        setError('An error occurred, please try again later');
+      }
+      return;
+    } finally {
+      setIsLoading(false);
+    }
+
+    console.log('Email:', email);
+  };
+
   const dummyContent = [
     {
       title: 'Ratios for all pubically traded companies',
@@ -33,23 +82,39 @@ export default function LandingPage() {
       badge: 'Features',
       image: ratioUiScreenshot,
     },
-    // {
-    //   title: 'Ratio Breakdown',
-    //   description: (
-    //     <>
-    //       <p>
-    //         This tool takes you through the financial ratios of any publicly
-    //         traded company, showing you the numbers that matter. You’ll see how
-    //         ratios like earnings against stock prices or assets versus
-    //         liabilities are calculated, with each step explained in
-    //         straightforward terms. It’s your personal guide to understanding the
-    //         financial health of companies without the jargon, making it perfect
-    //         for both new learners and seasoned analysts.
-    //       </p>
-    //     </>
-    //   ),
-    //   image: ratioBreakdownScreenshot,
-    // },
+    {
+      title: 'Search public companies',
+      description: (
+        <>
+          <p>
+            Simply search for any publicly traded company by name or ticker
+            symbol, and instantly access a wealth of information including
+            current stock prices and historical performance charts. This
+            intuitive search tool is designed to provide investors, analysts,
+            and the curious with quick insights into the financial health and
+            status of companies across global markets.
+          </p>
+        </>
+      ),
+      image: searchScreenshot,
+    },
+    {
+      title: 'Calculation breakdown',
+      description: (
+        <>
+          <p>
+            Provides users with a clear breakdown of the calculations used in
+            stock analysis, explaining how each figure is derived and its
+            relevance in evaluating a company’s performance. This transparency
+            helps users understand the financial metrics better, ensuring they
+            can make well-informed investment decisions based on solid data
+            analysis. It’s a valuable tool for demystifying complex financial
+            concepts and empowering users with actionable insights.
+          </p>
+        </>
+      ),
+      image: descriptionScreenshot,
+    },
     {
       title: 'Full price history',
       description: (
@@ -102,17 +167,21 @@ export default function LandingPage() {
               </h1>
             </div>
             <div className="flex flex-row gap-8">
-              <Button className="relative inline-flex w-32 h-12 overflow-hidden p-[1px] outline-none">
-                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-                <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl hover:bg-slate-900/90">
-                  Sign Up
-                </span>
-              </Button>
-              <Button className="w-32 h-12 flex items-center justify-center outline-none">
-                <span className="text-white font-medium p-4 text-xl">
-                  Login
-                </span>
-              </Button>
+              <Link href={'/sign-in'}>
+                <Button className="relative inline-flex w-32 h-12 overflow-hidden p-[1px] outline-none">
+                  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                  <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl hover:bg-slate-900/90">
+                    Sign Up
+                  </span>
+                </Button>
+              </Link>
+              <Link href={'/sign-in'}>
+                <Button className="w-32 h-12 flex items-center justify-center outline-none">
+                  <span className="text-white font-medium p-4 text-xl">
+                    Login
+                  </span>
+                </Button>
+              </Link>
             </div>
             <Separator className="w-full" />
             <div className="flex flex-col w-full gap-8">
@@ -133,15 +202,21 @@ export default function LandingPage() {
             </div>
           </SheetContent>
           <div className="hidden md:flex flex-row gap-4 px-6">
-            <Button className="relative inline-flex w-32 h-12 overflow-hidden p-[1px] outline-none">
-              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-              <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl hover:bg-slate-900/90">
-                Sign Up
-              </span>
-            </Button>
-            <Button className="w-32 h-12 flex items-center justify-center outline-none">
-              <span className="text-white font-medium p-4 text-xl">Login</span>
-            </Button>
+            <Link href={'/sign-in?isSignUp=true'}>
+              <Button className="relative inline-flex w-32 h-12 overflow-hidden p-[1px] outline-none">
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl hover:bg-slate-900/90">
+                  Sign Up
+                </span>
+              </Button>
+            </Link>
+            <Link href={'/sign-in'}>
+              <Button className="w-32 h-12 flex items-center justify-center outline-none">
+                <span className="text-white font-medium p-4 text-xl">
+                  Login
+                </span>
+              </Button>
+            </Link>
           </div>
         </div>
       </Sheet>
@@ -168,19 +243,50 @@ export default function LandingPage() {
           />
         </div>
       </div>
-      <div className="w-full flex flex-col gap-4 justify-center items-center py-10">
-        <Input
-          className="w-72 md:w-96 text-lg xl:text-xl h-12"
-          type="email"
-          placeholder="Email"
-        />
-        <Button className="relative inline-flex w-max h-12 overflow-hidden p-[1px] outline-none md:self-center">
-          <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-          <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl xl:text-2xl hover:bg-slate-900/90">
-            Join the Waitlist
-          </span>
-        </Button>
-      </div>
+      <form className="w-full flex flex-col gap-4 justify-center items-center py-10">
+        {!waitlisted ? (
+          <>
+            <Input
+              className="w-72 md:w-96 text-lg xl:text-xl h-12"
+              type="email"
+              placeholder="Email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            {error && <div className="error-message text-red-500">{error}</div>}
+            {isLoading ? (
+              <Button
+                disabled
+                className="relative inline-flex w-max h-12 overflow-hidden p-[1px] outline-none md:self-center"
+              >
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                <span className="cursor-wait inline-flex h-full w-full rounded-md overflow-hidden items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl xl:text-2xl hover:bg-slate-900/90">
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin text-white" />
+                  Please wait
+                </span>
+              </Button>
+            ) : (
+              <Button
+                className="relative inline-flex w-max h-12 overflow-hidden p-[1px] outline-none md:self-center"
+                onClick={handleJoinWaitlist}
+              >
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl xl:text-2xl hover:bg-slate-900/90">
+                  Join the Waitlist
+                </span>
+              </Button>
+            )}
+          </>
+        ) : (
+          <p className="text-xl">
+            🎉 Thank you for joining the waitlist, an email will be sent to you
+            soon. 🎉
+          </p>
+        )}
+      </form>
+
       <div className="h-min w-full items-center">
         <TracingBeam className="px-6 h-min">
           <div className="max-w-2xl mx-auto antialiased pt-4 px-2 relative">
@@ -242,6 +348,7 @@ export default function LandingPage() {
           </span>
         </Button>
       </div>
+      <Footer />
     </div>
   );
 }
