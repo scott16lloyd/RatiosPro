@@ -44,15 +44,15 @@ export default function LandingPage() {
         setWaitlisted(true);
       }
     } catch (error: any) {
+      console.log(error);
       if (error instanceof Error) {
-        console.log(error);
-        if (error.message === '23505')
-          console.error('Error joining waitlist:', error);
-        setError('Error joining waitlist');
-      } else {
-        setError('An error occurred, please try again later');
+        if (error.message === 'DUPLICATE_ENTRY') {
+          setError('Sorry, you are already on the waitlist');
+        } else {
+          setError('An error occurred, please try again later');
+        }
+        return;
       }
-      return;
     } finally {
       setIsLoading(false);
     }
@@ -202,7 +202,14 @@ export default function LandingPage() {
             </div>
           </SheetContent>
           <div className="hidden md:flex flex-row gap-4 px-6">
-            <Link href={'/sign-in?isSignUp=true'}>
+            <Link
+              href={{
+                pathname: '/sign-in',
+                query: {
+                  signup: true,
+                },
+              }}
+            >
               <Button className="relative inline-flex w-32 h-12 overflow-hidden p-[1px] outline-none">
                 <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
                 <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl hover:bg-slate-900/90">
@@ -280,7 +287,7 @@ export default function LandingPage() {
             )}
           </>
         ) : (
-          <p className="text-xl">
+          <p className="text-xl text-center px-8">
             🎉 Thank you for joining the waitlist, an email will be sent to you
             soon. 🎉
           </p>
@@ -335,19 +342,50 @@ export default function LandingPage() {
           </div>
         </TracingBeam>
       </div>
-      <div className="w-full flex flex-col gap-4 justify-center items-center py-10">
-        <Input
-          className="w-72 md:w-96 text-lg xl:text-xl h-12"
-          type="email"
-          placeholder="Email"
-        />
-        <Button className="relative inline-flex w-max h-12 overflow-hidden p-[1px] outline-none md:self-center">
-          <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-          <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl xl:text-2xl hover:bg-slate-900/90">
-            Join the Waitlist
-          </span>
-        </Button>
-      </div>
+
+      <form className="w-full flex flex-col gap-4 justify-center items-center py-10">
+        {!waitlisted ? (
+          <>
+            <Input
+              className="w-72 md:w-96 text-lg xl:text-xl h-12"
+              type="email"
+              placeholder="Email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            {error && <div className="error-message text-red-500">{error}</div>}
+            {isLoading ? (
+              <Button
+                disabled
+                className="relative inline-flex w-max h-12 overflow-hidden p-[1px] outline-none md:self-center"
+              >
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                <span className="cursor-wait inline-flex h-full w-full rounded-md overflow-hidden items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl xl:text-2xl hover:bg-slate-900/90">
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin text-white" />
+                  Please wait
+                </span>
+              </Button>
+            ) : (
+              <Button
+                className="relative inline-flex w-max h-12 overflow-hidden p-[1px] outline-none md:self-center"
+                onClick={handleJoinWaitlist}
+              >
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                <span className="inline-flex h-full w-full rounded-md overflow-hidden cursor-pointer items-center justify-center bg-secondary p-4 font-medium text-white backdrop-blur-3xl text-xl xl:text-2xl hover:bg-slate-900/90">
+                  Join the Waitlist
+                </span>
+              </Button>
+            )}
+          </>
+        ) : (
+          <p className="text-xl text-center px-8">
+            🎉 Thank you for joining the waitlist, an email will be sent to you
+            soon. 🎉
+          </p>
+        )}
+      </form>
       <Footer />
     </div>
   );

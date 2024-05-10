@@ -257,7 +257,11 @@ export async function addWaitlister(email: string) {
 
   if (error) {
     console.error('Error adding to waitlist', error);
-    throw error;
+    if (error.code.includes('23505')) {
+      throw new Error('DUPLICATE_ENTRY');
+    } else {
+      throw error;
+    }
   } else {
     console.log('Added to waitlist successfully');
     return {};

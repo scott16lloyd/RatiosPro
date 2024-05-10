@@ -34,9 +34,9 @@ const Highlight = ({
   );
 };
 
-export default function SignInPage() {
+export default function SignInPage({ searchParams }: { searchParams: any }) {
   // Manage form inputs
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(searchParams.signup);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
