@@ -1,4 +1,3 @@
-/// <reference types="https://esm.sh/@supabase/functions-js/src/edge-runtime.d.ts" />
 import { Database } from '@/types/supabase';
 
 console.log('Hello from `database-webhook` function!');
