@@ -46,7 +46,12 @@ export default function LandingPage() {
     } catch (error: any) {
       console.log(error);
       if (error instanceof Error) {
-        if (error.message === 'DUPLICATE_ENTRY') {
+        if (
+          error.message === 'DUPLICATE_ENTRY' ||
+          error.message.includes(
+            'duplicate key value violates unique constraint'
+          )
+        ) {
           setError('Sorry, you are already on the waitlist');
         } else {
           setError('An error occurred, please try again later');
@@ -56,8 +61,6 @@ export default function LandingPage() {
     } finally {
       setIsLoading(false);
     }
-
-    console.log('Email:', email);
   };
 
   const dummyContent = [
