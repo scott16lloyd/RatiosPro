@@ -47,7 +47,7 @@ export default function LandingPage() {
       console.log(error);
       if (error instanceof Error) {
         if (
-          error.message..includes('DUPLICATE_ENTRY') ||
+          error.message.includes('DUPLICATE_ENTRY') ||
           error.message.includes(
             'duplicate key value violates unique constraint'
           )
