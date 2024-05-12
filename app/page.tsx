@@ -44,7 +44,9 @@ export default function LandingPage() {
           .then(() => {
             setWaitlisted(true);
           })
-          .catch((error) => {
+          .catch((error: any) => {
+            console.log('Nested error:', error.error);
+            console.log('Response:', error.response);
             if (
               error.includes('DUPLICATE_ENTRY') ||
               error.includes('duplicate key value violates unique constraint')
