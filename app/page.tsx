@@ -42,7 +42,6 @@ export default function LandingPage() {
       } else {
         const response = await addWaitlister(email);
         if (response.error) {
-          console.log(response.error);
           if (
             response.error.includes('DUPLICATE_ENTRY') ||
             response.error.includes(
@@ -59,15 +58,7 @@ export default function LandingPage() {
       }
     } catch (error: any) {
       console.log(error);
-      console.log(error.toString());
-      // if (
-      //   error.message.includes('DUPLICATE_ENTRY') ||
-      //   error.message.includes('duplicate key value violates unique constraint')
-      // ) {
-      //   setError('Sorry, you are already on the waitlist');
-      // } else {
-      //   setError('An error occurred, please try again later');
-      // }
+      setError('An error occurred, please try again later');
     } finally {
       setIsLoading(false);
     }
