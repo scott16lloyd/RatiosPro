@@ -46,7 +46,7 @@ export default function LandingPage() {
     } catch (error: any) {
       console.log('SERVER ERROR ' + error);
       console.log('SERVER ERROR MESSAGE' + error.message);
-      if (error instanceof Error) {
+      if (error && error.message) {
         if (
           error.message.includes('DUPLICATE_ENTRY') ||
           error.message.includes(
