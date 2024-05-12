@@ -257,7 +257,7 @@ export async function addWaitlister(email: string) {
 
   if (error) {
     console.error('Error adding to waitlist', error);
-    throw new Error(error || 'Unknown error');
+    throw new Error(error.message || 'Unknown error');
   } else {
     console.log('Added to waitlist successfully');
     return {};

@@ -46,10 +46,8 @@ export default function LandingPage() {
           })
           .catch((error) => {
             if (
-              error.message.includes('DUPLICATE_ENTRY') ||
-              error.message.includes(
-                'duplicate key value violates unique constraint'
-              )
+              error.includes('DUPLICATE_ENTRY') ||
+              error.includes('duplicate key value violates unique constraint')
             ) {
               setError('Sorry, you are already on the waitlist');
             } else {
