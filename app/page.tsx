@@ -41,10 +41,12 @@ export default function LandingPage() {
         return;
       } else {
         await addWaitlister(email).catch((error) => {
-          console.log(error);
+          console.log('SERVER ERROR ' + error);
           if (
-            error.includes('DUPLICATE_ENTRY') ||
-            error.includes('duplicate key value violates unique constraint')
+            error.message.includes('DUPLICATE_ENTRY') ||
+            error.message.includes(
+              'duplicate key value violates unique constraint "waitlisters_pkey"'
+            )
           ) {
             setError('Sorry, you are already on the waitlist');
           } else {
