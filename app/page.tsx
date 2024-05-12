@@ -45,11 +45,13 @@ export default function LandingPage() {
             setWaitlisted(true);
           })
           .catch((error: any) => {
-            console.log('Nested error:', error.error);
-            console.log('Response:', error.response);
+            console.log(error.message);
+            console.log(error.toString());
             if (
-              error.includes('DUPLICATE_ENTRY') ||
-              error.includes('duplicate key value violates unique constraint')
+              error.message.includes('DUPLICATE_ENTRY') ||
+              error.message.includes(
+                'duplicate key value violates unique constraint'
+              )
             ) {
               setError('Sorry, you are already on the waitlist');
             } else {
