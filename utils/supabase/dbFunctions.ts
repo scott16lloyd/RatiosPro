@@ -245,3 +245,21 @@ export async function getSubscription(userID: string) {
     return false;
   }
 }
+
+export async function addWaitlister(email: string) {
+  const supabase = createClient();
+
+  const { error } = await supabase.from('waitlisters').insert([
+    {
+      email: email,
+    },
+  ]);
+
+  if (error) {
+    console.error('Error adding to waitlist', error);
+    return { error: error.message };
+  } else {
+    console.log('Added to waitlist successfully');
+    return {};
+  }
+}

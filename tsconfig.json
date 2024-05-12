@@ -31,5 +31,5 @@
     "utils/stripe/CheckoutForm.js",
     "utils/stripe/index.js"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "supabase"]
 }
