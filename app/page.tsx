@@ -44,7 +44,8 @@ export default function LandingPage() {
         setWaitlisted(true);
       }
     } catch (error: any) {
-      console.log(error);
+      console.log('SERVER ERROR ' + error);
+      console.log('SERVER ERROR MESSAGE' + error.message);
       if (error instanceof Error) {
         if (
           error.message.includes('DUPLICATE_ENTRY') ||
