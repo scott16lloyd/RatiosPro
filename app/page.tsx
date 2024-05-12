@@ -40,28 +40,33 @@ export default function LandingPage() {
         setError('Please enter a valid email address');
         return;
       } else {
-        await addWaitlister(email)
-          .then(() => {
-            setWaitlisted(true);
-          })
-          .catch((error: any) => {
-            console.log(error.message);
-            console.log(error.toString());
-            if (
-              error.message.includes('DUPLICATE_ENTRY') ||
-              error.message.includes(
-                'duplicate key value violates unique constraint'
-              )
-            ) {
-              setError('Sorry, you are already on the waitlist');
-            } else {
-              setError('An error occurred, please try again later');
-            }
-          });
+        await addWaitlister(email).catch((error) => {
+          console.log(error);
+          if (
+            error.message.includes('DUPLICATE_ENTRY') ||
+            error.message.includes(
+              'duplicate key value violates unique constraint'
+            )
+          ) {
+            setError('Sorry, you are already on the waitlist');
+          } else {
+            console.log(error);
+          }
+          throw error;
+        });
+        setWaitlisted(true);
       }
     } catch (error: any) {
-      console.log('Error from try/catch:', error);
-      setError('An error occurred, please try again later');
+      console.log(error);
+      console.log(error.toString());
+      // if (
+      //   error.message.includes('DUPLICATE_ENTRY') ||
+      //   error.message.includes('duplicate key value violates unique constraint')
+      // ) {
+      //   setError('Sorry, you are already on the waitlist');
+      // } else {
+      //   setError('An error occurred, please try again later');
+      // }
     } finally {
       setIsLoading(false);
     }
