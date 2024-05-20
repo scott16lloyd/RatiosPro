@@ -33,6 +33,10 @@ export const theme = {
     },
   },
   extend: {
+    backgroundImage: (theme) => ({
+      'green-gradient':
+        'linear-gradient(90deg, hsla(120, 65%, 53%, 1), hsla(120, 100%, 37%, 1))',
+    }),
     aspectRatio: {
       '4/3': '4 / 3',
     },
