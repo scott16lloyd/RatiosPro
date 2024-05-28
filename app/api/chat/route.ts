@@ -8,6 +8,7 @@ export async function POST(ticker?: string) {
     model: openai('gpt-3.5-turbo'),
     prompt: 'Give me details about the company with ticker symbol TSLA',
   });
+  console.log(result);
 
-  return new StreamingTextResponse(result.toAIStream());
+  return result.toAIStreamResponse();
 }
