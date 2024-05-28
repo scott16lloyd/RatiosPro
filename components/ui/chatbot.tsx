@@ -7,9 +7,13 @@ import {
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { useChat } from 'ai/react';
+import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 
 export default function Chatbot({ symbol }: { symbol: string }) {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat();
+
   return (
     <Popover>
       <div className="fixed bottom-4 right-4 z-50">
@@ -26,22 +30,27 @@ export default function Chatbot({ symbol }: { symbol: string }) {
             <Separator className="my-2" />
             <span className="text-xl lg:text-2xl font-medium">{symbol}</span>
           </div>
+          <Button onClick={handleSubmit}>Analyse</Button>
           <span className="lg:text-xl">
-            {messages.map((m) => (
-              <div key={m.id} className="whitespace-pre-wrap">
-                {m.role === 'user' ? 'User: ' : 'AI: '}
-                {m.content}
-              </div>
-            ))}
+            {isLoading ? (
+              <span>Loading...</span>
+            ) : (
+              messages.map((m) => (
+                <div key={m.id} className="whitespace-pre-wrap">
+                  {m.role === 'user' ? 'User: ' : 'AI: '}
+                  {m.content}
+                </div>
+              ))
+            )}
           </span>
-          <form onSubmit={handleSubmit}>
+          {/* <form onSubmit={handleSubmit}>
             <input
               className="fixed bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
               value={input}
               placeholder="Say something..."
               onChange={handleInputChange}
             />
-          </form>
+          </form> */}
         </PopoverContent>
       </div>
     </Popover>
