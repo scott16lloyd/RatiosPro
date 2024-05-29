@@ -24,10 +24,13 @@ export default function Chatbot({ symbol }: { symbol: string }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ticker: symbol }), // pass the symbol as ticker
+        // body: JSON.stringify({ ticker: symbol }), // pass the symbol as ticker
       });
-      const data = await response.json();
-      console.log(data);
+      console.log(response);
+      console.log(response.body);
+      response.json().then((data) => {
+        console.log(data);
+      });
       // handle the response data
     } catch (error) {
       console.error('Error:', error);
