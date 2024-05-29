@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 const openai = new OpenAI();
 
-export async function POST(res: Next, ticker?: string) {
+export async function POST(ticker?: string) {
   console.log('Initiating chatbot request');
 
   const completion = await openai.chat.completions.create({
@@ -19,5 +19,5 @@ export async function POST(res: Next, ticker?: string) {
 
   console.log(completion.choices[0]);
 
-  return NextResponse.json({ content: completion.choices[0].content });
+  return NextResponse.json({ content: completion.choices[0] }, { status: 200});
 }
