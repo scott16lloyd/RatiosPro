@@ -38,6 +38,8 @@ export default function DetailsPage({
 
   const ratios: QueryResult = useQuery(queryRatio);
 
+  console.log(ratios);
+
   // Queries company profile
   const queryProfile: UseQueryOptions<any, Error> = {
     queryKey: ['fetchProfile', symbol],
@@ -110,7 +112,7 @@ export default function DetailsPage({
             No data available
           </div>
         )}
-        <Chatbot symbol={symbol} />
+        <Chatbot symbol={symbol} companyRatios={ratios} />
       </div>
     </>
   );
