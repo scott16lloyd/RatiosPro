@@ -10,7 +10,7 @@ type QueryResult = {
   data: any;
 };
 
-export async function POST(request: { json: () => any }) {
+export async function POST(request: Request) {
   const body = await request.json();
   const { ticker, companyRatios } = body;
 
