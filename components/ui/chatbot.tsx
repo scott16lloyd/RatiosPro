@@ -27,31 +27,39 @@ export default function Chatbot({
   symbol: string;
   companyRatios: QueryResult;
 }) {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [displayedText, setDisplayedText] = useState('');
+  const [typingIndex, setTypingIndex] = useState(0);
+
   console.log(companyRatios);
 
   useEffect(() => {
     const handleSubmit = async (event: any) => {
       setLoading(true);
       console.log('submitting');
+      console.log(symbol);
+      console.log(companyRatios.data);
       try {
+        const params = {
+          ticker: symbol,
+          companyRatios: companyRatios.data,
+        };
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            ticker: symbol,
-            companyRatios: companyRatios,
-          }),
+          body: JSON.stringify(params),
         });
+        console.log(response);
         const data = await response.json();
         setData(data.content.message.content);
+        setTypingIndex(0); // Reset typing index
+        setDisplayedText(''); // Reset displayed text
         console.log(data);
-        // handle the response data
       } catch (error) {
         console.error('Error:', error);
       } finally {
@@ -63,7 +71,22 @@ export default function Chatbot({
       handleSubmit(symbol);
       setHasSubmitted(true);
     }
-  }, [isOpen]);
+  }, [isOpen, companyRatios, symbol]);
+
+  useEffect(() => {
+    if (data) {
+      const interval = setInterval(() => {
+        setDisplayedText((prev) => prev + data.charAt(typingIndex));
+        setTypingIndex((prev) => prev + 1);
+      }, 20); // Adjust typing speed here
+
+      if (typingIndex >= data.length) {
+        clearInterval(interval);
+      }
+
+      return () => clearInterval(interval);
+    }
+  }, [data, typingIndex]);
 
   return (
     <Popover>
@@ -77,7 +100,7 @@ export default function Chatbot({
             <Image src={robotGif} alt="AI Robot" width={300} height={100} />
           </div>
         </PopoverTrigger>
-        <PopoverContent className="w-72 md:w-80 m-2 max-h-[75vh] lg:w-96 overflow-scroll">
+        <PopoverContent className="w-72 md:w-80 m-2 max-h-[75vh] lg:w-96 overflow-y-scroll p-1">
           <div className="flex flex-col flex-grow justify-center items-center px-2 w-full">
             <span className="text-xl lg:text-2xl font-medium">
               Warren Bottet
@@ -85,8 +108,15 @@ export default function Chatbot({
             <Separator className="my-2" />
             <span className="text-xl lg:text-2xl font-medium">{symbol}</span>
 
-            <span>{data}</span>
+            <span className="text-sm md:text-md lg:text-lg p-1">
+              {displayedText}
+            </span>
             {loading ? <LineLoader /> : ''}
+          </div>
+          <div className="text-center">
+            <span className="text-zinc-500 text-sm">
+              AI generated suggestions, check important info.
+            </span>
           </div>
         </PopoverContent>
       </div>
