@@ -10,6 +10,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { LikeButton } from '@/components/like-button';
 import { useEffect, useState } from 'react';
 import { checkLikedStock } from '@/utils/supabase/dbFunctions';
+import Chatbot from '@/components/ui/chatbot';
 
 export default function DetailsPage({
   params,
@@ -47,6 +48,8 @@ export default function DetailsPage({
 
   const [isLoading, setIsLoading] = useState(false);
   const [isHeartFilled, setIsHeartFilled] = useState(false);
+
+  // Check if stock is liked
   useEffect(() => {
     const checkIfLiked = async () => {
       setIsLoading(true);
@@ -109,6 +112,7 @@ export default function DetailsPage({
             No data available
           </div>
         )}
+        <Chatbot symbol={symbol} companyRatios={ratios} />
       </div>
     </>
   );
