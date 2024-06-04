@@ -34,14 +34,10 @@ export default function Chatbot({
   const [displayedText, setDisplayedText] = useState('');
   const [typingIndex, setTypingIndex] = useState(0);
 
-  console.log(companyRatios);
-
+  // Fetch chatbot data once per render
   useEffect(() => {
     const handleSubmit = async (event: any) => {
       setLoading(true);
-      console.log('submitting');
-      console.log(symbol);
-      console.log(companyRatios.data);
       try {
         const params = {
           ticker: symbol,
@@ -54,12 +50,10 @@ export default function Chatbot({
           },
           body: JSON.stringify(params),
         });
-        console.log(response);
         const data = await response.json();
         setData(data.content.message.content);
         setTypingIndex(0); // Reset typing index
         setDisplayedText(''); // Reset displayed text
-        console.log(data);
       } catch (error) {
         console.error('Error:', error);
       } finally {
@@ -67,12 +61,14 @@ export default function Chatbot({
       }
     };
 
+    // Check if chatbot is open and has not been submitted
     if (isOpen && !hasSubmitted) {
       handleSubmit(symbol);
       setHasSubmitted(true);
     }
   }, [isOpen, companyRatios, symbol]);
 
+  // Typing effect
   useEffect(() => {
     if (data) {
       const interval = setInterval(() => {

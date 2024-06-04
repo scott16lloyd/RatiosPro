@@ -38,8 +38,6 @@ export default function DetailsPage({
 
   const ratios: QueryResult = useQuery(queryRatio);
 
-  console.log(ratios);
-
   // Queries company profile
   const queryProfile: UseQueryOptions<any, Error> = {
     queryKey: ['fetchProfile', symbol],
@@ -50,6 +48,8 @@ export default function DetailsPage({
 
   const [isLoading, setIsLoading] = useState(false);
   const [isHeartFilled, setIsHeartFilled] = useState(false);
+
+  // Check if stock is liked
   useEffect(() => {
     const checkIfLiked = async () => {
       setIsLoading(true);

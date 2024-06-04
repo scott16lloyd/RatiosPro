@@ -14,8 +14,7 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { ticker, companyRatios } = body;
 
-  console.log('Received companyRatios:', companyRatios[0]);
-  console.log('Received ticker:', ticker);
+  // Fetch chatbot response from openAI
   const completion = await openai.chat.completions.create({
     messages: [
       {
@@ -33,7 +32,6 @@ export async function POST(request: Request) {
     model: 'gpt-3.5-turbo',
   });
 
-  console.log(completion.choices[0]);
-
+  // Return chatbot response
   return NextResponse.json({ content: completion.choices[0] }, { status: 200 });
 }
