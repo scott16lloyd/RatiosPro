@@ -45,6 +45,7 @@ export default function DetailsPage({
   };
 
   const profile: QueryResult = useQuery(queryProfile);
+  console.log(profile);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isHeartFilled, setIsHeartFilled] = useState(false);
@@ -53,13 +54,23 @@ export default function DetailsPage({
   useEffect(() => {
     const checkIfLiked = async () => {
       setIsLoading(true);
-      const isLiked = await checkLikedStock(symbol);
-      setIsHeartFilled(isLiked ? true : false);
-      setIsLoading(false);
+      // Check if the value is in the localStorage
+      const likedInStorage = localStorage.getItem(`liked-${symbol}`) as string;
+
+      let isLiked = JSON.parse(likedInStorage);
+
+      if (isLiked === null) {
+        isLiked = await checkLikedStock(symbol);
+        localStorage.setItem(`liked-${symbol}`, JSON.stringify(isLiked));
+      }
+
+      setIsHeartFilled(isLiked);
+      // Delay the loading state due to issue with state change
+      setTimeout(() => setIsLoading(false), 1000);
     };
 
     checkIfLiked();
-  }, [symbol]);
+  }, [symbol, isHeartFilled, setIsHeartFilled]);
 
   if (ratios.isLoading) {
     // Data is still loading
@@ -89,9 +100,9 @@ export default function DetailsPage({
             </h1>
             <LikeButton
               symbol={symbol}
-              name={profile.data ? profile.data.name : ''}
-              price={profile.data ? profile.data.price : 0}
-              changesPercentage={profile.data ? profile.data.changes : 0}
+              name={profile.data ? profile.data.companyName : ''}
+              price={profile.data ? profile.data.price : ''}
+              changesPercentage={profile.data ? profile.data.changes : ''}
               isLoading={isLoading}
               isHeartFilledProp={isHeartFilled}
             />
