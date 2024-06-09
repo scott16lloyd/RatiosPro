@@ -21,6 +21,9 @@ export default function Footer() {
           <Link
             className="hover:text-gray-900 dark:hover:text-gray-200"
             href="#"
+            onClick={() =>
+              (window.location.href = 'mailto:scott16lloyd@gmail.com')
+            }
           >
             Contact
           </Link>

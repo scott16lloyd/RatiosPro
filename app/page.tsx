@@ -66,7 +66,7 @@ export default function LandingPage() {
 
   const dummyContent = [
     {
-      title: 'Ratios for all pubically traded companies',
+      title: 'Ratios for all publicly traded companies',
       description: (
         <>
           <p>
@@ -137,7 +137,25 @@ export default function LandingPage() {
       image: priceHistoryScreenshot,
     },
     {
-      title: 'Like your favorite stocks',
+      title: 'AI powered insights',
+      description: (
+        <>
+          <p>
+            Our AI-powered financial ratio insight tool harnesses the power of
+            advanced analytics to evaluate stocks with precision. The AI
+            compares these ratios against industry benchmarks and historical
+            data to identify undervalued stocks or those with strong growth
+            potential. Users receive actionable insights, enabling them to make
+            informed investment decisions based on solid financial metrics. This
+            tool is designed to simplify the complex world of stock analysis,
+            providing a clear and concise overview that empowers both novice and
+            experienced investors alike.
+          </p>
+        </>
+      ),
+    },
+    {
+      title: 'Like your favourite stocks',
       description: (
         <>
           <p>
@@ -197,7 +215,12 @@ export default function LandingPage() {
               </Link>
             </div>
             <div className="flex flex-col w-full gap-8">
-              <Link href="#">
+              <Link
+                href="#"
+                onClick={() =>
+                  (window.location.href = 'mailto:scott16lloyd@gmail.com')
+                }
+              >
                 <div className="flex flex-row w-full justify-between">
                   <span className="text-xl font-white">Contact</span>
                   <ChevronRight size={32} />
