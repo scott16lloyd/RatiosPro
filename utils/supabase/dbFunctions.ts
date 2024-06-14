@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseServerClient';
 import { createLocalClient } from '@/utils/supabase/supabaseClient';
+import { createServiceClient } from '@/utils/supabase/supabaseServiceClient';
 import stripe from 'stripe';
 
 export async function login(formData: FormData) {
@@ -247,7 +248,7 @@ export async function getSubscription(userID: string) {
 }
 
 export async function addWaitlister(email: string) {
-  const supabase = createClient();
+  const supabase = createServiceClient();
 
   const { error } = await supabase.from('waitlisters').insert([
     {

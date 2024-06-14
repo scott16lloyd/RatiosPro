@@ -9,7 +9,7 @@ export async function POST() {
 
   const { data, error } = await supabase.auth.getUser();
   if (error || !data?.user) {
-    return NextResponse.redirect('https://ratios-pro.vercel.app/sign-in');
+    return NextResponse.redirect(`${process.env.BASE_URL}/sign-in`);
   }
   try {
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
@@ -23,8 +23,8 @@ export async function POST() {
         },
       ],
       mode: 'subscription',
-      success_url: process.env.SUCCESS_URL || 'http://localhost:3000/success',
-      cancel_url: process.env.CANCEL_URL || 'http://localhost:3000/home',
+      success_url: process.env.SUCCESS_URL || `${process.env.BASE_URL}/success`,
+      cancel_url: process.env.CANCEL_URL || `${process.env.BASE_URL}/home`,
       client_reference_id: data.user.id,
       subscription_data: { billing_cycle_anchor: futureDate },
     });
@@ -33,6 +33,6 @@ export async function POST() {
   } catch (error) {
     NextResponse.json({ message: 'Internal Server Error', error });
     console.error(error);
-    return NextResponse.redirect('https://ratios-pro.vercel.app/error');
+    return NextResponse.redirect(`${process.env.BASE_URL}/error`);
   }
 }
