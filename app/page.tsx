@@ -281,7 +281,9 @@ export default function LandingPage() {
         </div>
       </div>
       <form className="w-full flex flex-col gap-4 justify-center items-center py-10">
-        <span className="text-3xl font-medium">Become a waitlister today.</span>
+        <span className="text-2xl md:text-3xl font-medium text-center">
+          Become a waitlister today.
+        </span>
         {!waitlisted ? (
           <>
             <Input
@@ -375,7 +377,9 @@ export default function LandingPage() {
       </div>
 
       <form className="w-full flex flex-col gap-4 justify-center items-center py-10">
-        <span className="text-3xl font-medium">Become a waitlister today.</span>
+        <span className="text-2xl md:text-3xl font-medium text-center">
+          Become a waitlister today.
+        </span>
         {!waitlisted ? (
           <>
             <Input
