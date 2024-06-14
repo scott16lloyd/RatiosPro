@@ -2,13 +2,13 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient } from '@/utils/supabase/supabaseServerClient';
+import { createServerClient } from '@/utils/supabase/supabaseServerClient';
 import { createLocalClient } from '@/utils/supabase/supabaseClient';
 import stripe from 'stripe';
 
 export async function login(formData: FormData) {
   // Supabase client instance
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const data = {
     email: formData.get('email') as string,
@@ -30,7 +30,7 @@ export async function login(formData: FormData) {
 
 export async function signup(formData: FormData) {
   // Supabase client instance
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const data = {
     email: formData.get('email') as string,
@@ -50,7 +50,7 @@ export async function signup(formData: FormData) {
 
 export async function signout() {
   // Supabase client instance
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const { error } = await supabase.auth.signOut();
   if (error) {
@@ -61,7 +61,7 @@ export async function signout() {
 }
 
 export async function getuser() {
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const { data, error } = await supabase.auth.getUser();
 
@@ -79,7 +79,7 @@ export async function addLikedStock(
   stock_price: number,
   stock_change_percentage: number
 ) {
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const { user } = await getuser();
 
@@ -103,7 +103,7 @@ export async function addLikedStock(
 }
 
 export async function removeLikedStock(stockName: string) {
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const { user } = await getuser();
 
@@ -123,7 +123,7 @@ export async function removeLikedStock(stockName: string) {
 }
 
 export async function checkLikedStock(stockName: string) {
-  const supabase = createClient();
+  const supabase = createServerClient();
   const { user } = await getuser();
 
   if (!user) {
@@ -146,7 +146,7 @@ export async function checkLikedStock(stockName: string) {
 }
 
 export async function getUsersLikedStocks() {
-  const supabase = createClient();
+  const supabase = createServerClient();
   const { user } = await getuser();
 
   if (!user) {
@@ -171,7 +171,7 @@ export async function updateUserSubscription(
 ) {
   console.log('updateUserSubscription');
 
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -210,7 +210,7 @@ export async function updateUserSubscription(
 }
 
 export async function removeUserSubscription(stripeCustomerID: string) {
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const { data, error } = await supabase
     .from('subscribers')
@@ -227,7 +227,7 @@ export async function removeUserSubscription(stripeCustomerID: string) {
 }
 
 export async function getSubscription(userID: string) {
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const { data, error } = await supabase
     .from('subscribers')
@@ -247,7 +247,7 @@ export async function getSubscription(userID: string) {
 }
 
 export async function addWaitlister(email: string) {
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const { error } = await supabase.from('waitlisters').insert([
     {
