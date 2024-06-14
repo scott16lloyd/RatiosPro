@@ -100,7 +100,7 @@ export default function LandingPage() {
           </p>
         </>
       ),
-      image: searchScreenshot,
+      video: 'SearchBar UI Video.mp4',
     },
     {
       title: 'Calculation breakdown',
@@ -117,7 +117,7 @@ export default function LandingPage() {
           </p>
         </>
       ),
-      image: descriptionScreenshot,
+      video: 'Description UI Video.mp4',
     },
     {
       title: 'Full price history',
@@ -134,10 +134,10 @@ export default function LandingPage() {
         </>
       ),
 
-      image: priceHistoryScreenshot,
+      video: 'Price History UI Video.mp4',
     },
     {
-      title: 'AI powered insights',
+      title: 'AI-powered insights',
       description: (
         <>
           <p>
@@ -153,6 +153,7 @@ export default function LandingPage() {
           </p>
         </>
       ),
+      video: 'Chatbot UI Video.mp4',
     },
     {
       title: 'Like your favourite stocks',
@@ -188,7 +189,8 @@ export default function LandingPage() {
                 Ratios Pro
               </h1>
             </div>
-            <div className="flex flex-row gap-8">
+            {/* Commented out until signup is available */}
+            {/* <div className="flex flex-row gap-8">
               <Link href={'/sign-in'}>
                 <Button className="relative inline-flex w-32 h-12 overflow-hidden p-[1px] outline-none">
                   <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
@@ -204,7 +206,7 @@ export default function LandingPage() {
                   </span>
                 </Button>
               </Link>
-            </div>
+            </div> */}
             <Separator className="w-full" />
             <div className="flex flex-col w-full gap-8">
               <Link href="#">
@@ -228,7 +230,8 @@ export default function LandingPage() {
               </Link>
             </div>
           </SheetContent>
-          <div className="hidden md:flex flex-row gap-4 px-6">
+          {/* Commented out until signup is available */}
+          {/* <div className="hidden md:flex flex-row gap-4 px-6">
             <Link
               href={{
                 pathname: '/sign-in',
@@ -251,7 +254,7 @@ export default function LandingPage() {
                 </span>
               </Button>
             </Link>
-          </div>
+          </div> */}
         </div>
       </Sheet>
       <div className="w-full flex flex-row items-center md:pt-4 justify-between pb-6 md:pb-10">
@@ -278,6 +281,7 @@ export default function LandingPage() {
         </div>
       </div>
       <form className="w-full flex flex-col gap-4 justify-center items-center py-10">
+        <span className="text-3xl font-medium">Become a waitlister today.</span>
         {!waitlisted ? (
           <>
             <Input
@@ -350,8 +354,8 @@ export default function LandingPage() {
                   )}
                   {item?.video && (
                     <video
-                      height="241"
-                      width="384"
+                      height="1000"
+                      width="1000"
                       autoPlay
                       loop
                       muted
@@ -371,6 +375,7 @@ export default function LandingPage() {
       </div>
 
       <form className="w-full flex flex-col gap-4 justify-center items-center py-10">
+        <span className="text-3xl font-medium">Become a waitlister today.</span>
         {!waitlisted ? (
           <>
             <Input

@@ -80,33 +80,39 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
     // Clear the error message when the form is submitted
     setError(null);
 
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('password', password);
+    setError(
+      'Signup is not currently available, please join the waitlist instead.'
+    );
+    setIsLoading(false);
 
-    try {
-      const { error } = await signup(formData);
-      console.log(error);
-      if (error) {
-        console.log(error);
-        if (error === 'Password should be at least 6 characters.') {
-          // Handle the custom error
-          setError(
-            'Password should be at least 6 characters. Please try again.'
-          );
-        } else if (
-          error === 'Unable to validate email address: invalid format'
-        ) {
-          setError('Invalid email address. Please try again.');
-        } else {
-          setError('An error occurred during login. Please try again.');
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    // Commented out and displaying error message until signup is available
+    // const formData = new FormData();
+    // formData.append('email', email);
+    // formData.append('password', password);
+
+    // try {
+    //   const { error } = await signup(formData);
+    //   console.log(error);
+    //   if (error) {
+    //     console.log(error);
+    //     if (error === 'Password should be at least 6 characters.') {
+    //       // Handle the custom error
+    //       setError(
+    //         'Password should be at least 6 characters. Please try again.'
+    //       );
+    //     } else if (
+    //       error === 'Unable to validate email address: invalid format'
+    //     ) {
+    //       setError('Invalid email address. Please try again.');
+    //     } else {
+    //       setError('An error occurred during login. Please try again.');
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const CARDS = [

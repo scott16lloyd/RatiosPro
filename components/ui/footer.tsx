@@ -14,7 +14,7 @@ export default function Footer() {
         <nav className="flex flex-wrap items-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-400">
           <Link
             className="hover:text-gray-900 dark:hover:text-gray-200"
-            href="/home"
+            href="#"
           >
             Home
           </Link>
