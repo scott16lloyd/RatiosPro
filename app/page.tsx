@@ -206,7 +206,7 @@ export default function LandingPage() {
             </div> */}
             <Separator className="w-full" />
             <div className="flex flex-col w-full gap-8">
-              <Link href="#">
+              <Link href="/pricing">
                 <div className="flex flex-row w-full justify-between">
                   <span className="text-xl font-white">Pricing</span>
                   <ChevronRight size={32} />
