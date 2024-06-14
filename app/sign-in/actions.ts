@@ -3,11 +3,11 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { createClient } from '@/utils/supabase/supabaseServerClient';
+import { createServerClient } from '@/utils/supabase/supabaseServerClient';
 
 export async function login(formData: FormData) {
   // Supabase client instance
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const data = {
     email: formData.get('email') as string,
@@ -32,7 +32,7 @@ export async function login(formData: FormData) {
 
 export async function signup(formData: FormData) {
   // Supabase client instance
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const data = {
     email: formData.get('email') as string,
