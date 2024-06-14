@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ReactQueryClientProvider } from '@/components/ReactQueryClientProvider';
-import { createServerClient } from '@/utils/supabase/supabaseServerClient';
+import { createClient } from '@/utils/supabase/supabaseServerClient';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,7 +17,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   if (typeof window !== 'undefined') {
     supabase.auth.onAuthStateChange((event, session) => {

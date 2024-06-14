@@ -3,11 +3,11 @@ import { SearchBar } from '@/components/ui/search-bar';
 import { LeftToRightGrid } from '@/components/layouts/left-to-right-grid';
 import { UpDownGrid } from '@/components/layouts/up-down-grid';
 import { redirect } from 'next/navigation';
-import { createServerClient } from '@/utils/supabase/supabaseServerClient';
+import { createClient } from '@/utils/supabase/supabaseServerClient';
 import { getSubscription } from '@/utils/supabase/dbFunctions';
 
 export default async function Home() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const { data, error } = await supabase.auth.getUser();
 

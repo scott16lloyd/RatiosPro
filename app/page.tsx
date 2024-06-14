@@ -11,10 +11,7 @@ import { TracingBeam } from '@/components/ui/tracing-beam';
 import { twMerge } from 'tailwind-merge';
 import { Input } from '@/components/ui/input';
 import ratioUiScreenshot from '/public/ratio-ui-screenshot.png';
-import priceHistoryScreenshot from '/public/price-history-ui.png';
-import searchScreenshot from '/public/search-ui.png';
 import Footer from '@/components/ui/footer';
-import descriptionScreenshot from '/public/description-ui.png';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { addWaitlister } from '@/utils/supabase/dbFunctions';
 
