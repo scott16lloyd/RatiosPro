@@ -6,15 +6,15 @@ import { AlignJustify, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { PricingInfo } from '@/components/ui/pricing-info';
+import Footer from '@/components/ui/footer';
+import { HomeButton } from '@/components/ui/home-button';
 
 export default function Pricing() {
   return (
-    <main className="flex min-h-screen flex-col gap-4 overflow-x-hidden p-2">
+    <main className="flex min-h-screen flex-col gap-4 overflow-x-hidden p-2 items-center">
       <Sheet>
         <div className="w-full flex flex-row justify-between items-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-start text-gradient px-2 lg:p-6">
-            Ratios Pro
-          </h1>
+          <HomeButton />
           <SheetTrigger asChild>
             <AlignJustify className="md:hidden mx-6" size={32} />
           </SheetTrigger>
@@ -92,7 +92,7 @@ export default function Pricing() {
           </div> */}
         </div>
       </Sheet>
-      <div className="flex flex-col px-8 md:px-32">
+      <div className="flex flex-col px-8 md:px-32 gap-2 items-center max-w-[950px]">
         <div className="flex flex-col px-6 gap-4 mb-4">
           <span className="text-4xl lg:text-5xl xl:text-6xl font-bold text-center tracking-wide xl:leading-tight">
             Subscription Pricing
@@ -105,6 +105,7 @@ export default function Pricing() {
         <PricingComponent />
         <PricingInfo />
       </div>
+      <Footer />
     </main>
   );
 }

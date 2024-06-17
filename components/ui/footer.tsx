@@ -27,6 +27,12 @@ export default function Footer() {
           >
             Contact
           </Link>
+          <Link
+            className="hover:text-gray-900 dark:hover:text-gray-200"
+            href="/pricing"
+          >
+            Pricing
+          </Link>
         </nav>
         <p className="text-sm text-gray-500 dark:text-gray-400">
           © 2024 Ratios Pro. All rights reserved.
