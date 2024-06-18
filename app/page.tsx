@@ -14,6 +14,8 @@ import ratioUiScreenshot from '/public/ratio-ui-screenshot.png';
 import Footer from '@/components/ui/footer';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { addWaitlister } from '@/utils/supabase/dbFunctions';
+import { HomeButton } from '@/components/ui/home-button';
+import { PricingComponent } from '@/components/ui/pricing';
 
 export default function LandingPage() {
   const [email, setEmail] = useState('');
@@ -174,9 +176,7 @@ export default function LandingPage() {
     <div className="h-screen w-full flex flex-col items-center md:items-start">
       <Sheet>
         <div className="w-full py-6 flex flex-row justify-between items-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-start text-gradient px-6">
-            Ratios Pro
-          </h1>
+          <HomeButton />
           <SheetTrigger asChild>
             <AlignJustify className="md:hidden mx-6" size={32} />
           </SheetTrigger>
@@ -206,7 +206,7 @@ export default function LandingPage() {
             </div> */}
             <Separator className="w-full" />
             <div className="flex flex-col w-full gap-8">
-              <Link href="#">
+              <Link href="/pricing">
                 <div className="flex flex-row w-full justify-between">
                   <span className="text-xl font-white">Pricing</span>
                   <ChevronRight size={32} />
@@ -369,6 +369,7 @@ export default function LandingPage() {
                 </div>
               </div>
             ))}
+            <PricingComponent />
           </div>
         </TracingBeam>
       </div>
