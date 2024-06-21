@@ -33,6 +33,15 @@ export default function Footer() {
           >
             Pricing
           </Link>
+          <Link
+            className="hover:text-gray-900 dark:hover:text-gray-200"
+            href="#"
+            onClick={() =>
+              (window.location.href = 'mailto:scott16lloyd@gmail.com')
+            }
+          >
+            Request a demo
+          </Link>
         </nav>
         <p className="text-sm text-gray-500 dark:text-gray-400">
           © 2024 Ratios Pro. All rights reserved.
