@@ -15,7 +15,6 @@ export function WaitlisterProfiles() {
           <Image
             src={image}
             alt={`profile-${index}`}
-            fit="cover"
             className="rounded-full"
           />
         </div>
