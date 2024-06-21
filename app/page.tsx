@@ -16,6 +16,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { addWaitlister } from '@/utils/supabase/dbFunctions';
 import { HomeButton } from '@/components/ui/home-button';
 import { PricingComponent } from '@/components/ui/pricing';
+import { WaitlisterProfiles } from '@/components/ui/waitlister-profiles';
 
 export default function LandingPage() {
   const [email, setEmail] = useState('');
@@ -281,8 +282,9 @@ export default function LandingPage() {
         <span className="text-2xl md:text-3xl font-medium text-center">
           Become a waitlister today.
         </span>
+
         {!waitlisted ? (
-          <>
+          <div className="flex flex-col md:flex-row items-center gap-2 p-2">
             <Input
               className="w-72 md:w-96 text-lg xl:text-xl h-12"
               type="email"
@@ -292,7 +294,7 @@ export default function LandingPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            {error && <div className="error-message text-red-500">{error}</div>}
+
             {isLoading ? (
               <Button
                 disabled
@@ -315,13 +317,15 @@ export default function LandingPage() {
                 </span>
               </Button>
             )}
-          </>
+          </div>
         ) : (
           <p className="text-xl text-center px-8">
             🎉 Thank you for joining the waitlist, an email will be sent to you
             soon. 🎉
           </p>
         )}
+        {error && <div className="error-message text-red-500">{error}</div>}
+        <WaitlisterProfiles />
       </form>
 
       <div className="h-min w-full items-center">
@@ -378,8 +382,9 @@ export default function LandingPage() {
         <span className="text-2xl md:text-3xl font-medium text-center">
           Become a waitlister today.
         </span>
+
         {!waitlisted ? (
-          <>
+          <div className="flex flex-col md:flex-row items-center gap-2 p-2">
             <Input
               className="w-72 md:w-96 text-lg xl:text-xl h-12"
               type="email"
@@ -389,7 +394,7 @@ export default function LandingPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            {error && <div className="error-message text-red-500">{error}</div>}
+
             {isLoading ? (
               <Button
                 disabled
@@ -412,13 +417,15 @@ export default function LandingPage() {
                 </span>
               </Button>
             )}
-          </>
+          </div>
         ) : (
           <p className="text-xl text-center px-8">
             🎉 Thank you for joining the waitlist, an email will be sent to you
             soon. 🎉
           </p>
         )}
+        {error && <div className="error-message text-red-500">{error}</div>}
+        <WaitlisterProfiles />
       </form>
       <Footer />
     </div>

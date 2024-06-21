@@ -39,8 +39,8 @@ export function PricingComponent() {
             Search public companies
           </li>
         </ul>
-        <Button disabled className="w-full p-5">
-          <span className="text-white text-xl font-medium">Coming soon</span>
+        <Button disabled className="w-full p-5 cursor-not-allowed">
+          <span className="text-white text-xl font-medium ">Coming soon</span>
         </Button>
       </div>
     </div>
