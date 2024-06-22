@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     url: 'ratiospro.com',
     images: [
       {
-        url: 'https://ratiospro.com/images/ratios-pro-desktop.png',
+        url: '/images/ratios-pro-desktop.png',
         width: 1260,
         height: 800,
       },
