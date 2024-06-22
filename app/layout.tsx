@@ -9,20 +9,21 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'RatiosPro | Financial Ratio Calculator',
-  description: 'A simple UI for calculating financial ratios.',
+  description:
+    'Ratios Pro is a powerful web application designed to assist investors and financial professionals in analyzing stocks by providing essential financial ratios.',
   openGraph: {
     title: 'RatiosPro | Financial Ratio Calculator',
-    description: 'A simple UI for calculating financial ratios.',
+    description:
+      'Ratios Pro is a powerful web application designed to assist investors and financial professionals in analyzing stocks by providing essential financial ratios.',
     url: 'ratiospro.com',
     images: [
       {
         url: '/images/ratios-pro-desktop.png',
-        width: 1260,
-        height: 800,
       },
     ],
     locale: 'en_EN',
     siteName: 'RatiosPro',
+    type: 'website',
   },
 };
 
