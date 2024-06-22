@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ReactQueryClientProvider } from '@/components/ReactQueryClientProvider';
 import { createClient } from '@/utils/supabase/supabaseServerClient';
+import Head from 'next/head';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -40,6 +41,25 @@ export default async function RootLayout({
   return (
     <ReactQueryClientProvider>
       <html lang="en">
+        <Head>
+          <title>RatiosPro | Financial Ratio Calculator</title>
+          <meta
+            name="description"
+            content="A simple UI for calculating financial ratios."
+          />
+          <meta
+            property="og:title"
+            content="RatiosPro | Financial Ratio Calculator"
+          />
+          <meta
+            property="og:description"
+            content="A simple UI for calculating financial ratios."
+          />
+          <meta property="og:image" content="/images/ratios-pro-desktop.png" />
+          <meta property="og:url" content="https://ratiospro.com" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta property="og:type" content="website" />
+        </Head>
         <body className={inter.className}>
           <ThemeProvider
             attribute="class"
