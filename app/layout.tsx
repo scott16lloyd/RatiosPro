@@ -22,7 +22,7 @@ export const metadata: Metadata = {
       },
     ],
     locale: 'en_EN',
-    site_name: 'RatiosPro',
+    siteName: 'RatiosPro',
   },
 };
 
