@@ -8,7 +8,7 @@ import { createClient } from '@/utils/supabase/supabaseServerClient';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  type: 'website'
+  type: 'website',
   title: 'RatiosPro | Financial Ratio Calculator',
   description:
     'Ratios Pro is a powerful web application designed to assist investors and financial professionals in analyzing stocks by providing essential financial ratios.',
@@ -24,7 +24,6 @@ export const metadata: Metadata = {
     ],
     locale: 'en_EN',
     siteName: 'RatiosPro',
-
   },
 };
 
