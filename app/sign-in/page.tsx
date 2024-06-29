@@ -73,7 +73,7 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
         console.log(error);
         toast({
           title: 'Error',
-          description: { error.message },
+          description: error.message,
         });
       }
     } finally {
@@ -111,7 +111,7 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
         console.log(error);
         toast({
           title: 'Error',
-          description: { error.message },
+          description: error.message,
         });
       }
     } finally {
