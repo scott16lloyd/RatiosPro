@@ -240,12 +240,14 @@ export async function getSubscription(userID: string) {
     return { error };
   }
 
-  if (data.length === 0) {
+  if (!data || data.length === 0) {
     // No subscription found for the user
     return { error: 'No subscription found' };
   }
 
-  if (data[0].status === 'active') {
+  const subscription = data[0];
+
+  if (subscription.status === 'active') {
     return true;
   } else {
     return false;
