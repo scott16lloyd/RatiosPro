@@ -69,7 +69,13 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
         }
       }
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        console.log(error);
+        toast({
+          title: 'Error',
+          description: { error.message },
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -105,7 +111,7 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
         console.log(error);
         toast({
           title: 'Error',
-          description: { error },
+          description: { error.message },
         });
       }
     } finally {
