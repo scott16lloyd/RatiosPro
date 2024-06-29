@@ -14,6 +14,7 @@ import { cn } from '@/utils/cn';
 import { useState } from 'react';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { login, signup } from '@/app/sign-in/actions';
+import { useToast } from '@/components/ui/use-toast';
 
 const Highlight = ({
   children,
@@ -35,6 +36,7 @@ const Highlight = ({
 };
 
 export default function SignInPage({ searchParams }: { searchParams: any }) {
+  const { toast } = useToast();
   // Manage form inputs
   const [isSignUp, setIsSignUp] = useState(searchParams.signup);
   const [email, setEmail] = useState('');
@@ -80,39 +82,37 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
     // Clear the error message when the form is submitted
     setError(null);
 
-    setError(
-      'Signup is not currently available, please join the waitlist instead.'
-    );
-    setIsLoading(false);
+    // Uncomment the following lines to display an error message when the user tries to sign up
+    // setError(
+    //   'Signup is not currently available, please join the waitlist instead.'
+    // );
 
     // Commented out and displaying error message until signup is available
-    // const formData = new FormData();
-    // formData.append('email', email);
-    // formData.append('password', password);
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
 
-    // try {
-    //   const { error } = await signup(formData);
-    //   console.log(error);
-    //   if (error) {
-    //     console.log(error);
-    //     if (error === 'Password should be at least 6 characters.') {
-    //       // Handle the custom error
-    //       setError(
-    //         'Password should be at least 6 characters. Please try again.'
-    //       );
-    //     } else if (
-    //       error === 'Unable to validate email address: invalid format'
-    //     ) {
-    //       setError('Invalid email address. Please try again.');
-    //     } else {
-    //       setError('An error occurred during login. Please try again.');
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    try {
+      const { error } = await signup(formData);
+      console.log(error);
+      if (error) {
+        setError(error);
+      } else {
+        setError('An error occurred during login. Please try again.');
+      }
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: 'Error',
+        description: { error },
+      });
+    } finally {
+      toast({
+        title: 'Account created',
+        description: 'Please check your email to verify your account.',
+      });
+      setIsLoading(false);
+    }
   };
 
   const CARDS = [

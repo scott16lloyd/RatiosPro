@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ReactQueryClientProvider } from '@/components/ReactQueryClientProvider';
 import { createClient } from '@/utils/supabase/supabaseServerClient';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -64,6 +65,7 @@ export default async function RootLayout({
           >
             {children}
           </ThemeProvider>
+          <Toaster />
         </body>
       </html>
     </ReactQueryClientProvider>
