@@ -101,11 +101,13 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
         setError('An error occurred during login. Please try again.');
       }
     } catch (error) {
-      console.log(error);
-      toast({
-        title: 'Error',
-        description: { error },
-      });
+      if (error instanceof Error) {
+        console.log(error);
+        toast({
+          title: 'Error',
+          description: { error },
+        });
+      }
     } finally {
       toast({
         title: 'Account created',
