@@ -18,15 +18,12 @@ export async function login(formData: FormData) {
 
   if (error) {
     console.log('error', error);
-
-    if (error) {
-      // Return a plain object with the error message
-      return { error: error.message };
-    }
+    return { error: error.message };
   }
 
   revalidatePath('/', 'layout');
   redirect('/home');
+
   return { error: null };
 }
 
@@ -46,9 +43,12 @@ export async function signup(formData: FormData) {
 
   const { error } = await supabase.auth.signUp(data);
 
-  return { error: error ? error.message : null };
+  if (error) {
+    console.log('error', error);
+    return { error: error.message };
+  }
 
   revalidatePath('/', 'layout');
-  redirect('/home');
+
   return { error: null };
 }
