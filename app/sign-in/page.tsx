@@ -16,6 +16,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { login, signup } from '@/app/sign-in/actions';
 import { useToast } from '@/components/ui/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { set } from 'lodash';
 
 const Highlight = ({
   children,
@@ -97,39 +98,40 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
     setEmailAlert(false);
 
     // Uncomment the following lines to display an error message when the user tries to sign up
-    // setError(
-    //   'Signup is not currently available, please join the waitlist instead.'
-    // );
+    setError(
+      'Signup is not currently available, please join the waitlist instead.'
+    );
+    setIsLoading(false);
 
     // Commented out and displaying error message until signup is available
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('password', password);
+    // const formData = new FormData();
+    // formData.append('email', email);
+    // formData.append('password', password);
 
-    try {
-      const result = await signup(formData);
+    // try {
+    //   const result = await signup(formData);
 
-      if (result && 'error' in result) {
-        const { error } = result;
-        if (error) {
-          console.log(error);
-          setError(error);
-          return error;
-        }
-      }
-      setEmailAlert(true);
-      setError(null);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log(error);
-        toast({
-          title: 'Error',
-          description: error.message,
-        });
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    //   if (result && 'error' in result) {
+    //     const { error } = result;
+    //     if (error) {
+    //       console.log(error);
+    //       setError(error);
+    //       return error;
+    //     }
+    //   }
+    //   setEmailAlert(true);
+    //   setError(null);
+    // } catch (error) {
+    //   if (error instanceof Error) {
+    //     console.log(error);
+    //     toast({
+    //       title: 'Error',
+    //       description: error.message,
+    //     });
+    //   }
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const CARDS = [
