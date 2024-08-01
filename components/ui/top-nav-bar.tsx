@@ -67,9 +67,7 @@ export function TopNavBar() {
                   <span>Liked stocks</span>
                 </Link>
                 <Link
-                  href={
-                    'https://billing.stripe.com/p/login/test_cN2cPhevxcCD6K4eUU'
-                  }
+                  href={'/account'}
                   className="text-md hover:cursor-pointer hover:bg-zinc-700 hover:rounded-[5px] p-1"
                 >
                   <span>Account settings</span>

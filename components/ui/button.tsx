@@ -18,7 +18,7 @@ const buttonVariants = cva(
         secondary:
           'bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-background dark:text-slate-50 dark:hover:bg-secondary',
         ghost:
-          'hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-zinc-900 dark:hover:text-slate-50',
+          'hover:rounded-[5px] p-1 hover:bg-zinc-700 hover:text-slate-900 dark:hover:bg-zinc-700 dark:hover:text-slate-50',
         link: 'text-slate-900 underline-offset-4 hover:underline dark:text-slate-50',
       },
       size: {
