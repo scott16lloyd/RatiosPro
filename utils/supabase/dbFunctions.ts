@@ -271,3 +271,68 @@ export async function addWaitlister(email: string) {
     return {};
   }
 }
+
+export async function updateUserEmail(email: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.updateUser({
+    email: email,
+  });
+
+  // TODO - remove console.log
+  console.log(data);
+
+  if (error) {
+    console.error('Error updating email', error);
+    return { error: error.message };
+  } else {
+    console.log('Email updated successfully');
+    return { error: null };
+  }
+}
+
+export async function updateUsername(username: string) {
+  console.log(username);
+  const supabase = createClient();
+  const { user } = await getuser();
+
+  if (!user) {
+    return [];
+  }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      username: username,
+    })
+    .eq('id', user.id);
+
+  if (error) {
+    console.error('Error updating username', error);
+    return { error: error.message };
+  } else {
+    console.log('Username updated successfully');
+    return { error: null };
+  }
+}
+
+export async function getUsername() {
+  const supabase = createClient();
+  const { user } = await getuser();
+
+  if (!user) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('id', user.id);
+
+  if (error) {
+    console.error('Error getting username', error);
+    return { error: error.message };
+  }
+
+  return data;
+}

@@ -16,7 +16,6 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { login, signup } from '@/app/sign-in/actions';
 import { useToast } from '@/components/ui/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { set } from 'lodash';
 
 const Highlight = ({
   children,
