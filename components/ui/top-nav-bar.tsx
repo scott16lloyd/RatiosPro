@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ProfilePicture } from '@/components/ui/profilePicture';
 import Link from 'next/link';
 import {
   Popover,
@@ -51,11 +51,8 @@ export function TopNavBar() {
           </div>
         </Link>
         <Popover>
-          <PopoverTrigger asChild>
-            <Avatar className="cursor-pointer">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+          <PopoverTrigger>
+            <ProfilePicture />
           </PopoverTrigger>
           <PopoverContent avoidCollisions={true} collisionPadding={10}>
             <div className="flex flex-col w-max h-max justify-evenly">
