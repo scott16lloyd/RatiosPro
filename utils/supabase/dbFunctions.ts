@@ -336,3 +336,21 @@ export async function getUsername() {
 
   return data;
 }
+
+export async function resetPasswordRequest(email: string) {
+  console.log(email);
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: 'localhost:3000' + '/password-reset',
+  });
+
+  if (error) {
+    console.log(error);
+    console.error('Error resetting password', error);
+    return { error: error.message };
+  } else {
+    console.log('Password reset email sent successfully');
+    return { error: null };
+  }
+}

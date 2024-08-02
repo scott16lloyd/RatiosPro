@@ -32,6 +32,7 @@ import {
   getUsername,
 } from '@/utils/supabase/dbFunctions';
 import { useToast } from '@/components/ui/use-toast';
+import Link from 'next/link';
 
 type User = {
   id: string;
@@ -46,6 +47,7 @@ export default function Account() {
   const [newEmail, setNewEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
   const [username, setUsername] = useState('');
+  const [newUsername, setNewUsername] = useState(''); // New state for the input field
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
@@ -123,6 +125,7 @@ export default function Account() {
             description: 'Your username has been updated.',
           });
           setFormSubmitted(true);
+          setUsername(username); // Update the displayed username here
         }
       }
     } catch (error) {
@@ -159,6 +162,7 @@ export default function Account() {
           console.error('Failed to get username:', result.error);
         } else {
           setUsername(result[0]?.username || 'Not set');
+          setNewUsername(result[0]?.username || ''); // Set initial value for the input field
         }
       })
       .catch((error) => {
@@ -182,7 +186,7 @@ export default function Account() {
       </div>
       <div className="flex flex-row mx-auto h-fit w-full rounded-xl bg-secondary p-4 shadow-md items-center gap-4">
         <ProfilePicture />
-        <div className="flex flex-col">
+        <div className="flex flex-col flex-grow">
           <span className="font-medium md:text-xl">
             {username ? username : 'Not logged in'}
           </span>
@@ -192,7 +196,7 @@ export default function Account() {
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="ghost" className="h-full">
+            <Button variant="ghost" className="h-full ml-auto">
               <SquarePen className="h-full" />
             </Button>
           </DialogTrigger>
@@ -264,7 +268,7 @@ export default function Account() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  submitUsername(username);
+                  submitUsername(newUsername);
                 }}
               >
                 <div className="flex flex-row items-center gap-4">
@@ -273,10 +277,10 @@ export default function Account() {
                   </Label>
                   <Input
                     id="username"
-                    defaultValue={user?.email || 'Not logged in'}
+                    defaultValue={username}
                     className="col-span-3 my-2"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
                   />
                 </div>
                 <DialogFooter className="item-end my-2">
@@ -291,16 +295,16 @@ export default function Account() {
       </div>
       <div className="flex flex-row mx-auto w-full rounded-xl bg-secondary p-4 shadow-md items-center gap-2">
         <div className="flex flex-col w-full gap-2">
-          <Button
-            variant="ghost"
-            className="p-0 text-lg font-normal md:text-xl"
+          <Link
+            href={'https://billing.stripe.com/p/login/test_cN2cPhevxcCD6K4eUU'}
+            className="text-lg font-normal hover:bg-zinc-700 hover:rounded-[5px] md:text-xl"
           >
             <div className="relative flex flex-row mx-auto w-full items-center gap-2">
               <CreditCard className="mx-2 h-full" />
               Billing
               <ChevronRight className="absolute right-0 h-full" />
             </div>
-          </Button>
+          </Link>
           <Separator className="w-full" />
           <Button
             variant="ghost"
