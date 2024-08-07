@@ -33,6 +33,7 @@ import {
 } from '@/utils/supabase/dbFunctions';
 import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
+import { PasswordResetPopover } from '@/components/ui/password-reset-popover';
 
 type User = {
   id: string;
@@ -306,16 +307,21 @@ export default function Account() {
             </div>
           </Link>
           <Separator className="w-full" />
-          <Button
-            variant="ghost"
-            className="p-0 text-lg font-normal md:text-xl"
-          >
-            <div className="relative flex flex-row mx-auto w-full items-center gap-2">
-              <Lock className="mx-2 h-full" />
-              Change password
-              <ChevronRight className="absolute right-0 h-full" />
-            </div>
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                className="p-0 text-lg font-normal md:text-xl"
+              >
+                <div className="relative flex flex-row mx-auto w-full items-center gap-2">
+                  <Lock className="mx-2 h-full" />
+                  Change password
+                  <ChevronRight className="absolute right-0 h-full" />
+                </div>
+              </Button>
+            </DialogTrigger>
+            <PasswordResetPopover />
+          </Dialog>
           <Separator className="w-full" />
           <Button
             variant="ghost"
