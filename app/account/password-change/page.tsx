@@ -1,9 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
 import { createLocalClient } from '@/utils/supabase/supabaseClient';
-import { redirect } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { resetPassword } from '@/utils/supabase/dbFunctions';
@@ -16,7 +14,6 @@ export default function ChangePasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState(null);
   const router = useRouter();
   const supabase = createLocalClient();
 
@@ -37,7 +34,6 @@ export default function ChangePasswordPage() {
     confirmPassword: string
   ) => {
     setIsLoading(true);
-    setError(null);
 
     // Check if passwords match
     if (newPassword !== confirmPassword) {
@@ -50,6 +46,7 @@ export default function ChangePasswordPage() {
     }
 
     try {
+      // Reset the user's password after request
       const update = await resetPassword(newPassword);
 
       if (update && 'error' in update) {
@@ -66,9 +63,10 @@ export default function ChangePasswordPage() {
             title: 'Success',
             description: 'Your password has been updated.',
           });
+          // Clear inputs and redirect to sign-in
           setNewPassword('');
           setConfirmPassword('');
-          // setFormSubmitted(true);
+          router.push('/sign-in');
         }
       }
     } catch (error) {
@@ -92,15 +90,23 @@ export default function ChangePasswordPage() {
           <h1 className="text-xl md:text-2xl">Change password</h1>
         </div>
       </div>
-      <div className="flex flex-col mx-auto h-fit w-full rounded-xl bg-secondary p-4 shadow-md items-center gap-4">
+      <form
+        className="flex flex-col mx-auto h-fit w-full rounded-xl bg-secondary p-4 shadow-md items-center gap-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          submitPasswordUpdate(newPassword, confirmPassword);
+        }}
+      >
         <div className="flex flex-col gap-4 w-full">
           <Label htmlFor="password" className="text-sm">
             New password
           </Label>
           <Input
             type="password"
-            id="password"
-            name="password"
+            id="new-password"
+            name="new-password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
             className="w-full p-2 rounded-md border border-gray-300"
           />
         </div>
@@ -112,11 +118,15 @@ export default function ChangePasswordPage() {
             type="password"
             id="confirm-password"
             name="confirm-password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-full p-2 rounded-md border border-gray-300"
           />
         </div>
-        <Button className="w-full">Change password</Button>
-      </div>
+        <Button className="w-full" type="submit" disabled={isLoading}>
+          {isLoading ? 'Submitting...' : 'Change password'}
+        </Button>
+      </form>
     </main>
   );
 }

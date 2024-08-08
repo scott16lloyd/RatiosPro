@@ -48,15 +48,13 @@ export default function Account() {
   const [newEmail, setNewEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
   const [username, setUsername] = useState('');
-  const [newUsername, setNewUsername] = useState(''); // New state for the input field
-  const [error, setError] = useState<string | null>(null);
+  const [newUsername, setNewUsername] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
 
   const submitEmail = async (email: string, confirmEmail: string) => {
     setIsLoading(true);
-    setError(null);
 
+    // Check if emails match
     if (email !== confirmEmail) {
       toast({
         title: 'Error',
@@ -67,6 +65,7 @@ export default function Account() {
     }
 
     try {
+      // Send email request change
       const update = await updateUserEmail(email);
 
       if (update && 'error' in update) {
@@ -85,7 +84,6 @@ export default function Account() {
           });
           setNewEmail('');
           setConfirmEmail('');
-          setFormSubmitted(true);
         }
       }
     } catch (error) {
@@ -103,12 +101,10 @@ export default function Account() {
   };
 
   const submitUsername = async (username: string) => {
-    console.log(username);
-    console.log('CALLED');
     setIsLoading(true);
-    setError(null);
 
     try {
+      // Update username
       const update = await updateUsername(username);
 
       if (update && 'error' in update) {
@@ -125,8 +121,7 @@ export default function Account() {
             title: 'Success',
             description: 'Your username has been updated.',
           });
-          setFormSubmitted(true);
-          setUsername(username); // Update the displayed username here
+          setUsername(username);
         }
       }
     } catch (error) {
@@ -143,6 +138,7 @@ export default function Account() {
     }
   };
 
+  // Get user's id, email, and role
   useEffect(() => {
     getuser()
       .then((userObject) =>
@@ -163,7 +159,7 @@ export default function Account() {
           console.error('Failed to get username:', result.error);
         } else {
           setUsername(result[0]?.username || 'Not set');
-          setNewUsername(result[0]?.username || ''); // Set initial value for the input field
+          setNewUsername(result[0]?.username || '');
         }
       })
       .catch((error) => {
@@ -187,17 +183,17 @@ export default function Account() {
       </div>
       <div className="flex flex-row mx-auto h-fit w-full rounded-xl bg-secondary p-4 shadow-md items-center gap-4">
         <ProfilePicture />
-        <div className="flex flex-col flex-grow">
-          <span className="font-medium md:text-xl">
+        <div className="flex flex-col overflow-hidden">
+          <span className="font-medium md:text-xl whitespace-nowrap overflow-hidden text-ellipsis">
             {username ? username : 'Not logged in'}
           </span>
-          <span className="font-light md:text-xl">
+          <span className="font-light md:text-xl overflow-hidden text-ellipsis">
             {user?.email ? user?.email : 'Not logged in'}
           </span>
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="ghost" className="h-full ml-auto">
+            <Button variant="ghost" className="h-full ml-auto flex-shrink-0">
               <SquarePen className="h-full" />
             </Button>
           </DialogTrigger>

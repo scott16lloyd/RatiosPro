@@ -338,7 +338,7 @@ export async function getUsername() {
 }
 
 export async function resetPasswordRequest(email: string) {
-  console.log(email);
+  // Sends an email with password reset URL
   const supabase = createClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {

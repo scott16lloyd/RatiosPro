@@ -15,7 +15,6 @@ export function PasswordResetPopover() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
-  const [error, setError] = useState(null);
 
   const validateEmail = (email: string) => {
     // Simple email validation regex
@@ -25,7 +24,6 @@ export function PasswordResetPopover() {
 
   const submitEmail = async (email: string) => {
     setIsLoading(true);
-    setError(null);
 
     // Validate email
     if (!validateEmail(email)) {
@@ -37,6 +35,7 @@ export function PasswordResetPopover() {
     }
 
     try {
+      // Request password reset via email
       const request = await resetPasswordRequest(email);
 
       if (request && 'error' in request) {
