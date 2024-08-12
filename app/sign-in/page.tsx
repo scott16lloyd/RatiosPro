@@ -16,7 +16,8 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { login, signup } from '@/app/sign-in/actions';
 import { useToast } from '@/components/ui/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { set } from 'lodash';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { PasswordResetPopover } from '@/components/ui/password-reset-popover';
 
 const Highlight = ({
   children,
@@ -302,7 +303,7 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
                     </span>
                   </Button>
                 )}
-                <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md mb-24">
+                <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md">
                   {!isSignUp
                     ? 'Don’t have an account?'
                     : 'Already have an account?'}
@@ -317,6 +318,14 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
                     {!isSignUp ? 'Sign Up Now' : 'Sign in'}
                   </Link>
                 </span>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <span className="text-zinc-500 font-light text-center text-xs md:text-sm lg:text-md underline hover:cursor-pointer">
+                      Forgot password
+                    </span>
+                  </DialogTrigger>
+                  <PasswordResetPopover />
+                </Dialog>
               </div>
             </form>
             <div className="flex flex-col h-full justify-end">

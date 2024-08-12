@@ -271,3 +271,116 @@ export async function addWaitlister(email: string) {
     return {};
   }
 }
+
+export async function updateUserEmail(email: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.updateUser({
+    email: email,
+  });
+
+  // TODO - remove console.log
+  console.log(data);
+
+  if (error) {
+    console.error('Error updating email', error);
+    return { error: error.message };
+  } else {
+    console.log('Email updated successfully');
+    return { error: null };
+  }
+}
+
+export async function updateUsername(username: string) {
+  console.log(username);
+  const supabase = createClient();
+  const { user } = await getuser();
+
+  if (!user) {
+    return [];
+  }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      username: username,
+    })
+    .eq('id', user.id);
+
+  if (error) {
+    console.error('Error updating username', error);
+    return { error: error.message };
+  } else {
+    console.log('Username updated successfully');
+    return { error: null };
+  }
+}
+
+export async function getUsername() {
+  const supabase = createClient();
+  const { user } = await getuser();
+
+  if (!user) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('id', user.id);
+
+  if (error) {
+    console.error('Error getting username', error);
+    return { error: error.message };
+  }
+
+  return data;
+}
+
+export async function resetPasswordRequest(email: string) {
+  // Sends an email with password reset URL
+  const supabase = createClient();
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: 'localhost:3000' + 'account/password-change',
+  });
+
+  if (error) {
+    console.log(error);
+    console.error('Error requesting password reset', error);
+    return { error: error.message };
+  } else {
+    console.log('Password request sent successfully.');
+    return { error: null };
+  }
+}
+
+export async function resetPassword(password: string) {
+  // Takes the new password and updates the user's password
+  const supabase = createClient();
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    console.log(error);
+    console.error('Error resetting password.', error);
+    return { error: error.message };
+  } else {
+    console.log('Password reset succesfully.');
+    return { error: null };
+  }
+}
+
+export async function inviteUser(email: string) {
+  // Sends an invite to the email provided
+  const supabase = createServiceClient();
+
+  const { error } = await supabase.auth.admin.inviteUserByEmail(email);
+
+  if (error) {
+    console.error('Error inviting user', error);
+    return { error: error.message };
+  } else {
+    console.log('User invited successfully');
+    return { error: null };
+  }
+}

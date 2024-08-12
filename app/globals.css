@@ -81,6 +81,21 @@
   }
 }
 
+.icon-danger-gradient {
+  mask-image: linear-gradient(
+    90deg,
+    hsla(0, 100%, 50%, 1),
+    hsla(0, 100%, 37%, 1)
+  );
+  mask-size: 100%;
+  mask-repeat: no-repeat;
+  background: none;
+  -webkit-mask-composite: source-in;
+  mask-composite: source-in;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
