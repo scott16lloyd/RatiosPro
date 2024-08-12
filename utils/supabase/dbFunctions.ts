@@ -369,3 +369,18 @@ export async function resetPassword(password: string) {
     return { error: null };
   }
 }
+
+export async function inviteUser(email: string) {
+  // Sends an invite to the email provided
+  const supabase = createServiceClient();
+
+  const { error } = await supabase.auth.admin.inviteUserByEmail(email);
+
+  if (error) {
+    console.error('Error inviting user', error);
+    return { error: error.message };
+  } else {
+    console.log('User invited successfully');
+    return { error: null };
+  }
+}

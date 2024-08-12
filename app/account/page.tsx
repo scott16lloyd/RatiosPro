@@ -34,6 +34,9 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import { PasswordResetPopover } from '@/components/ui/password-reset-popover';
+import { InviteUserPopover } from '@/components/ui/inviteUserPopover';
+import { signout } from '@/utils/supabase/dbFunctions';
+import { createClient } from '@/utils/supabase/supabaseServerClient';
 
 type User = {
   id: string;
@@ -319,22 +322,28 @@ export default function Account() {
             <PasswordResetPopover />
           </Dialog>
           <Separator className="w-full" />
-          <Button
-            variant="ghost"
-            className="p-0 text-lg font-normal md:text-xl"
-          >
-            <div className="relative flex flex-row w-full items-center gap-2">
-              <Mail className="mx-2 h-full" />
-              Invite friends
-              <ChevronRight className="absolute right-0 h-full" />
-            </div>
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                className="p-0 text-lg font-normal md:text-xl"
+              >
+                <div className="relative flex flex-row w-full items-center gap-2">
+                  <Mail className="mx-2 h-full" />
+                  Invite friends
+                  <ChevronRight className="absolute right-0 h-full" />
+                </div>
+              </Button>
+            </DialogTrigger>
+            <InviteUserPopover />
+          </Dialog>
         </div>
       </div>
       <div className="flex flex-row mx-auto w-full rounded-xl bg-secondary p-4 shadow-md items-center gap-2">
         <Button
           variant="ghost"
           className="p-0 text-lg font-normal w-full md:text-xl"
+          onClick={() => signout()}
         >
           <div className="relative flex flex-row w-full items-center gap-2">
             <span className="text-red-500 mx-2 h-full">
