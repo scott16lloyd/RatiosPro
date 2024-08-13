@@ -62,6 +62,7 @@ export default function Account() {
       toast({
         title: 'Error',
         description: 'The email addresses do not match. Please try again.',
+        variant: 'destructive',
       });
       setIsLoading(false);
       return;
@@ -83,7 +84,10 @@ export default function Account() {
         } else {
           toast({
             title: 'Success',
-            description: 'Your email has been updated.',
+            description:
+              'Email change request sent. Please check your inbox for ' +
+              email +
+              '.',
           });
           setNewEmail('');
           setConfirmEmail('');
@@ -321,7 +325,8 @@ export default function Account() {
             </DialogTrigger>
             <PasswordResetPopover />
           </Dialog>
-          <Separator className="w-full" />
+          {/* Archived feature for later */}
+          {/* <Separator className="w-full" />
           <Dialog>
             <DialogTrigger asChild>
               <Button
@@ -336,7 +341,7 @@ export default function Account() {
               </Button>
             </DialogTrigger>
             <InviteUserPopover />
-          </Dialog>
+          </Dialog> */}
         </div>
       </div>
       <div className="flex flex-row mx-auto w-full rounded-xl bg-secondary p-4 shadow-md items-center gap-2">
