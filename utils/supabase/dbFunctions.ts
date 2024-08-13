@@ -374,7 +374,9 @@ export async function inviteUser(email: string) {
   // Sends an invite to the email provided
   const supabase = createServiceClient();
 
-  const { error } = await supabase.auth.admin.inviteUserByEmail(email);
+  const { error } = await supabase.auth.admin.inviteUserByEmail(email, {
+    redirectTo: 'http://localhost:3000/set-password', //Redirects to a set password page
+  });
 
   if (error) {
     console.error('Error inviting user', error);
