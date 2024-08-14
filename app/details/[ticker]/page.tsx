@@ -11,6 +11,7 @@ import { LikeButton } from '@/components/like-button';
 import { useEffect, useState } from 'react';
 import { checkLikedStock } from '@/utils/supabase/dbFunctions';
 import Chatbot from '@/components/ui/chatbot';
+import { createLocalClient } from '@/utils/supabase/supabaseClient';
 
 export default function DetailsPage({
   params,
@@ -20,7 +21,7 @@ export default function DetailsPage({
   const symbol = params.ticker;
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const supabase = createLocalClient();
   const title = searchParams.get('name');
 
   // Define query options
@@ -49,6 +50,18 @@ export default function DetailsPage({
 
   const [isLoading, setIsLoading] = useState(false);
   const [isHeartFilled, setIsHeartFilled] = useState(false);
+
+  // Check if user is logged in and subscribed
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data, error: getUserError } = await supabase.auth.getUser();
+      if (getUserError || !data?.user) {
+        console.log(getUserError);
+        router.push('/sign-in');
+      }
+    };
+    fetchUser();
+  }, []);
 
   // Check if stock is liked
   useEffect(() => {
