@@ -10,9 +10,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useEffect, useState } from 'react';
-import { getuser } from '@/utils/supabase/dbFunctions';
+import { getuser, getUsername, signout } from '@/utils/supabase/dbFunctions';
 import { User } from 'lucide-react';
-import { signout } from '@/utils/supabase/dbFunctions';
 
 type User = {
   id: string;
@@ -22,6 +21,7 @@ type User = {
 
 export function TopNavBar() {
   const [user, setUser] = useState<User | null>(null);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     getuser()
@@ -34,6 +34,19 @@ export function TopNavBar() {
       )
       .catch((error) => {
         console.error('Failed to fetch user:', error);
+      });
+
+    // Fetch username
+    getUsername()
+      .then((result) => {
+        if ('error' in result) {
+          console.error('Failed to get username:', result.error);
+        } else {
+          setUsername(result[0]?.full_name || 'Not set');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching username:', error);
       });
   }, []);
 
@@ -55,11 +68,15 @@ export function TopNavBar() {
             <ProfilePicture />
           </PopoverTrigger>
           <PopoverContent avoidCollisions={true} collisionPadding={10}>
-            <div className="flex flex-col w-max h-max justify-evenly">
+            <div className="flex flex-col max-w-64 h-max justify-evenly overflow-hidden">
+              <span className="font-medium md:text-xl whitespace-nowrap overflow-hidden text-ellipsis">
+                {username ? username : 'Not logged in'}
+              </span>
+              <span className="text-md whitespace-nowrap overflow-hidden text-ellipsis">
+                {user?.email ? user?.email : 'Not logged in'}
+              </span>
+              <Separator className="w-full h-0.5 my-2" />
               <div className="w-full h-full flex flex-col gap-1 justify-between">
-                <span className="text-md hover:cursor-pointer hover:bg-zinc-700 hover:rounded-[5px] p-1">
-                  {user?.email ? user?.email : 'Not logged in'}
-                </span>
                 <Link
                   href={'/view-all/liked'}
                   className="text-md hover:cursor-pointer hover:bg-zinc-700 hover:rounded-[5px] p-1"
@@ -74,7 +91,11 @@ export function TopNavBar() {
                 </Link>
               </div>
               <Separator className="w-full h-0.5 my-2" />
-              <Button variant="link" onClick={() => signout()}>
+              <Button
+                variant="link"
+                onClick={() => signout()}
+                className="text-md"
+              >
                 Sign out
               </Button>
             </div>
