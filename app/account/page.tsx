@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import {
   ArrowLeft,
   CreditCard,
-  Mail,
   SquarePen,
   Lock,
   ChevronRight,
@@ -34,9 +33,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import { PasswordResetPopover } from '@/components/ui/password-reset-popover';
-import { InviteUserPopover } from '@/components/ui/inviteUserPopover';
 import { signout } from '@/utils/supabase/dbFunctions';
-import { createClient } from '@/utils/supabase/supabaseServerClient';
 
 type User = {
   id: string;
@@ -165,8 +162,8 @@ export default function Account() {
         if ('error' in result) {
           console.error('Failed to get username:', result.error);
         } else {
-          setUsername(result[0]?.username || 'Not set');
-          setNewUsername(result[0]?.username || '');
+          setUsername(result[0]?.full_name || 'Not set');
+          setNewUsername(result[0]?.full_name || '');
         }
       })
       .catch((error) => {

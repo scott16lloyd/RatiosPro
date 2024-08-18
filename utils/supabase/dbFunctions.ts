@@ -279,9 +279,6 @@ export async function updateUserEmail(email: string) {
     email: email,
   });
 
-  // TODO - remove console.log
-  console.log(data);
-
   if (error) {
     console.error('Error updating email', error);
     return { error: error.message };
@@ -303,7 +300,7 @@ export async function updateUsername(username: string) {
   const { error } = await supabase
     .from('profiles')
     .update({
-      username: username,
+      full_name: username,
     })
     .eq('id', user.id);
 
@@ -326,7 +323,7 @@ export async function getUsername() {
 
   const { data, error } = await supabase
     .from('profiles')
-    .select('username')
+    .select('full_name')
     .eq('id', user.id);
 
   if (error) {
@@ -342,7 +339,8 @@ export async function resetPasswordRequest(email: string) {
   const supabase = createClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: 'localhost:3000' + 'account/password-change',
+    redirectTo:
+      process.env.NEXT_PUBLIC_REDIRECT_URL + '/account/password-change',
   });
 
   if (error) {
@@ -375,7 +373,7 @@ export async function inviteUser(email: string) {
   const supabase = createServiceClient();
 
   const { error } = await supabase.auth.admin.inviteUserByEmail(email, {
-    redirectTo: 'http://localhost:3000/set-password', //Redirects to a set password page
+    redirectTo: process.env.NEXT_PUBLIC_REDIRECT_URL + '/set-password', //Redirects to a set password page
   });
 
   if (error) {

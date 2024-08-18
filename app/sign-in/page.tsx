@@ -44,9 +44,12 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
   const [isSignUp, setIsSignUp] = useState(searchParams.signup);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [emailAlert, setEmailAlert] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   // Handle form submission
   const handleLogin = async (e: { preventDefault: () => void }) => {
@@ -105,34 +108,52 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
     setIsLoading(false);
 
     // Commented out and displaying error message until signup is available
-    // const formData = new FormData();
-    // formData.append('email', email);
-    // formData.append('password', password);
+    //   const formData = new FormData();
+    //   formData.append('email', email);
+    //   formData.append('password', password);
+    //   formData.append('full_name', `${firstName} ${lastName}`);
 
-    // try {
-    //   const result = await signup(formData);
-
-    //   if (result && 'error' in result) {
-    //     const { error } = result;
-    //     if (error) {
-    //       console.log(error);
-    //       setError(error);
-    //       return error;
-    //     }
-    //   }
-    //   setEmailAlert(true);
-    //   setError(null);
-    // } catch (error) {
-    //   if (error instanceof Error) {
-    //     console.log(error);
+    //   // Check if passwords match
+    //   if (password !== confirmPassword) {
     //     toast({
     //       title: 'Error',
-    //       description: error.message,
+    //       description: 'The passwords do not match. Please try again.',
+    //       variant: 'destructive',
     //     });
+    //     setIsLoading(false);
+    //     return;
     //   }
-    // } finally {
-    //   setIsLoading(false);
-    // }
+
+    //   try {
+    //     const result = await signup(formData);
+
+    //     if (result && 'error' in result) {
+    //       const { error } = result;
+    //       if (error) {
+    //         console.log(error);
+    //         setError(error);
+    //         return error;
+    //       }
+    //     }
+    //     setEmailAlert(true);
+    //     // Clear the form inputs
+    //     setFirstName('');
+    //     setLastName('');
+    //     setEmail('');
+    //     setPassword('');
+    //     setConfirmPassword('');
+    //     setError(null);
+    //   } catch (error) {
+    //     if (error instanceof Error) {
+    //       console.log(error);
+    //       toast({
+    //         title: 'Error',
+    //         description: error.message,
+    //       });
+    //     }
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
   };
 
   const CARDS = [
@@ -246,7 +267,53 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
               </div>
             </div>
             <form>
-              <div className="flex flex-col flex-grow-2 gap-4 w-full">
+              <div className="flex flex-col flex-grow-2 gap-2 w-full">
+                <div className="flex flex-row w-full items-center gap-1.5">
+                  {isSignUp ? (
+                    <div className="grid w-full items-center gap-1.5">
+                      <Label
+                        htmlFor="firstName"
+                        className="text-zinc-500 font-light md:text-sm lg:text-md"
+                      >
+                        First name
+                      </Label>
+                      <Input
+                        type="text"
+                        id="firstName"
+                        placeholder="First name"
+                        name="firstName"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                        className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
+                      />
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                  {isSignUp ? (
+                    <div className="grid w-full items-center gap-1.5">
+                      <Label
+                        htmlFor="lastName"
+                        className="text-zinc-500 font-light md:text-sm lg:text-md"
+                      >
+                        Last name
+                      </Label>
+                      <Input
+                        type="text"
+                        id="lastName"
+                        placeholder="Last name"
+                        name="lastName"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        required
+                        className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
+                      />
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                </div>
                 <div className="grid w-full items-center gap-1.5">
                   <Label
                     htmlFor="email"
@@ -283,6 +350,28 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
                     className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
                   />
                 </div>
+                {isSignUp ? (
+                  <div className="grid w-full items-center gap-1.5">
+                    <Label
+                      htmlFor="password"
+                      className="text-zinc-500 font-light md:text-sm lg:text-md"
+                    >
+                      Confirm password
+                    </Label>
+                    <Input
+                      type="password"
+                      placeholder="Confirm password"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      className="rounded-sm py-5 w-full dark:border-zinc-700 dark:border-1 md:text-md lg:text-lg"
+                    />
+                  </div>
+                ) : (
+                  ''
+                )}
                 {error && (
                   <div className="error-message text-red-500">{error}</div>
                 )}
@@ -295,7 +384,7 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
                   </Button>
                 ) : (
                   <Button
-                    className="p-5"
+                    className="p-5 mt-2"
                     onClick={!isSignUp ? handleLogin : handleSignup}
                   >
                     <span className="text-white md:text-lg lg:text-xl">
