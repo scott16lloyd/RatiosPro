@@ -223,10 +223,10 @@ export function SmallResultBox({
         </Drawer>
       </div>
       <div className="flex flex-row justify-center items-center h-full w-full">
-        <div className="flex flex-row lg:gap-2">
+        <div className="flex flex-row flex-wrap justify-center lg:gap-2">
           <div className="flex flex-col items-center md:gap-1">
             <span
-              className={`text-1.5xl md:text-5xl font-bold ${prevValueColor}`}
+              className={`text-1.5xl md:text-3xl lg:text-5xl font-bold ${prevValueColor}`}
             >
               {prevValue ? prevValue : 'null'}
             </span>
@@ -237,11 +237,14 @@ export function SmallResultBox({
           <div className="border-l border-white h-8 md:h-12 mx-2"></div>
           <div className="flex flex-col items-center md:gap-1">
             <span
-              className={`text-1.5xl md:text-5xl font-bold ${currValueColor}`}
+              className={`text-1.5xl md:text-3xl lg:text-5xl font-bold ${currValueColor}`}
             >
               {currValue ? currValue : 'null'}
             </span>
-            <span className="text-xxs md:text-sm xl:text-md lg:text-lg font-extralight">
+            <span
+              id="curr-value"
+              className="text-xxs md:text-sm xl:text-md lg:text-lg font-extralight"
+            >
               {currYear ? currYear : 'null'}
             </span>
           </div>
