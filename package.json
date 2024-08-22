@@ -62,8 +62,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@tanstack/eslint-plugin-query": "^5.18.0",
-    "@types/jquery": "^3.5.30",
+    "@tanstack/eslint-plugin-query": "^4.38.0",
     "@types/lodash": "^4.17.0",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -71,7 +70,7 @@
     "autoprefixer": "^10.0.1",
     "drizzle-kit": "^0.20.14",
     "eslint": "^8",
-    "eslint-config-next": "^14.2.3",
+    "eslint-config-next": "^0.2.4",
     "postcss": "^8",
     "react-heart": "^1.0.6",
     "supabase": "^1.165.0",
