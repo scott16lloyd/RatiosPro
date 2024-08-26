@@ -63,7 +63,7 @@ export default function resultGridLayout({ data }: ResultGridLayoutProps) {
   }));
   return (
     <div className="w-11/12 h-full flex items-center justify-center pt-4 pb-4">
-      <div className="grid grid-cols-customSmall md:grid-cols-custom gap-2 md:gap-4 w-[1000px] mx-auto auto-rows-min">
+      <div className="grid grid-cols-customSmall md:grid-cols-custom gap-2 md:gap-4 w-[1000px] auto-rows-min">
         {roundedData[0].currentRatio && roundedData[1].currentRatio ? (
           <SmallResultBox
             ratioName="CR"
