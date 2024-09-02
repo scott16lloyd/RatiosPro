@@ -21,26 +21,22 @@ export function SmallBentoBox({
 }: SmallBentoBoxProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isHeartFilled, setIsHeartFilled] = useState(false);
+
   useEffect(() => {
     const checkIfLiked = async () => {
       setIsLoading(true);
-      // Check if the value is in the localStorage
-      const likedInStorage = localStorage.getItem(`liked-${symbol}`) as string;
-
-      let isLiked = JSON.parse(likedInStorage);
-
-      if (isLiked === null) {
-        isLiked = await checkLikedStock(symbol);
-        localStorage.setItem(`liked-${symbol}`, JSON.stringify(isLiked));
+      try {
+        const isLiked = await checkLikedStock(symbol);
+        setIsHeartFilled(isLiked || false);
+      } catch (error) {
+        console.error('Error checking liked stock:', error);
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsHeartFilled(isLiked);
-      // Delay the loading state due to issue with state change
-      setTimeout(() => setIsLoading(false), 1000);
     };
 
     checkIfLiked();
-  }, [symbol, isHeartFilled, setIsHeartFilled]);
+  }, [symbol]);
 
   return isLoading ? (
     <div className="p-1 sm:w-32 md:w-52 sm:h-24 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48">
