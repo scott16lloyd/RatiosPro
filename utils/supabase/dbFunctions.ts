@@ -19,7 +19,7 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    console.log(error);
+    console.error(error);
     return error.message;
   } else {
     supabase.auth.refreshSession();
@@ -41,7 +41,6 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    console.log(error);
     return error.message;
   }
 
@@ -55,7 +54,7 @@ export async function signout() {
 
   const { error } = await supabase.auth.signOut();
   if (error) {
-    console.log(error);
+    console.error(error);
   }
   revalidatePath('/', 'layout');
   redirect('/sign-in');
@@ -83,7 +82,6 @@ export async function addLikedStock(
   const supabase = createClient();
 
   const { user } = await getuser();
-  console.log(user);
 
   if (!user) {
     throw new Error('User not found');
@@ -154,7 +152,6 @@ export async function getUsersLikedStocks() {
   if (!user) {
     return [];
   }
-  console.log(user);
 
   const { data, error } = await supabase
     .from('liked_stocks')
@@ -172,8 +169,6 @@ export async function updateUserSubscription(
   userID: string | null,
   subscriptionId: string | stripe.Subscription | null
 ) {
-  console.log('updateUserSubscription');
-
   const supabase = createClient();
 
   const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
@@ -207,7 +202,6 @@ export async function updateUserSubscription(
     console.error('Error inserting data:', error);
     return { error };
   } else {
-    console.log('Data inserted successfully!');
     return {};
   }
 }
@@ -224,7 +218,6 @@ export async function removeUserSubscription(stripeCustomerID: string) {
     console.error('Error removing user subscription', error);
     return { error };
   } else {
-    console.log('User subscription updated successfully!');
     return {};
   }
 }
@@ -269,7 +262,6 @@ export async function addWaitlister(email: string) {
     console.error('Error adding to waitlist', error);
     return { error: error.message };
   } else {
-    console.log('Added to waitlist successfully');
     return {};
   }
 }
@@ -285,13 +277,11 @@ export async function updateUserEmail(email: string) {
     console.error('Error updating email', error);
     return { error: error.message };
   } else {
-    console.log('Email updated successfully');
     return { error: null };
   }
 }
 
 export async function updateUsername(username: string) {
-  console.log(username);
   const supabase = createClient();
   const { user } = await getuser();
 
@@ -310,7 +300,6 @@ export async function updateUsername(username: string) {
     console.error('Error updating username', error);
     return { error: error.message };
   } else {
-    console.log('Username updated successfully');
     return { error: null };
   }
 }
@@ -346,11 +335,10 @@ export async function resetPasswordRequest(email: string) {
   });
 
   if (error) {
-    console.log(error);
+    console.error(error);
     console.error('Error requesting password reset', error);
     return { error: error.message };
   } else {
-    console.log('Password request sent successfully.');
     return { error: null };
   }
 }
@@ -361,11 +349,10 @@ export async function resetPassword(password: string) {
   const { error } = await supabase.auth.updateUser({ password });
 
   if (error) {
-    console.log(error);
+    console.error(error);
     console.error('Error resetting password.', error);
     return { error: error.message };
   } else {
-    console.log('Password reset succesfully.');
     return { error: null };
   }
 }
@@ -382,7 +369,6 @@ export async function inviteUser(email: string) {
     console.error('Error inviting user', error);
     return { error: error.message };
   } else {
-    console.log('User invited successfully');
     return { error: null };
   }
 }

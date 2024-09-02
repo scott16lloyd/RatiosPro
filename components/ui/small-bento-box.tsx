@@ -3,11 +3,7 @@ import Link from 'next/link';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { LikeButton } from '@/components/like-button';
 import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
-import {
-  checkLikedStock,
-  addLikedStock,
-  removeLikedStock,
-} from '@/utils/supabase/dbFunctions';
+import { checkLikedStock } from '@/utils/supabase/dbFunctions';
 import { useState, useEffect } from 'react';
 
 interface SmallBentoBoxProps {

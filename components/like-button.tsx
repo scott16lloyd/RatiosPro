@@ -27,12 +27,11 @@ export function LikeButton({
     event.preventDefault();
     event.stopPropagation();
 
-    // Update local storage
-    localStorage.setItem(`liked-${symbol}`, JSON.stringify(!isHeartFilled));
-    // Update component state
-    setIsHeartFilled(!isHeartFilled);
-
     try {
+      // Update component state
+      setIsHeartFilled(!isHeartFilled);
+      // Update local storage
+      localStorage.setItem(`liked-${symbol}`, JSON.stringify(!isHeartFilled));
       if (!isHeartFilled) {
         await addLikedStock(symbol, name, price, changesPercentage);
       } else {
