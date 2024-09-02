@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 export default function LikedPage() {
   const fetchLikedStocks = async () => {
     const likedStocks = await getUsersLikedStocks();
+    console.log(likedStocks);
     return likedStocks;
   };
   const { isLoading, error, data } = useQuery({

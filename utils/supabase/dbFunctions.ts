@@ -83,6 +83,7 @@ export async function addLikedStock(
   const supabase = createClient();
 
   const { user } = await getuser();
+  console.log(user);
 
   if (!user) {
     throw new Error('User not found');
@@ -153,6 +154,7 @@ export async function getUsersLikedStocks() {
   if (!user) {
     return [];
   }
+  console.log(user);
 
   const { data, error } = await supabase
     .from('liked_stocks')
