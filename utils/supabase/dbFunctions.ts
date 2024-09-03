@@ -122,7 +122,9 @@ export async function removeLikedStock(stockName: string) {
   }
 }
 
-export async function checkLikedStock(stockName: string) {
+const inMemoryCache: Record<string, string[]> = {};
+
+export async function checkLikedStock(stockName: string): Promise<boolean> {
   const supabase = createClient();
   const { user } = await getuser();
 
@@ -130,19 +132,40 @@ export async function checkLikedStock(stockName: string) {
     throw new Error('User not found');
   }
 
-  const { data, error } = await supabase
-    .from('liked_stocks')
-    .select('stock_symbol')
-    .eq('user_id', user.id)
-    .eq('stock_symbol', stockName);
+  // Determine if localStorage is available (i.e., running in a browser environment)
+  const isBrowser =
+    typeof window !== 'undefined' && typeof localStorage !== 'undefined';
 
-  if (error) {
-    console.error(error);
+  const cacheKey = `liked_stocks_${user.id}`;
+  let likedStocks: string[] | null = null;
+
+  if (isBrowser) {
+    likedStocks = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+  } else {
+    likedStocks = inMemoryCache[cacheKey] || null;
   }
 
-  if (data) {
-    return data.length > 0; // returns true if the user has liked the stock
+  if (!likedStocks) {
+    const { data, error } = await supabase
+      .from('liked_stocks')
+      .select('stock_symbol')
+      .eq('user_id', user.id);
+
+    if (error) {
+      console.error(error);
+      return false;
+    }
+
+    likedStocks = data.map((stock) => stock.stock_symbol);
+
+    if (isBrowser) {
+      localStorage.setItem(cacheKey, JSON.stringify(likedStocks));
+    } else {
+      inMemoryCache[cacheKey] = likedStocks; // No error here since likedStocks is now string[]
+    }
   }
+
+  return likedStocks.includes(stockName);
 }
 
 export async function getUsersLikedStocks() {

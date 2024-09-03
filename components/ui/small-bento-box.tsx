@@ -2,7 +2,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { LikeButton } from '@/components/like-button';
-import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
 import { checkLikedStock } from '@/utils/supabase/dbFunctions';
 import { useState, useEffect } from 'react';
 
@@ -38,11 +37,7 @@ export function SmallBentoBox({
     checkIfLiked();
   }, [symbol]);
 
-  return isLoading ? (
-    <div className="p-1 sm:w-32 md:w-52 sm:h-24 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48">
-      <BentoSkeleton />
-    </div>
-  ) : (
+  return (
     <Link href={{ pathname: `/details/${symbol}`, query: { name } }}>
       <Card className="sm:w-32 smd:w-40 md:w-52 sm:h-24 smd:h-28 md:h-36 lg:w-72 lg:h-44 xl:w-80 xl:h-48 border-none py-1 px-2 md:p-4 noselect ring-zinc-700 ring-1">
         <CardContent className="p-0 h-full flex flex-col justify-evenly lg:gap-1">
