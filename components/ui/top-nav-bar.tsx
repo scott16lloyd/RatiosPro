@@ -65,7 +65,7 @@ export function TopNavBar() {
         </Link>
         <Popover>
           <PopoverTrigger>
-            <ProfilePicture />
+            <ProfilePicture username={username} />
           </PopoverTrigger>
           <PopoverContent avoidCollisions={true} collisionPadding={10}>
             <div className="flex flex-col max-w-64 h-max justify-evenly overflow-hidden">

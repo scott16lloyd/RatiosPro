@@ -105,9 +105,58 @@ export default function Account() {
   };
 
   const submitUsername = async (username: string) => {
-    setIsLoading(true);
+    // Check if username is empty
+    if (!username) {
+      toast({
+        title: 'Error',
+        description: 'Username cannot be empty.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Check if username is too short
+    if (username.length < 2) {
+      toast({
+        title: 'Error',
+        description: 'Username must be at least 3 characters long.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Check if username is too long
+    if (username.length > 50) {
+      toast({
+        title: 'Error',
+        description: 'Username must be less than 50 characters long.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Check if username has special characters
+    if (!/^[a-zA-Z0-9_ ]*$/.test(username)) {
+      toast({
+        title: 'Error',
+        description: 'Username must not contain special characters.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Make sure username is 2 words or less
+    if (username.split(' ').length > 2) {
+      toast({
+        title: 'Error',
+        description: 'Username must be 2 words or less.',
+        variant: 'destructive',
+      });
+      return;
+    }
 
     try {
+      setIsLoading(true);
       // Update username
       const update = await updateUsername(username);
 
@@ -186,7 +235,7 @@ export default function Account() {
         </div>
       </div>
       <div className="flex flex-row mx-auto h-fit w-full rounded-xl bg-secondary p-4 shadow-md items-center gap-4">
-        <ProfilePicture />
+        <ProfilePicture username={username} />
         <div className="flex flex-col overflow-hidden">
           <span className="font-medium md:text-xl whitespace-nowrap overflow-hidden text-ellipsis">
             {username ? username : 'Not logged in'}
