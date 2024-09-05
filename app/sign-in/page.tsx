@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { CardStack } from '@/components/ui/card-stack';
 import { cn } from '@/utils/cn';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { login, signup } from '@/app/sign-in/actions';
 import { useToast } from '@/components/ui/use-toast';
@@ -70,23 +70,32 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
       if (result && 'error' in result) {
         const { error } = result;
         if (error) {
-          console.log(error);
+          console.error(error);
           if (error === 'Invalid login credentials') {
             // Handle the custom error
-            setError('Invalid login credentials. Please try again.');
+            toast({
+              title: 'Error',
+              description: 'Invalid login credentials. Please try again.',
+              variant: 'destructive',
+            });
           } else {
-            setError('An error occurred during login. Please try again.');
+            toast({
+              title: 'Error',
+              description: 'An error occurred during login. Please try again.',
+              variant: 'destructive',
+            });
           }
         }
       }
     } catch (error) {
-      console.log('Error during login:', error);
+      console.error('Error during login:', error);
       toast({
         title: 'Error',
         description:
           error instanceof Error
             ? error.message
             : 'An unexpected error occurred.',
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -102,59 +111,69 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
     setEmailAlert(false);
 
     // Uncomment the following lines to display an error message when the user tries to sign up
-    setError(
-      'Signup is not currently available, please join the waitlist instead.'
-    );
-    setIsLoading(false);
+    // setError(
+    //   'Signup is not currently available, please join the waitlist instead.'
+    // );
+    // setIsLoading(false);
 
     // Commented out and displaying error message until signup is available
-    //   const formData = new FormData();
-    //   formData.append('email', email);
-    //   formData.append('password', password);
-    //   formData.append('full_name', `${firstName} ${lastName}`);
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('full_name', `${firstName} ${lastName}`);
 
-    //   // Check if passwords match
-    //   if (password !== confirmPassword) {
-    //     toast({
-    //       title: 'Error',
-    //       description: 'The passwords do not match. Please try again.',
-    //       variant: 'destructive',
-    //     });
-    //     setIsLoading(false);
-    //     return;
-    //   }
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      toast({
+        title: 'Error',
+        description: 'The passwords do not match. Please try again.',
+        variant: 'destructive',
+      });
+      setIsLoading(false);
+      return;
+    }
 
-    //   try {
-    //     const result = await signup(formData);
+    try {
+      const result = await signup(formData);
 
-    //     if (result && 'error' in result) {
-    //       const { error } = result;
-    //       if (error) {
-    //         console.log(error);
-    //         setError(error);
-    //         return error;
-    //       }
-    //     }
-    //     setEmailAlert(true);
-    //     // Clear the form inputs
-    //     setFirstName('');
-    //     setLastName('');
-    //     setEmail('');
-    //     setPassword('');
-    //     setConfirmPassword('');
-    //     setError(null);
-    //   } catch (error) {
-    //     if (error instanceof Error) {
-    //       console.log(error);
-    //       toast({
-    //         title: 'Error',
-    //         description: error.message,
-    //       });
-    //     }
-    //   } finally {
-    //     setIsLoading(false);
-    //   }
+      if (result && 'error' in result) {
+        console.log(result);
+        const { error } = result;
+        console.log(error);
+        toast({
+          title: 'Error',
+          description: error,
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      setEmailAlert(true);
+      // Clear the form inputs
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setError(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error);
+        toast({
+          title: 'Error',
+          description: error.message,
+          variant: 'destructive',
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  // Remove error messages if user changes from sign up to sign in or vice versa
+  useEffect(() => {
+    setError(null);
+  }, [isSignUp]);
 
   const CARDS = [
     {

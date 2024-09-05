@@ -188,7 +188,7 @@ export default function LandingPage() {
               </h1>
             </div>
             {/* Commented out until signup is available */}
-            {/* <div className="flex flex-row gap-8">
+            <div className="flex flex-row gap-8">
               <Link href={'/sign-in'}>
                 <Button className="relative inline-flex w-32 h-12 overflow-hidden p-[1px] outline-none">
                   <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
@@ -204,7 +204,7 @@ export default function LandingPage() {
                   </span>
                 </Button>
               </Link>
-            </div> */}
+            </div>
             <Separator className="w-full" />
             <div className="flex flex-col w-full gap-8">
               <Link href="/pricing">
@@ -229,7 +229,7 @@ export default function LandingPage() {
             </div>
           </SheetContent>
           {/* Commented out until signup is available */}
-          {/* <div className="hidden md:flex flex-row gap-4 px-6">
+          <div className="hidden md:flex flex-row gap-4 px-6">
             <Link
               href={{
                 pathname: '/sign-in',
@@ -252,7 +252,7 @@ export default function LandingPage() {
                 </span>
               </Button>
             </Link>
-          </div> */}
+          </div>
         </div>
       </Sheet>
       <div className="w-full flex flex-row items-center md:pt-4 justify-between pb-6 md:pb-10">

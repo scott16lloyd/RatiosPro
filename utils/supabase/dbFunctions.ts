@@ -3,7 +3,6 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseServerClient';
-import { createLocalClient } from '@/utils/supabase/supabaseClient';
 import { createServiceClient } from '@/utils/supabase/supabaseServiceClient';
 import stripe from 'stripe';
 
@@ -64,13 +63,34 @@ export async function signout() {
 export async function getuser() {
   const supabase = createClient();
 
-  const { data, error } = await supabase.auth.getUser();
+  const { data: userData, error } = await supabase.auth.getUser();
+  console.log(userData.user?.id);
+
+  // Check if the user is a beta user
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('beta_user')
+    .eq('id', userData.user?.id) // Filter by user ID
+    .single(); // Ensure we only get one record
+
+  if (profileError) {
+    console.error(profileError);
+    redirect('/sign-in');
+  }
+
+  console.log(profileData);
+
+  if (!profileData.beta_user) {
+    redirect('/error');
+  }
+
+  console.log(profileData);
 
   if (error) {
     console.error(error);
     redirect('/sign-in');
   } else {
-    return data;
+    return userData;
   }
 }
 

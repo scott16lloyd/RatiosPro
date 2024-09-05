@@ -34,6 +34,7 @@ export async function signup(formData: FormData) {
   const { error: sessionError } = await supabase.auth.getSession();
 
   if (sessionError) {
+    console.log(sessionError);
     return { error: sessionError.message };
   }
 
@@ -47,8 +48,17 @@ export async function signup(formData: FormData) {
     },
   });
 
+  if (
+    formData.get('full_name') === null ||
+    formData.get('email') === '' ||
+    formData.get('password') === ''
+  ) {
+    console.log(1);
+    return { error: 'Please fill out all fields' };
+  }
+
   if (error) {
-    console.error(error);
+    console.log(error);
     return { error: error.message };
   }
 
