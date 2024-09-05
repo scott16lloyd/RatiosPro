@@ -22,19 +22,24 @@ export function SmallBentoBox({
   const [isHeartFilled, setIsHeartFilled] = useState(false);
 
   useEffect(() => {
-    const checkIfLiked = async () => {
-      setIsLoading(true);
-      try {
-        const isLiked = await checkLikedStock(symbol);
-        setIsHeartFilled(isLiked || false);
-      } catch (error) {
-        console.error('Error checking liked stock:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    const cachedLikedStatus = localStorage.getItem(`liked_${symbol}`);
+    if (cachedLikedStatus !== null) {
+      setIsHeartFilled(cachedLikedStatus === 'true');
+    } else {
+      const checkIfLiked = async () => {
+        // setIsLoading(true);
+        try {
+          const isLiked = await checkLikedStock(symbol);
+          setIsHeartFilled(isLiked || false);
 
-    checkIfLiked();
+          // Also cache the result in localStorage
+          localStorage.setItem(`liked_${symbol}`, isLiked ? 'true' : 'false');
+        } catch (error) {
+          console.error('Error checking liked stock:', error);
+        }
+      };
+      checkIfLiked();
+    }
   }, [symbol]);
 
   return (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { addLikedStock, removeLikedStock } from '@/utils/supabase/dbFunctions';
 import { useQueryClient } from '@tanstack/react-query';
@@ -23,24 +23,38 @@ export function LikeButton({
   const [isHeartFilled, setIsHeartFilled] = useState(isHeartFilledProp);
   const queryClient = useQueryClient();
 
+  // Sync the `isHeartFilled` state with the prop
+  useEffect(() => {
+    setIsHeartFilled(isHeartFilledProp);
+  }, [isHeartFilledProp]);
+
   const handleHeartClick = async (event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
 
+    // Store the previous state in case we need to revert on failure
+    const previousState = isHeartFilled;
+
+    // Optimistically update the UI
+    setIsHeartFilled(!isHeartFilled);
+
     try {
-      // Update component state
-      setIsHeartFilled(!isHeartFilled);
-      // Update local storage
-      localStorage.setItem(`liked-${symbol}`, JSON.stringify(!isHeartFilled));
+      // Update the cache
+      localStorage.setItem(
+        `liked_${symbol}`,
+        !isHeartFilled ? 'true' : 'false'
+      );
       if (!isHeartFilled) {
         await addLikedStock(symbol, name, price, changesPercentage);
       } else {
         await removeLikedStock(symbol);
       }
+      // Invalidate any queries related to the liked stocks
       queryClient.invalidateQueries({ queryKey: ['likedStocks'] });
     } catch (error) {
-      // If the operation fails, revert the changes and show an error message
-      setIsHeartFilled(!isHeartFilled);
+      // Revert the state if the operation fails
+      setIsHeartFilled(previousState);
+      localStorage.setItem(`liked_${symbol}`, previousState ? 'true' : 'false');
       console.error(error);
     }
   };

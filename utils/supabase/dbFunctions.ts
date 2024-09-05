@@ -19,7 +19,7 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    console.error(error);
+    console.log(error);
     return error.message;
   } else {
     supabase.auth.refreshSession();
@@ -41,6 +41,7 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
+    console.log(error);
     return error.message;
   }
 
@@ -54,7 +55,7 @@ export async function signout() {
 
   const { error } = await supabase.auth.signOut();
   if (error) {
-    console.error(error);
+    console.log(error);
   }
   revalidatePath('/', 'layout');
   redirect('/sign-in');
@@ -82,6 +83,7 @@ export async function addLikedStock(
   const supabase = createClient();
 
   const { user } = await getuser();
+  console.log(user);
 
   if (!user) {
     throw new Error('User not found');
@@ -122,9 +124,7 @@ export async function removeLikedStock(stockName: string) {
   }
 }
 
-const inMemoryCache: Record<string, string[]> = {};
-
-export async function checkLikedStock(stockName: string): Promise<boolean> {
+export async function checkLikedStock(stockName: string) {
   const supabase = createClient();
   const { user } = await getuser();
 
@@ -132,40 +132,19 @@ export async function checkLikedStock(stockName: string): Promise<boolean> {
     throw new Error('User not found');
   }
 
-  // Determine if localStorage is available (i.e., running in a browser environment)
-  const isBrowser =
-    typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+  const { data, error } = await supabase
+    .from('liked_stocks')
+    .select('stock_symbol')
+    .eq('user_id', user.id)
+    .eq('stock_symbol', stockName);
 
-  const cacheKey = `liked_stocks_${user.id}`;
-  let likedStocks: string[] | null = null;
-
-  if (isBrowser) {
-    likedStocks = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-  } else {
-    likedStocks = inMemoryCache[cacheKey] || null;
+  if (error) {
+    console.error(error);
   }
 
-  if (!likedStocks) {
-    const { data, error } = await supabase
-      .from('liked_stocks')
-      .select('stock_symbol')
-      .eq('user_id', user.id);
-
-    if (error) {
-      console.error(error);
-      return false;
-    }
-
-    likedStocks = data.map((stock) => stock.stock_symbol);
-
-    if (isBrowser) {
-      localStorage.setItem(cacheKey, JSON.stringify(likedStocks));
-    } else {
-      inMemoryCache[cacheKey] = likedStocks; // No error here since likedStocks is now string[]
-    }
+  if (data) {
+    return data.length > 0; // returns true if the user has liked the stock
   }
-
-  return likedStocks.includes(stockName);
 }
 
 export async function getUsersLikedStocks() {
@@ -175,6 +154,7 @@ export async function getUsersLikedStocks() {
   if (!user) {
     return [];
   }
+  console.log(user);
 
   const { data, error } = await supabase
     .from('liked_stocks')
@@ -192,6 +172,8 @@ export async function updateUserSubscription(
   userID: string | null,
   subscriptionId: string | stripe.Subscription | null
 ) {
+  console.log('updateUserSubscription');
+
   const supabase = createClient();
 
   const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY!);
@@ -225,6 +207,7 @@ export async function updateUserSubscription(
     console.error('Error inserting data:', error);
     return { error };
   } else {
+    console.log('Data inserted successfully!');
     return {};
   }
 }
@@ -241,6 +224,7 @@ export async function removeUserSubscription(stripeCustomerID: string) {
     console.error('Error removing user subscription', error);
     return { error };
   } else {
+    console.log('User subscription updated successfully!');
     return {};
   }
 }
@@ -285,6 +269,7 @@ export async function addWaitlister(email: string) {
     console.error('Error adding to waitlist', error);
     return { error: error.message };
   } else {
+    console.log('Added to waitlist successfully');
     return {};
   }
 }
@@ -300,11 +285,13 @@ export async function updateUserEmail(email: string) {
     console.error('Error updating email', error);
     return { error: error.message };
   } else {
+    console.log('Email updated successfully');
     return { error: null };
   }
 }
 
 export async function updateUsername(username: string) {
+  console.log(username);
   const supabase = createClient();
   const { user } = await getuser();
 
@@ -323,6 +310,7 @@ export async function updateUsername(username: string) {
     console.error('Error updating username', error);
     return { error: error.message };
   } else {
+    console.log('Username updated successfully');
     return { error: null };
   }
 }
@@ -358,10 +346,11 @@ export async function resetPasswordRequest(email: string) {
   });
 
   if (error) {
-    console.error(error);
+    console.log(error);
     console.error('Error requesting password reset', error);
     return { error: error.message };
   } else {
+    console.log('Password request sent successfully.');
     return { error: null };
   }
 }
@@ -372,10 +361,11 @@ export async function resetPassword(password: string) {
   const { error } = await supabase.auth.updateUser({ password });
 
   if (error) {
-    console.error(error);
+    console.log(error);
     console.error('Error resetting password.', error);
     return { error: error.message };
   } else {
+    console.log('Password reset succesfully.');
     return { error: null };
   }
 }
@@ -392,6 +382,7 @@ export async function inviteUser(email: string) {
     console.error('Error inviting user', error);
     return { error: error.message };
   } else {
+    console.log('User invited successfully');
     return { error: null };
   }
 }
