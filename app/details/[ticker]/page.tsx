@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { checkLikedStock } from '@/utils/supabase/dbFunctions';
 import Chatbot from '@/components/ui/chatbot';
 import { createLocalClient } from '@/utils/supabase/supabaseClient';
+import { TopNavBar } from '@/components/ui/top-nav-bar';
 
 export default function DetailsPage({
   params,
@@ -98,11 +99,7 @@ export default function DetailsPage({
   ) : (
     <>
       <div className="w-full h-screen flex flex-col justify-start">
-        <div className="w-full flex justify-start p-4">
-          <Button size="icon" variant="secondary" onClick={() => router.back()}>
-            <ArrowLeft />
-          </Button>
-        </div>
+        <TopNavBar />
         <div className="flex flex-col items-center justify-center px-6 lg:gap-4">
           <h1 className="text-lg md:text-xl lg:text-2xl font-semibold truncate text-wrap text-center">
             {title}
