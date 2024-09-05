@@ -14,7 +14,6 @@ import {
 import { BentoSkeleton } from '@/components/ui/skeletons/bento-skeleton';
 import { fetchBiggestGainers, fetchMostPopular } from '@/hooks/index';
 import { createContext } from 'react';
-
 interface StockData {
   symbol: string;
   name: string;
@@ -24,19 +23,15 @@ interface StockData {
 
 export function LeftToRightGrid({
   title,
-  fetchType,
+  isLoading,
+  error,
+  data,
 }: {
   title: string;
-  fetchType: string;
+  isLoading: boolean;
+  error: Error | null;
+  data: any;
 }) {
-  const fetchFunction =
-    fetchType === 'Biggest Gainers' ? fetchBiggestGainers : fetchMostPopular;
-
-  const { isLoading, error, data } = useQuery({
-    queryKey: [title],
-    queryFn: fetchFunction,
-  });
-
   const StockNameContext = createContext('No title');
 
   return (

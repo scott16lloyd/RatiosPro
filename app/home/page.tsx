@@ -1,10 +1,10 @@
 import { TopNavBar } from '@/components/ui/top-nav-bar';
 import { SearchBar } from '@/components/ui/search-bar';
-import { LeftToRightGrid } from '@/components/layouts/left-to-right-grid';
 import { UpDownGrid } from '@/components/layouts/up-down-grid';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseServerClient';
 import { getSubscription } from '@/utils/supabase/dbFunctions';
+import { RowContainer } from '@/components/layouts/row-container';
 
 export default async function Home() {
   const supabase = createClient();
@@ -26,8 +26,7 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col items-center md:gap-4 overflow-x-hidden">
       <TopNavBar />
       <SearchBar />
-      <LeftToRightGrid title="Biggest Gainers" fetchType="Biggest Gainers" />
-      <LeftToRightGrid title="Trending" fetchType="Trending" />
+      <RowContainer />
       <UpDownGrid title="Discover" />
     </main>
   );
