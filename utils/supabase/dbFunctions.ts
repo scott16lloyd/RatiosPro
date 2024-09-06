@@ -65,12 +65,17 @@ export async function getuser() {
 
   const { data: userData, error } = await supabase.auth.getUser();
 
+  if (error) {
+    console.error(error);
+    redirect('/sign-in');
+  }
+
   // Check if the user is a beta user
   const { data: profileData, error: profileError } = await supabase
     .from('profiles')
     .select('beta_user')
-    .eq('id', userData.user?.id) // Filter by user ID
-    .single(); // Ensure we only get one record
+    .eq('id', userData.user?.id)
+    .single();
 
   if (profileError) {
     console.error(profileError);
@@ -80,13 +85,7 @@ export async function getuser() {
   if (!profileData.beta_user) {
     redirect('/error');
   }
-
-  if (error) {
-    console.error(error);
-    redirect('/sign-in');
-  } else {
-    return userData;
-  }
+  return userData;
 }
 
 export async function addLikedStock(
