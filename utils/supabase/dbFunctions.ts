@@ -3,7 +3,6 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/supabaseServerClient';
-import { createLocalClient } from '@/utils/supabase/supabaseClient';
 import { createServiceClient } from '@/utils/supabase/supabaseServiceClient';
 import stripe from 'stripe';
 
@@ -64,13 +63,29 @@ export async function signout() {
 export async function getuser() {
   const supabase = createClient();
 
-  const { data, error } = await supabase.auth.getUser();
+  const { data: userData, error } = await supabase.auth.getUser();
+
+  // Check if the user is a beta user
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('beta_user')
+    .eq('id', userData.user?.id) // Filter by user ID
+    .single(); // Ensure we only get one record
+
+  if (profileError) {
+    console.error(profileError);
+    redirect('/sign-in');
+  }
+
+  if (!profileData.beta_user) {
+    redirect('/error');
+  }
 
   if (error) {
     console.error(error);
     redirect('/sign-in');
   } else {
-    return data;
+    return userData;
   }
 }
 
@@ -83,13 +98,12 @@ export async function addLikedStock(
   const supabase = createClient();
 
   const { user } = await getuser();
-  console.log(user);
 
   if (!user) {
     throw new Error('User not found');
   }
 
-  const { data, error } = await supabase.from('liked_stocks').insert([
+  const { error } = await supabase.from('liked_stocks').insert([
     {
       user_id: user.id,
       stock_symbol: stock_symbol,

@@ -31,13 +31,7 @@ export async function signup(formData: FormData) {
   // Supabase client instance
   const supabase = createClient();
 
-  const { error: sessionError } = await supabase.auth.getSession();
-
-  if (sessionError) {
-    return { error: sessionError.message };
-  }
-
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: formData.get('email') as string,
     password: formData.get('password') as string,
     options: {
@@ -47,12 +41,17 @@ export async function signup(formData: FormData) {
     },
   });
 
+  // Check if there was an error during signup
   if (error) {
-    console.error(error);
-    return { error: error.message };
+    return { error: error.message || 'Unknown error occurred' }; // Handle null message
   }
 
-  revalidatePath('/', 'layout');
+  // Check if user data is returned (i.e., signup was successful)
+  if (data && data.user) {
+    revalidatePath('/', 'layout');
+    return { error: null }; // No error, signup was successful
+  }
 
-  return { error: null };
+  // If no user data and no error, return a generic error message
+  return { error: 'Signup failed for unknown reasons' };
 }
