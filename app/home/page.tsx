@@ -2,23 +2,18 @@ import { TopNavBar } from '@/components/ui/top-nav-bar';
 import { SearchBar } from '@/components/ui/search-bar';
 import { UpDownGrid } from '@/components/layouts/up-down-grid';
 import { redirect } from 'next/navigation';
-import { createClient } from '@/utils/supabase/supabaseServerClient';
 import { getSubscription } from '@/utils/supabase/dbFunctions';
 import { RowContainer } from '@/components/layouts/row-container';
+import { getuser } from '@/utils/supabase/dbFunctions';
 
 export default async function Home() {
-  const supabase = createClient();
+  const user = await getuser();
 
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error || !data?.user) {
-    console.log(error);
-    redirect('/sign-in');
-  } else {
-    const isSubscribed = await getSubscription(data.user.id);
+  if (user) {
+    const isSubscribed = await getSubscription(user.user.id);
 
     if (!isSubscribed) {
-      redirect('/subscribe');
+      return redirect('/subscribe');
     }
   }
 
