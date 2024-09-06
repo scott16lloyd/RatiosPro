@@ -110,17 +110,16 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
     setError(null);
     setEmailAlert(false);
 
-    // Uncomment the following lines to display an error message when the user tries to sign up
-    // setError(
-    //   'Signup is not currently available, please join the waitlist instead.'
-    // );
-    // setIsLoading(false);
-
-    // Commented out and displaying error message until signup is available
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('password', password);
-    formData.append('full_name', `${firstName} ${lastName}`);
+    // Validation checks before signup
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      toast({
+        title: 'Error',
+        description: 'All fields are required. Please fill them out.',
+        variant: 'destructive',
+      });
+      setIsLoading(false);
+      return;
+    }
 
     // Check if passwords match
     if (password !== confirmPassword) {
@@ -133,21 +132,32 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
       return;
     }
 
+    // Commented out and displaying error message until signup is available
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('full_name', `${firstName} ${lastName}`);
+
     try {
       const result = await signup(formData);
 
-      if (result && 'error' in result) {
-        console.log(result);
-        const { error } = result;
-        console.log(error);
+      // Handle any error returned from the signup function
+      if (result && result.error) {
+        console.log(result.error);
         toast({
           title: 'Error',
-          description: error,
+          description: result.error,
           variant: 'destructive',
         });
         return;
       }
 
+      // Show success message and clear form fields
+      toast({
+        title: 'Success',
+        description:
+          'Account created successfully. Please check your email to verify.',
+      });
       setEmailAlert(true);
       // Clear the form inputs
       setFirstName('');
