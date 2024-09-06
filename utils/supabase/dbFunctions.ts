@@ -64,7 +64,6 @@ export async function getuser() {
   const supabase = createClient();
 
   const { data: userData, error } = await supabase.auth.getUser();
-  console.log(userData.user?.id);
 
   // Check if the user is a beta user
   const { data: profileData, error: profileError } = await supabase
@@ -78,13 +77,9 @@ export async function getuser() {
     redirect('/sign-in');
   }
 
-  console.log(profileData);
-
   if (!profileData.beta_user) {
     redirect('/error');
   }
-
-  console.log(profileData);
 
   if (error) {
     console.error(error);
@@ -103,13 +98,12 @@ export async function addLikedStock(
   const supabase = createClient();
 
   const { user } = await getuser();
-  console.log(user);
 
   if (!user) {
     throw new Error('User not found');
   }
 
-  const { data, error } = await supabase.from('liked_stocks').insert([
+  const { error } = await supabase.from('liked_stocks').insert([
     {
       user_id: user.id,
       stock_symbol: stock_symbol,

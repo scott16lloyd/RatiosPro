@@ -43,13 +43,11 @@ export async function signup(formData: FormData) {
 
   // Check if there was an error during signup
   if (error) {
-    console.log('Signup error:', error);
     return { error: error.message || 'Unknown error occurred' }; // Handle null message
   }
 
   // Check if user data is returned (i.e., signup was successful)
   if (data && data.user) {
-    console.log('Signup successful:', data.user);
     revalidatePath('/', 'layout');
     return { error: null }; // No error, signup was successful
   }

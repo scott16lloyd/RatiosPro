@@ -143,7 +143,6 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
 
       // Handle any error returned from the signup function
       if (result && result.error) {
-        console.log(result.error);
         toast({
           title: 'Error',
           description: result.error,
@@ -151,13 +150,6 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
         });
         return;
       }
-
-      // Show success message and clear form fields
-      toast({
-        title: 'Success',
-        description:
-          'Account created successfully. Please check your email to verify.',
-      });
       setEmailAlert(true);
       // Clear the form inputs
       setFirstName('');
