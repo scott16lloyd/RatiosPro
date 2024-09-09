@@ -1,9 +1,8 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-
 import { createClient } from '@/utils/supabase/supabaseServerClient';
+import { redirect } from 'next/navigation';
 
 export async function login(formData: FormData) {
   // Supabase client instance
@@ -72,7 +71,6 @@ export async function googleLogin() {
     },
   });
 
-  console.log(data);
   if (data.url) {
     console.log(data.url);
     redirect(data.url); // use the redirect API for your server framework
