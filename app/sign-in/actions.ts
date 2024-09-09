@@ -55,3 +55,26 @@ export async function signup(formData: FormData) {
   // If no user data and no error, return a generic error message
   return { error: 'Signup failed for unknown reasons' };
 }
+
+// Google OAuth login
+export async function googleLogin() {
+  // Supabase client instance
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_REDIRECT_URL}/home`,
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      },
+    },
+  });
+
+  console.log(data);
+  if (data.url) {
+    console.log(data.url);
+    redirect(data.url); // use the redirect API for your server framework
+  }
+}

@@ -13,7 +13,7 @@ import { CardStack } from '@/components/ui/card-stack';
 import { cn } from '@/utils/cn';
 import { useState, useEffect } from 'react';
 import { ReloadIcon } from '@radix-ui/react-icons';
-import { login, signup } from '@/app/sign-in/actions';
+import { login, signup, googleLogin } from '@/app/sign-in/actions';
 import { useToast } from '@/components/ui/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
@@ -263,6 +263,7 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
                 <Button
                   variant="outline"
                   className="w-full p-5 bg-background ring-zinc-700 ring-1 border-none rounded-sm"
+                  onClick={() => googleLogin()}
                 >
                   <div className="flex items-center space-x-2">
                     <div className="relative w-6 h-6">
