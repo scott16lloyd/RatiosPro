@@ -72,7 +72,6 @@ export async function googleLogin() {
   });
 
   if (data.url) {
-    console.log(data.url);
     redirect(data.url); // use the redirect API for your server framework
   }
 }
