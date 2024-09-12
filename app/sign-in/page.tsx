@@ -3,7 +3,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import appleIcon from '@/public/appleIcon.png';
 import googleIcon from '@/public/googleIcon.png';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
@@ -242,24 +241,6 @@ export default function SignInPage({ searchParams }: { searchParams: any }) {
                 </span>
               </div>
               <div className="w-full flex flex-col gap-4 h-full justify-evenly">
-                <Button
-                  variant="outline"
-                  className="w-full p-5 bg-background ring-zinc-700 ring-1 border-none rounded-sm"
-                >
-                  <div className="flex items-center space-x-2">
-                    <div className="relative w-6 h-6">
-                      <Image
-                        src={appleIcon}
-                        alt="Apple Login"
-                        layout="fill"
-                        objectFit="contain"
-                      />{' '}
-                    </div>
-                    <span className="text-lg md:text-xl lg:text-2xl font-light">
-                      Apple
-                    </span>
-                  </div>
-                </Button>
                 <Button
                   variant="outline"
                   className="w-full p-5 bg-background ring-zinc-700 ring-1 border-none rounded-sm"
