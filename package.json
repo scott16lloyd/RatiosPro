@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.13",
+    "@next-auth/supabase-adapter": "^0.2.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -41,6 +42,7 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.309.0",
     "next": "^14.1.4",
+    "next-auth": "^4.24.7",
     "next-themes": "^0.2.1",
     "openai": "^4.47.1",
     "postgres": "^3.4.4",
@@ -73,7 +75,7 @@
     "eslint-config-next": "^0.2.4",
     "postcss": "^8",
     "react-heart": "^1.0.6",
-    "supabase": "^1.165.0",
+    "supabase": "^1.192.5",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
