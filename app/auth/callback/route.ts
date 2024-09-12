@@ -6,25 +6,26 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   // if "next" is in param, use it as the redirect URL
-  const next = searchParams.get('next') ?? '/';
+  const next = searchParams.get('next') ?? '/home';
 
   if (code) {
     const supabase = createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      const forwardedHost = request.headers.get('x-forwarded-host'); // original origin before load balancer
-      const isLocalEnv = process.env.NODE_ENV === 'development';
-      if (isLocalEnv) {
-        console.log(origin);
-        // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        return NextResponse.redirect(`${origin}${next}/home`);
-      } else if (forwardedHost) {
-        console.log('FORWARDED HOST: ' + forwardedHost);
-        return NextResponse.redirect(`https://${forwardedHost}${next}/home`);
-      } else {
-        return NextResponse.redirect(`${origin}${next}/home`);
-      }
+      // Determine the origin (ratiospro.com or localhost)
+      const origin =
+        process.env.NODE_ENV === 'development'
+          ? 'http://localhost:3000'
+          : process.env.NEXT_PUBLIC_SITE_URL || 'https://ratiospro.com'; // Fallback to hardcoded production URL if env var is missing
+
+      // Redirect to '/home' by default, unless 'next' is provided
+      return NextResponse.redirect(`${origin}${next}`);
     }
+
+    // Handle error: redirect to auth error page
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/auth/auth-code-error`
+    );
   }
 
   // return the user to an error page with instructions
