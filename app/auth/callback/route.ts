@@ -16,13 +16,13 @@ export async function GET(request: Request) {
       const origin =
         process.env.NODE_ENV === 'development'
           ? 'http://localhost:3000'
-          : process.env.NEXT_PUBLIC_SITE_URL + '/home';
+          : process.env.NEXT_PUBLIC_REDIRECT_URL;
 
       return NextResponse.redirect(`${origin}${next}/home`);
     }
 
     return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/auth/auth-code-error`
+      `${process.env.NEXT_PUBLIC_REDIRECT_URL}/auth/auth-code-error`
     );
   }
 
