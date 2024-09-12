@@ -75,7 +75,7 @@
     "eslint-config-next": "^0.2.4",
     "postcss": "^8",
     "react-heart": "^1.0.6",
-    "supabase": "^1.165.0",
+    "supabase": "^1.192.5",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
