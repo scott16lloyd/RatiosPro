@@ -12,19 +12,20 @@ export async function GET(request: Request) {
     const supabase = createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      const forwardedHost = request.headers.get('x-forwarded-host'); // original origin before load balancer
-      const isLocalEnv = process.env.NODE_ENV === 'development';
-      if (isLocalEnv) {
-        // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        return NextResponse.redirect(`${origin}${next}/home`);
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}/home`);
-      } else {
-        return NextResponse.redirect(`${origin}${next}/home`);
-      }
+      // Fallback to NEXT_PUBLIC_SITE_URL in production
+      const origin =
+        process.env.NODE_ENV === 'development'
+          ? 'http://localhost:3000'
+          : process.env.NEXT_PUBLIC_SITE_URL + '/home';
+
+      return NextResponse.redirect(`${origin}${next}/home`);
     }
+
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/auth/auth-code-error`
+    );
   }
 
-  // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+  // // return the user to an error page with instructions
+  // return NextResponse.redirect(`${origin}/auth/auth-code-error`);
 }
