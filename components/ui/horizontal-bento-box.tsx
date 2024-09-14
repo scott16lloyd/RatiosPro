@@ -19,18 +19,20 @@ export function HorizontalBentoBox({
   const isIndustry = typeof industryOrChange === 'string';
   return (
     <Link href={{ pathname: `/details/${symbol}`, query: { name } }}>
-      <Card className="snap-start w-auto sm:h-24 md:h-32 lg:h-40 border-none p-1 noselect flex items-center ring-zinc-700 ring-1">
+      <Card className="snap-start w-full sm:h-24 md:h-32 lg:h-40 border-none p-1 noselect flex items-center ring-zinc-700 ring-1">
         <CardContent className="p-2 md:p-4 lg:p-6 xl:p-8 flex justify-between items-center w-full">
-          <div className="flex justify-center content-start flex-col gap-2 max-w-44 md:max-w-96 lg:max-w-xl xl:max-w-4xl overflow-hidden">
-            <span className="w-full sm:text-lg md:text-2xl lg:text-3xl text-zinc-600 truncate">
-              {name}
-            </span>
-            <span className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl truncate">
-              {symbol}
-            </span>
+          <div className="flex justify-between flex-col gap-2 w-full truncate">
+            <div className="flex justify-start flex-col gap-2 w-full min-w-0">
+              <span className="w-full sm:text-lg md:text-2xl lg:text-3xl text-zinc-600 truncate">
+                {name}
+              </span>
+              <span className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl truncate">
+                {symbol}
+              </span>
+            </div>
           </div>
-          <div className="flex justify-evenly flex-col gap-2 lg:gap-y-4 overflow-hidden items-end">
-            <p className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-semibold truncate">
+          <div className="flex flex-col gap-2 lg:gap-y-4 items-end">
+            <p className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-semibold">
               ${price.toFixed(2)}
             </p>
             <div className="flex items-center gap-1 md:gap-2">

@@ -20,6 +20,7 @@ import { Label } from '@/components/ui/label';
 
 interface ComparisonSelectorProps {
   index: number;
+  onStockSelect: (stock: SelectedStock | null) => void;
 }
 
 interface SelectedStock {
@@ -30,6 +31,23 @@ interface SelectedStock {
   exchangeShortName: string;
 }
 
+// Ratio data interface
+interface RatiosData {
+  symbol: string;
+  date: string;
+  calendarYear: string;
+  period: string;
+  currentRatio: number;
+  quickRatio: number;
+  returnOnEquity: number;
+  returnOnAssets: number;
+  receivablesTurnover: number;
+  debtEquityRatio: number;
+  priceEarningsRatio: number;
+  priceToSalesRatio: number;
+  priceToBookRatio: number;
+}
+
 // Define query options
 type QueryResult = {
   isLoading: boolean;
@@ -37,7 +55,10 @@ type QueryResult = {
   data: any;
 };
 
-export function ComparisonSelector({ index }: ComparisonSelectorProps) {
+export function ComparisonSelector({
+  index,
+  onStockSelect,
+}: ComparisonSelectorProps) {
   const [searchString, setSearchString] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedStock, setSelectedStock] = useState<SelectedStock | null>(
@@ -80,12 +101,54 @@ export function ComparisonSelector({ index }: ComparisonSelectorProps) {
 
   const debouncedRefetch = debounce(refetch, 500);
 
+  // Round the values to two decimal places
+  const roundedData = ratios.data?.map((item: RatiosData) => ({
+    ...item,
+    calendarYear:
+      item.calendarYear !== null ? parseFloat(item.calendarYear) : 0,
+    currentRatio:
+      item.currentRatio !== null ? parseFloat(item.currentRatio.toFixed(1)) : 0,
+    quickRatio:
+      item.quickRatio !== null ? parseFloat(item.quickRatio.toFixed(1)) : 0,
+    returnOnEquity:
+      item.returnOnEquity !== null
+        ? parseFloat(item.returnOnEquity.toFixed(1))
+        : 0,
+    returnonAssets:
+      item.returnOnAssets !== null
+        ? parseFloat(item.returnOnAssets.toFixed(1))
+        : 0,
+    receivablesTurnover:
+      item.receivablesTurnover !== null
+        ? parseFloat(item.receivablesTurnover.toFixed(1))
+        : 0,
+    debtEquityRatio:
+      item.debtEquityRatio !== null
+        ? parseFloat(item.debtEquityRatio.toFixed(1))
+        : 0,
+    priceEarningsRatio:
+      item.priceEarningsRatio !== null
+        ? parseFloat(item.priceEarningsRatio.toFixed(1))
+        : 0,
+    priceSalesRatio:
+      item.priceToSalesRatio !== null
+        ? parseFloat(item.priceToSalesRatio.toFixed(1))
+        : 0,
+    priceToBookValue:
+      item.priceToBookRatio !== null
+        ? parseFloat(item.priceToBookRatio.toFixed(1))
+        : 0,
+  }));
+
+  console.log(roundedData);
+
   useEffect(() => {
     setIsOpen(searchString.length > 0);
   }, [searchString]);
 
   const handleStockSelection = (selectedStock: SelectedStock) => {
     setSelectedStock(selectedStock);
+    onStockSelect(selectedStock); // Lift the state up to the parent
     setIsOpen(false);
     setSearchString('');
   };
@@ -95,7 +158,7 @@ export function ComparisonSelector({ index }: ComparisonSelectorProps) {
     <div className="flex flex-col w-11/12 md:w-7/12 lg:w-6/12 xl:w-4/12 gap-2">
       <Popover open={isOpen}>
         <PopoverTrigger asChild>
-          <div className="flex flex-col w-full h-full gap-1">
+          <div className="flex flex-col w-full gap-1">
             <Label>Select stock {index}</Label>
             <Input
               type="text"
@@ -150,7 +213,7 @@ export function ComparisonSelector({ index }: ComparisonSelectorProps) {
             price={profile.data.price}
             industryOrChange={profile.data.changes}
           />
-        ) : isLoading ? (
+        ) : isLoading && selectedStock ? (
           <HorizontalBarSkeleton />
         ) : null}
       </div>
