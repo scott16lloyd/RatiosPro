@@ -11,6 +11,7 @@ import {
   Cell,
   LabelList,
   Label,
+  Tooltip,
 } from 'recharts';
 import { Info } from 'lucide-react';
 import Markdown from 'react-markdown';
@@ -52,31 +53,23 @@ export function VerticalComparisonBox({
     };
   }, []);
 
-  console.log(value);
+  console.log('VALUE:' + value);
 
   const data = [
-    {
-      name: value[0][1] ? value[0][1] : 'previous',
-      uv: value[0][0],
-      pv: 0.9, // Assuming you want to display `pv` values as well
-      max: 1,
-    },
-    {
-      name: value[1][1] ? value[1][1] : 'current',
-      uv: value[1][0],
-      pv: 0.8, // Assuming you want to display `pv` values as well
-      max: 1,
-    },
+    { name: '2021', companyA: 0.4, companyB: 0.8 }, // Example values for 2021
+    { name: '2022', companyA: 0.9, companyB: 0.8 }, // Example values for 2022
   ];
 
-  let barColor = 'white';
-  if (value[0][0] > value[1][0]) {
-    barColor = 'url(#greenGradient)';
-  } else if (value[0][0] === value[1][0]) {
-    barColor = 'grey';
-  } else {
-    barColor = 'url(#redGradient)';
-  }
+  console.log('data' + data);
+
+  const getBarColor = (a: number, b: number, isCompanyA: boolean) => {
+    if (a > b && isCompanyA) {
+      return 'url(#greenGradient)';
+    } else if (a < b && !isCompanyA) {
+      return 'url(#greenGradient)';
+    }
+    return 'white'; // Set the smaller value's bar to white
+  };
 
   type RatioName = 'ROA' | 'RT' | 'ROE';
 
@@ -167,19 +160,27 @@ export function VerticalComparisonBox({
               />
             </linearGradient>
           </defs>
-          <XAxis dataKey="name" type="category">
+          <XAxis dataKey="name">
             <Label offset={0} position="outside" />
           </XAxis>
           <YAxis type="number" domain={[0, 1]} hide />
-          <Bar dataKey="uv" radius={[8, 8, 8, 8]}>
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={index === 0 ? 'white' : barColor}
-              />
-            ))}
+          <Tooltip />
+          <Bar dataKey="companyA" name="Company A" radius={[8, 8, 8, 8]}>
+            {data.map(
+              (entry, index) => (
+                console.log(
+                  'ENTRY A: ' + entry.companyA + ' ENTRY B: ' + entry.companyB
+                ),
+                (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={getBarColor(entry.companyA, entry.companyB, true)}
+                  />
+                )
+              )
+            )}
             <LabelList
-              dataKey="uv"
+              dataKey="companyA"
               position="top"
               content={(props) => {
                 const { x, y, value } = props;
@@ -197,15 +198,15 @@ export function VerticalComparisonBox({
               }}
             />
           </Bar>
-          <Bar dataKey="pv" radius={[8, 8, 8, 8]}>
+          <Bar dataKey="companyB" name="Company B" radius={[8, 8, 8, 8]}>
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={index === 0 ? 'white' : barColor}
+                fill={getBarColor(entry.companyA, entry.companyB, false)}
               />
             ))}
             <LabelList
-              dataKey="pv"
+              dataKey="companyB"
               position="top"
               content={(props) => {
                 const { x, y, value } = props;
