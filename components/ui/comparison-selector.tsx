@@ -21,6 +21,7 @@ import { Label } from '@/components/ui/label';
 interface ComparisonSelectorProps {
   index: number;
   onStockSelect: (stock: SelectedStock | null) => void;
+  onRatiosDataUpdate: (data: RatiosData[] | null) => void;
 }
 
 interface SelectedStock {
@@ -58,6 +59,7 @@ type QueryResult = {
 export function ComparisonSelector({
   index,
   onStockSelect,
+  onRatiosDataUpdate,
 }: ComparisonSelectorProps) {
   const [searchString, setSearchString] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -102,45 +104,51 @@ export function ComparisonSelector({
   const debouncedRefetch = debounce(refetch, 500);
 
   // Round the values to two decimal places
-  const roundedData = ratios.data?.map((item: RatiosData) => ({
-    ...item,
-    calendarYear:
-      item.calendarYear !== null ? parseFloat(item.calendarYear) : 0,
-    currentRatio:
-      item.currentRatio !== null ? parseFloat(item.currentRatio.toFixed(1)) : 0,
-    quickRatio:
-      item.quickRatio !== null ? parseFloat(item.quickRatio.toFixed(1)) : 0,
-    returnOnEquity:
-      item.returnOnEquity !== null
-        ? parseFloat(item.returnOnEquity.toFixed(1))
-        : 0,
-    returnonAssets:
-      item.returnOnAssets !== null
-        ? parseFloat(item.returnOnAssets.toFixed(1))
-        : 0,
-    receivablesTurnover:
-      item.receivablesTurnover !== null
-        ? parseFloat(item.receivablesTurnover.toFixed(1))
-        : 0,
-    debtEquityRatio:
-      item.debtEquityRatio !== null
-        ? parseFloat(item.debtEquityRatio.toFixed(1))
-        : 0,
-    priceEarningsRatio:
-      item.priceEarningsRatio !== null
-        ? parseFloat(item.priceEarningsRatio.toFixed(1))
-        : 0,
-    priceSalesRatio:
-      item.priceToSalesRatio !== null
-        ? parseFloat(item.priceToSalesRatio.toFixed(1))
-        : 0,
-    priceToBookValue:
-      item.priceToBookRatio !== null
-        ? parseFloat(item.priceToBookRatio.toFixed(1))
-        : 0,
-  }));
-
-  console.log(roundedData);
+  useEffect(() => {
+    if (ratios.data) {
+      const roundedData = ratios.data.map((item: RatiosData) => ({
+        ...item,
+        calendarYear:
+          item.calendarYear !== null ? parseFloat(item.calendarYear) : 0,
+        currentRatio:
+          item.currentRatio !== null
+            ? parseFloat(item.currentRatio.toFixed(1))
+            : 0,
+        quickRatio:
+          item.quickRatio !== null ? parseFloat(item.quickRatio.toFixed(1)) : 0,
+        returnOnEquity:
+          item.returnOnEquity !== null
+            ? parseFloat(item.returnOnEquity.toFixed(1))
+            : 0,
+        returnOnAssets:
+          item.returnOnAssets !== null
+            ? parseFloat(item.returnOnAssets.toFixed(1))
+            : 0,
+        receivablesTurnover:
+          item.receivablesTurnover !== null
+            ? parseFloat(item.receivablesTurnover.toFixed(1))
+            : 0,
+        debtEquityRatio:
+          item.debtEquityRatio !== null
+            ? parseFloat(item.debtEquityRatio.toFixed(1))
+            : 0,
+        priceEarningsRatio:
+          item.priceEarningsRatio !== null
+            ? parseFloat(item.priceEarningsRatio.toFixed(1))
+            : 0,
+        priceSalesRatio:
+          item.priceToSalesRatio !== null
+            ? parseFloat(item.priceToSalesRatio.toFixed(1))
+            : 0,
+        priceToBookValue:
+          item.priceToBookRatio !== null
+            ? parseFloat(item.priceToBookRatio.toFixed(1))
+            : 0,
+      }));
+      onRatiosDataUpdate(roundedData);
+    }
+    console.log(ratios.data);
+  }, [ratios.data, onRatiosDataUpdate]);
 
   useEffect(() => {
     setIsOpen(searchString.length > 0);

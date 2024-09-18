@@ -14,20 +14,86 @@ interface SelectedStock {
   exchangeShortName: string;
 }
 
+interface RatiosData {
+  symbol: string;
+  date: string;
+  calendarYear: string;
+  period: string;
+  currentRatio: number;
+  quickRatio: number;
+  returnOnEquity: number;
+  returnOnAssets: number;
+  receivablesTurnover: number;
+  debtEquityRatio: number;
+  priceEarningsRatio: number;
+  priceToSalesRatio: number;
+  priceToBookRatio: number;
+}
+
 export default function ComparePage() {
   const [selectedFirstStock, setSelectedFirstStock] =
     useState<SelectedStock | null>(null);
   const [selectedSecondStock, setSelectedSecondStock] =
     useState<SelectedStock | null>(null);
+  const [firstStockRatios, setFirstStockRatios] = useState<RatiosData[] | null>(
+    null
+  );
+  const [secondStockRatios, setSecondStockRatios] = useState<
+    RatiosData[] | null
+  >(null);
+
+  const getComparisonData = (
+    ratioName: keyof RatiosData
+  ): {
+    year: string;
+    companyA: number | null;
+    companyB: number | null;
+    companyAName: string;
+    companyBName: string;
+  }[] => {
+    const years = new Set([
+      ...(firstStockRatios?.map((r) => r.calendarYear) || []),
+      ...(secondStockRatios?.map((r) => r.calendarYear) || []),
+    ]);
+
+    const parseRatioValue = (
+      value: string | number | undefined | null
+    ): number | null => {
+      if (value === undefined || value === null) return null;
+      const numValue = typeof value === 'string' ? parseFloat(value) : value;
+      return isNaN(numValue) ? null : numValue;
+    };
+
+    return Array.from(years).map((year) => ({
+      year,
+      companyA: parseRatioValue(
+        firstStockRatios?.find((r) => r.calendarYear === year)?.[ratioName]
+      ),
+      companyB: parseRatioValue(
+        secondStockRatios?.find((r) => r.calendarYear === year)?.[ratioName]
+      ),
+      companyAName: selectedFirstStock?.name || '',
+      companyBName: selectedSecondStock?.name || '',
+    }));
+  };
 
   return (
     <main className="w-full h-screen flex flex-col justify-start items-center gap-4">
       <TopNavBar />
       <div className="w-full flex flex-col items-center lg:items-start justify-center lg:flex-row gap-4 px-4">
-        <ComparisonSelector index={1} onStockSelect={setSelectedFirstStock} />
-        <ComparisonSelector index={2} onStockSelect={setSelectedSecondStock} />
+        <ComparisonSelector
+          index={1}
+          onStockSelect={setSelectedFirstStock}
+          onRatiosDataUpdate={setFirstStockRatios}
+        />
+        <ComparisonSelector
+          index={2}
+          onStockSelect={setSelectedSecondStock}
+          onRatiosDataUpdate={setSecondStockRatios}
+        />
       </div>
-      {selectedFirstStock || selectedSecondStock ? (
+      {selectedFirstStock ||
+      (selectedSecondStock && (firstStockRatios || secondStockRatios)) ? (
         <div className="w-full h-full flex flex-col items-center">
           <Tabs
             defaultValue="roa"
@@ -37,10 +103,10 @@ export default function ComparePage() {
               <TabsTrigger value="roa" className="w-full">
                 ROA
               </TabsTrigger>
-              <TabsTrigger value="password" className="w-full">
+              <TabsTrigger value="rt" className="w-full">
                 RT
               </TabsTrigger>
-              <TabsTrigger value="account" className="w-full">
+              <TabsTrigger value="roe" className="w-full">
                 ROE
               </TabsTrigger>
             </TabsList>
@@ -48,10 +114,23 @@ export default function ComparePage() {
               <div className="w-full h-full flex flex-grow justify-center">
                 <VerticalComparisonBox
                   ratioName="ROA"
-                  value={[
-                    [0.5, 2021],
-                    [0.6, 2022],
-                  ]}
+                  ratioValues={getComparisonData('returnOnAssets')}
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="rt" className="h-96 flex-grow">
+              <div className="w-full h-full flex flex-grow justify-center">
+                <VerticalComparisonBox
+                  ratioName="RT"
+                  ratioValues={getComparisonData('receivablesTurnover')}
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="roe" className="h-96 flex-grow">
+              <div className="w-full h-full flex flex-grow justify-center">
+                <VerticalComparisonBox
+                  ratioName="ROE"
+                  ratioValues={getComparisonData('returnOnEquity')}
                 />
               </div>
             </TabsContent>
