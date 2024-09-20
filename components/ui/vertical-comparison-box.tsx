@@ -60,6 +60,8 @@ export function VerticalComparisonBox({
   const [isLoading, setIsLoading] = useState(false);
   const [barCategoryGap, setBarCategoryGap] = useState(10);
 
+  console.log(ratioValues);
+
   // Use the first entry to get company names, or provide defaults
   const companyAName =
     ratioValues.length > 0 ? ratioValues[0].companyAName : '';
@@ -72,7 +74,9 @@ export function VerticalComparisonBox({
   const updateBarCategoryGap = () => {
     const windowWidth = window.innerWidth;
 
-    if (windowWidth > 1200) {
+    if (windowWidth > 1800) {
+      setBarCategoryGap(60);
+    } else if (windowWidth > 1200) {
       setBarCategoryGap(40);
     } else if (windowWidth > 768) {
       setBarCategoryGap(20);
@@ -96,10 +100,13 @@ export function VerticalComparisonBox({
     isCompanyA: boolean
   ) => {
     if (a === null || b === null) return 'white';
-    if (a > b && isCompanyA) {
-      return 'url(#greenGradient)';
-    } else if (a < b && !isCompanyA) {
-      return 'url(#greenGradient)';
+    console.log(ratioValues);
+    console.log(a);
+    console.log(b);
+    if (a > b) {
+      return isCompanyA ? 'url(#greenGradient)' : 'white';
+    } else if (a < b) {
+      return isCompanyA ? 'white' : 'url(#greenGradient)';
     }
     return 'white'; // Set the smaller value's bar to white
   };
@@ -185,7 +192,7 @@ export function VerticalComparisonBox({
       </div>
       <ResponsiveContainer width="100%" height="90%">
         <BarChart
-          data={[ratioValues[1], ratioValues[0]]}
+          data={ratioValues.slice(0, 2)}
           barCategoryGap={barCategoryGap}
           layout="horizontal"
           margin={{ top: 20, bottom: 2, left: 8, right: 8 }}
@@ -225,12 +232,18 @@ export function VerticalComparisonBox({
           <Tooltip content={<CustomTooltip />} />
           {/* Pass the acutal name of the stock to name e.g. Apple */}
           <Bar dataKey="companyA" name={companyAName} radius={[8, 8, 8, 8]}>
-            {ratioValues.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={getBarColor(entry.companyA, entry.companyB, true)}
-              />
-            ))}
+            {/* console.log("RATIO VALUES" + ratioValues); */}
+            {ratioValues.map(
+              (entry, index) => (
+                console.log(entry.companyA),
+                (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={getBarColor(entry.companyA, entry.companyB, true)}
+                  />
+                )
+              )
+            )}
             <LabelList
               dataKey="companyA"
               position="top"

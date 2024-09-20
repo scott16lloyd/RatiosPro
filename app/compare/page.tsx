@@ -80,7 +80,7 @@ export default function ComparePage() {
   return (
     <main className="w-full h-screen flex flex-col justify-start items-center gap-4">
       <TopNavBar />
-      <div className="w-full flex flex-col items-center lg:items-start justify-center lg:flex-row gap-4 px-4">
+      <div className="w-full flex flex-col items-center lg:items-start justify-center lg:flex-row gap-4 lg:px-8">
         <ComparisonSelector
           index={1}
           onStockSelect={setSelectedFirstStock}
