@@ -17,7 +17,7 @@ import { Info } from 'lucide-react';
 import Markdown from 'react-markdown';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
-import { Button } from './button';
+import { Button } from '@/components/ui/button';
 import {
   Drawer,
   DrawerClose,

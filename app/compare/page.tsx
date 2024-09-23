@@ -80,8 +80,20 @@ export default function ComparePage() {
 
   // Temporary data for horizontal comparison box
   const comparisonData = [
-    { company: 'APPL', previousYear: 1.32, currentYear: 1.62 },
-    { company: 'QCOM', previousYear: 1.32, currentYear: 1.62 },
+    {
+      company: 'APPL',
+      prevValue: 1.32,
+      currValue: 1.62,
+      prevYear: '2022',
+      currYear: '2023',
+    },
+    {
+      company: 'QCOM',
+      prevValue: 1.32,
+      currValue: 1.62,
+      prevYear: '2022',
+      currYear: '2023',
+    },
   ];
 
   return (
@@ -144,7 +156,7 @@ export default function ComparePage() {
           </Tabs>
         </div>
       ) : null}
-      <HorizontalComparisonBox title="CR" items={comparisonData} />
+      <HorizontalComparisonBox ratioName="CR" items={comparisonData} />
     </main>
   );
 }
