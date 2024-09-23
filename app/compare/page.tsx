@@ -5,6 +5,7 @@ import { ComparisonSelector } from '@/components/ui/comparison-selector';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
 import { VerticalComparisonBox } from '@/components/ui/vertical-comparison-box';
+import HorizontalComparisonBox from '@/components/ui/horizontal-comparison-box';
 
 interface SelectedStock {
   symbol: string;
@@ -77,8 +78,14 @@ export default function ComparePage() {
     }));
   };
 
+  // Temporary data for horizontal comparison box
+  const comparisonData = [
+    { company: 'APPL', previousYear: 1.32, currentYear: 1.62 },
+    { company: 'QCOM', previousYear: 1.32, currentYear: 1.62 },
+  ];
+
   return (
-    <main className="w-full h-screen flex flex-col justify-start items-center gap-4">
+    <main className="w-full h-full flex flex-col justify-start items-center gap-4 pb-4">
       <TopNavBar />
       <div className="w-full flex flex-col items-center lg:items-start justify-center lg:flex-row gap-4 lg:px-8">
         <ComparisonSelector
@@ -94,7 +101,7 @@ export default function ComparePage() {
       </div>
       {selectedFirstStock ||
       (selectedSecondStock && (firstStockRatios || secondStockRatios)) ? (
-        <div className="w-full h-full flex flex-col items-center">
+        <div className="w-full h-fit flex flex-col items-center">
           <Tabs
             defaultValue="roa"
             className="w-11/12 md:w-7/12 lg:w-6/12 xl:w-4/12 gap-2"
@@ -137,6 +144,7 @@ export default function ComparePage() {
           </Tabs>
         </div>
       ) : null}
+      <HorizontalComparisonBox title="CR" items={comparisonData} />
     </main>
   );
 }
